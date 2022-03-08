@@ -12,3 +12,4 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           start: npx serve -s build -l 3005
+          spec: '**/ProjectListPage/*'
