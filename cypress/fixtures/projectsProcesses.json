@@ -1,0 +1,34 @@
+{
+  "selectors": {
+    "platformTab": "[data-cy='platform-tab']",
+    "projectsTab": "[data-cy='platform-settings__projects-tab']",
+    "processesTable":"[data-cy='projects-settings__processes-table']",
+    "processesTableRow": "[data-cy='projects-settings__processes-table__process-$']",
+    "addProcessButton": "[data-cy='projects-settings__add-process-button']",
+    "editProcessButton": "[data-cy='projects-settings__processes-table__edit-button']",
+    "removeProcessButton": "[data-cy='projects-settings__processes-table__remove-button']",
+    "processForm": {
+      "container": "[data-cy='process-form__container']",
+      "processNameField": "[data-cy='process-form__process-name']",
+      "processDescriptionField": "[data-cy='process-form__process-description']",
+      "processStageNumber": "[data-cy='process-form__stage-number']",
+      "processStageNameField": "[data-cy='process-form__stage-$__stage-name']",
+      "processStageDescriptionField": "[data-cy='process-form__stage-$__stage-description']",
+      "processStageMinCompletionTimeField": "[data-cy='process-form__stage-$__min-completion-time']",
+      "processStageMaxCompletionTimeField": "[data-cy='process-form__stage-$__max-completion-time']",
+      "removeProcessStageButton": "[data-cy='process-form__stage-$__remove-stage-button']",
+      "addProcessStageButton": "[data-cy='process-form__add-stage-button']",
+      "confirmButton": "[data-cy='process-form__confirm-button']",
+      "cancelButton": "[data-cy='process-form__cancel-button']"
+    },
+    "removeProcessConfirmationModal": {
+      "container": "[data-cy='remove-process__confirmation-modal']",
+      "confirmButton": "[data-cy='remove-process__confirm-button']"
+    }
+  },
+  "constantTexts": {
+    "processAddedSuccesfully": "Process was succesfully added!",
+    "processUpdatedSuccesfully": "Process was succesfully updated!",
+    "processRemovedSuccesfully": "Process was succesfully removed!"
+  }
+}

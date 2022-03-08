@@ -1,0 +1,265 @@
+{
+    "selectors": {
+        "budgetHeaderTab": "[data-cy=tab-budget]",
+        "budgetTab": "[data-testid=tab-1]",
+        "budgetListTable": {
+            "budgetTable": "[data-cy=budget-details-table]",
+            "budgetRow": "[data-cy=budget-details-*]",
+            "budgetCategory": "[data-cy=header__budget-category]",
+            "budgetCategoryHeader": "[data-cy=header__budget-category]",
+            "budgetAllocatedBudgetHeader": "[data-cy=header__budget-allocated_budget]",
+            "budgetCostToDateHeader": "[data-cy=header__budget-cost_to_date]",
+            "budgetNotesHeader": "[data-cy=header__budget-notes]",
+            "allocatedBudgetInput": "[data-cy=allocated_budget-input-*]",
+            "costToDateInput": "[data-cy=cost_to_date-input-*]",
+            "notesInput": "[data-cy=notes-input-*]",
+            "saveBudgetButton": "[data-cy=save-budget-details-button-*]",
+            "cancelBudgetButton": "[data-cy=cancel-budget-details-button-*]",
+            "editBudgetButton": "[data-cy=edit-budget-details-button-*]",
+            "budgetExceededTooltip": "[data-cy=budget-exceeded-tooltip-*]"
+        }
+    },
+    "stubData": {
+        "code": 200,
+        "data": {
+            "budgets": [
+                {
+                    "id": "2451f63d-12f2-4b33-a2a0-4249b415765e",
+                    "name": "internal resource",
+                    "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                    "currency": "USD",
+                    "data": null,
+                    "createdAt": "2022-02-23T17:54:38.365Z",
+                    "updatedAt": "2022-02-28T07:24:16.389Z",
+                    "categoryBudgets": [
+                        {
+                            "id": "425f8b99-2f9d-4956-a103-da908749b906",
+                            "category_id": "2451f63d-12f2-4b33-a2a0-4249b415765e",
+                            "project_id": "d5b298c3-9393-4efe-b1bf-8fabd5306484",
+                            "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                            "category_name": "internal resource",
+                            "category_currency": "USD",
+                            "notes": "Lorem ipsum dolor sit amet",
+                            "allocated_budget": "10.00",
+                            "cost_to_date": "99.00",
+                            "data": null,
+                            "createdAt": "2022-02-25T18:37:32.660Z",
+                            "updatedAt": "2022-02-28T09:26:56.937Z"
+                        }
+                    ]
+                },
+                {
+                    "id": "32761fdf-de02-4b02-8ea6-af698b31d6c7",
+                    "name": "technology",
+                    "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                    "currency": "USD",
+                    "data": null,
+                    "createdAt": "2022-02-23T17:54:38.370Z",
+                    "updatedAt": "2022-02-28T07:24:16.397Z",
+                    "categoryBudgets": []
+                },
+                {
+                    "id": "f9269bbf-af1f-408d-8045-5b338dbe52e7",
+                    "name": "travel",
+                    "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                    "currency": "USD",
+                    "data": null,
+                    "createdAt": "2022-02-23T17:54:38.376Z",
+                    "updatedAt": "2022-02-28T07:24:16.404Z",
+                    "categoryBudgets": [
+                        {
+                            "id": "4451f63d-12f2-4b33-a2a0-4249b415761e",
+                            "category_id": "f9269bbf-af1f-408d-8045-5b338dbe52e7",
+                            "project_id": "d5b298c3-9393-4efe-b1bf-8fabd5306484",
+                            "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                            "category_name": "travel",
+                            "category_currency": "USD",
+                            "notes": "Lorem",
+                            "allocated_budget": "91.00",
+                            "cost_to_date": "9999.00",
+                            "data": null,
+                            "createdAt": "2022-02-23T17:54:38.365Z",
+                            "updatedAt": "2022-02-28T09:27:09.425Z"
+                        }
+                    ]
+                },
+                {
+                    "id": "f662ee4d-92ac-483b-a0f9-61e94b537df3",
+                    "name": "consulting",
+                    "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                    "currency": "USD",
+                    "data": null,
+                    "createdAt": "2022-02-23T17:54:38.382Z",
+                    "updatedAt": "2022-02-28T07:24:16.409Z",
+                    "categoryBudgets": [
+                        {
+                            "id": "97e31d30-3d4e-4f14-8645-a584bb7beee0",
+                            "category_id": "f662ee4d-92ac-483b-a0f9-61e94b537df3",
+                            "project_id": "d5b298c3-9393-4efe-b1bf-8fabd5306484",
+                            "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                            "category_name": "consulting",
+                            "category_currency": null,
+                            "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et sapien ut mauris malesuada condimentum. Nullam nec tellus arcu. Maecenas vel ligula sem. Curabitur urna est, fringilla mollis pretium in, efficitur vitae erat. Etiam turpis massa, consequat consectetur lobortis quis, dignissim nec turpis.",
+                            "allocated_budget": "1.00",
+                            "cost_to_date": "9.00",
+                            "data": null,
+                            "createdAt": "2022-02-24T21:38:37.085Z",
+                            "updatedAt": "2022-02-24T21:38:37.085Z"
+                        }
+                    ]
+                },
+                {
+                    "id": "62f66c7d-dbe4-49b3-ac27-313f8ab97f50",
+                    "name": "others",
+                    "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                    "currency": "USD",
+                    "data": null,
+                    "createdAt": "2022-02-23T17:54:38.387Z",
+                    "updatedAt": "2022-02-28T07:24:16.415Z",
+                    "categoryBudgets": [
+                        {
+                            "id": "a63f5eb8-e36f-4ec6-b9f7-adff8119c137",
+                            "category_id": "62f66c7d-dbe4-49b3-ac27-313f8ab97f50",
+                            "project_id": "d5b298c3-9393-4efe-b1bf-8fabd5306484",
+                            "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                            "category_name": "others",
+                            "category_currency": null,
+                            "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et sapien ut mauris malesuada condimentum. Nullam nec tellus arcu. Maecenas vel ligula sem. Curabitur urna est, fringilla mollis pretium in, efficitur vitae erat. Etiam turpis massa, consequat consectetur lobortis quis, dignissim nec turpis.",
+                            "allocated_budget": "1.00",
+                            "cost_to_date": "9.00",
+                            "data": null,
+                            "createdAt": "2022-02-24T21:34:09.260Z",
+                            "updatedAt": "2022-02-24T21:34:09.260Z"
+                        }
+                    ]
+                },
+                {
+                    "id": "cfaafbc8-c091-4ea4-b0d3-76c8526ce59f",
+                    "name": "facilities",
+                    "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                    "currency": "USD",
+                    "data": null,
+                    "createdAt": "2022-02-23T17:54:38.393Z",
+                    "updatedAt": "2022-02-28T07:24:16.421Z",
+                    "categoryBudgets": [
+                        {
+                            "id": "8c616c23-e524-4d25-9999-7b86cc466273",
+                            "category_id": "cfaafbc8-c091-4ea4-b0d3-76c8526ce59f",
+                            "project_id": "d5b298c3-9393-4efe-b1bf-8fabd5306484",
+                            "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                            "category_name": "facilities",
+                            "category_currency": "USD",
+                            "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et sapien ut mauris malesuada condimentum. Nullam nec tellus arcu. Maecenas vel ligula sem. Curabitur urna est, fringilla mollis pretium in, efficitur vitae erat. Etiam turpis massa, consequat consectetur lobortis quis, dignissim nec turpis.",
+                            "allocated_budget": "1.00",
+                            "cost_to_date": "9.00",
+                            "data": null,
+                            "createdAt": "2022-02-23T17:54:38.365Z",
+                            "updatedAt": "2022-02-23T17:54:38.365Z"
+                        }
+                    ]
+                },
+                {
+                    "id": "f9269bbf-af1f-408d-8045-5b338dbe52a7",
+                    "name": "sample 1",
+                    "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                    "currency": "USD",
+                    "data": null,
+                    "createdAt": "2022-02-23T17:54:38.376Z",
+                    "updatedAt": "2022-02-28T07:24:16.404Z",
+                    "categoryBudgets": [
+                        {
+                            "id": "f9269bbf-af1f-408d-8045-5b338dbe52a7",
+                            "category_id": "f9269bbf-af1f-408d-8045-5b338dbe52a7",
+                            "project_id": "d5b298c3-9393-4efe-b1bf-8fabd5306484",
+                            "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                            "category_name": "internal resource",
+                            "category_currency": "USD",
+                            "notes": "Lorem ipsum dolor sit amet",
+                            "allocated_budget": "10.00",
+                            "cost_to_date": "99.00",
+                            "data": null,
+                            "createdAt": "2022-02-25T18:37:32.660Z",
+                            "updatedAt": "2022-02-28T09:26:56.937Z"
+                        }
+                    ]
+                },
+                {
+                    "id": "f9269bbf-af1f-408d-8045-5b338dbe52b7",
+                    "name": "sample 2",
+                    "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                    "currency": "USD",
+                    "data": null,
+                    "createdAt": "2022-02-23T17:54:38.376Z",
+                    "updatedAt": "2022-02-28T07:24:16.404Z",
+                    "categoryBudgets": [
+                        {
+                            "id": "f9269bbf-af1f-408d-8045-5b338dbe51a7",
+                            "category_id": "f9269bbf-af1f-408d-8045-5b338dbe52b7",
+                            "project_id": "d5b298c3-9393-4efe-b1bf-8fabd5306484",
+                            "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                            "category_name": "internal resource",
+                            "category_currency": "USD",
+                            "notes": "Lorem ipsum dolor sit amet",
+                            "allocated_budget": "10.00",
+                            "cost_to_date": "99.00",
+                            "data": null,
+                            "createdAt": "2022-02-25T18:37:32.660Z",
+                            "updatedAt": "2022-02-28T09:26:56.937Z"
+                        }
+                    ]
+                },
+                {
+                    "id": "f9269bbf-af1f-408d-8045-5b338dbe52c7",
+                    "name": "sample 3",
+                    "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                    "currency": "USD",
+                    "data": null,
+                    "createdAt": "2022-02-23T17:54:38.376Z",
+                    "updatedAt": "2022-02-28T07:24:16.404Z",
+                    "categoryBudgets": [
+                        {
+                            "id": "f9269bbf-af1f-408d-8045-5b338dbe52c7",
+                            "category_id": "f9269bbf-af1f-408d-8045-5b338dbe52c7",
+                            "project_id": "d5b298c3-9393-4efe-b1bf-8fabd5306484",
+                            "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                            "category_name": "internal resource",
+                            "category_currency": "USD",
+                            "notes": "Lorem ipsum dolor sit amet",
+                            "allocated_budget": "10.00",
+                            "cost_to_date": "99.00",
+                            "data": null,
+                            "createdAt": "2022-02-25T18:37:32.660Z",
+                            "updatedAt": "2022-02-28T09:26:56.937Z"
+                        }
+                    ]
+                },
+                {
+                    "id": "f9269bbf-af1f-408d-8045-5b338dbe52d7",
+                    "name": "sample 4",
+                    "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                    "currency": "USD",
+                    "data": null,
+                    "createdAt": "2022-02-23T17:54:38.376Z",
+                    "updatedAt": "2022-02-28T07:24:16.404Z",
+                    "categoryBudgets": [
+                        {
+                            "id": "f9269bbf-af1f-408d-8045-5b338dbe5237",
+                            "category_id": "f9269bbf-af1f-408d-8045-5b338dbe52d7",
+                            "project_id": "d5b298c3-9393-4efe-b1bf-8fabd5306484",
+                            "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                            "category_name": "internal resource",
+                            "category_currency": "USD",
+                            "notes": "Lorem ipsum dolor sit amet",
+                            "allocated_budget": "10.00",
+                            "cost_to_date": "99.00",
+                            "data": null,
+                            "createdAt": "2022-02-25T18:37:32.660Z",
+                            "updatedAt": "2022-02-28T09:26:56.937Z"
+                        }
+                    ]
+                }
+            ]
+        },
+        "success": true
+    }
+}

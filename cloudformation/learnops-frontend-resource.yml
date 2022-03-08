@@ -1,0 +1,368 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Resource stack for learnops-frontend
+Parameters:
+  ImageTag:
+    Type: String
+    Default: 2842e31434212266afc3bb10380ed88171c526a8
+  Route53HostedZone:
+    Type: String
+    Default: dev.getsynapse.com
+  ApplicationHost:
+    Type: String
+    Default: learnops
+  SSLCertificateId:
+    Type: String
+    Default: arn:aws:acm:us-east-1:675441604370:certificate/3914b881-3f96-4fbf-ae78-4319d23d0c47
+  InstanceSubnet:
+    Default: subnet-beb826c8
+    Description: Subnet on which the instance should be set up. Required if VPCId is set
+    Type: String
+  SecondarySubnet:
+    Type: String
+    Default: subnet-04e39239
+  VPCId:
+    Default: vpc-355a6b51
+    Type: String
+  Stage:
+    Description: Environment from the app.
+    Type: String
+    Default: dev
+
+Resources:
+  ElasticLoadBalancer:
+    Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
+    Properties:
+      SecurityGroups:
+        - !Ref ELBSecurityGroup
+      Subnets:
+        - !Ref InstanceSubnet
+        - !Ref SecondarySubnet
+      Scheme: internet-facing
+  RedirectLoadBalancerListener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    DependsOn: ECSServiceRole
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref ECSTG
+      LoadBalancerArn: !Ref ElasticLoadBalancer
+      Port: 80
+      Protocol: HTTP
+  RedirectLoadBalancerListenerRule:
+    Type: 'AWS::ElasticLoadBalancingV2::ListenerRule'
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref ECSTG
+      Conditions:
+        - Field: path-pattern
+          Values:
+            - /
+      ListenerArn: !Ref RedirectLoadBalancerListener
+      Priority: 1
+  LoadBalancerListener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    DependsOn: ECSServiceRole
+    Properties:
+      Certificates:
+        - CertificateArn: !Ref SSLCertificateId
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref ECSTG
+      LoadBalancerArn: !Ref ElasticLoadBalancer
+      Port: 443
+      Protocol: HTTPS
+  LoadBalancerListenerRule:
+    Type: 'AWS::ElasticLoadBalancingV2::ListenerRule'
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref ECSTG
+      Conditions:
+        - Field: path-pattern
+          Values:
+            - /
+      ListenerArn: !Ref LoadBalancerListener
+      Priority: 1
+  ECSTG:
+    DependsOn: ElasticLoadBalancer
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      HealthCheckIntervalSeconds: 80
+      HealthCheckPath: /
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 60
+      HealthyThresholdCount: 2
+      Port: 80
+      Protocol: HTTP
+      UnhealthyThresholdCount: 5
+      VpcId: !Ref VPCId
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: '20'
+  AppSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: AppSecurityGroup
+      SecurityGroupIngress:
+        - IpProtocol: '-1'
+          FromPort: -1
+          ToPort: -1
+          SourceSecurityGroupId: !Ref ELBSecurityGroup
+      VpcId: !Ref VPCId
+  Route53Entry:
+    Type: 'AWS::Route53::RecordSetGroup'
+    Properties:
+      HostedZoneName: !Join
+        - ''
+        - - !Ref Route53HostedZone
+          - .
+      Comment: Zone apex alias targeted to myELB LoadBalancer.
+      RecordSets:
+        - Name: !Join
+            - .
+            - - !Ref ApplicationHost
+              - !Ref Route53HostedZone
+          Type: A
+          AliasTarget:
+            HostedZoneId: !GetAtt
+              - ElasticLoadBalancer
+              - CanonicalHostedZoneID
+            DNSName: !GetAtt
+              - ElasticLoadBalancer
+              - DNSName
+  ELBSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: ELBSecurityGroup
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      VpcId: !Ref VPCId
+  CloudWatchAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    Properties:
+      ActionsEnabled: true
+      AlarmActions:
+        - 'arn:aws:sns:us-east-1:675441604370:instance-alarm'
+      ComparisonOperator: LessThanOrEqualToThreshold
+      Dimensions:
+        - Name: LoadBalancer
+          Value: !GetAtt
+            - ElasticLoadBalancer
+            - LoadBalancerFullName
+        - Name: TargetGroup
+          Value: !GetAtt
+            - ECSTG
+            - TargetGroupFullName
+      EvaluationPeriods: 5
+      MetricName: HealthyHostCount
+      Namespace: AWS/ApplicationELB
+      Period: 60
+      Statistic: Maximum
+      Threshold: 0
+  AppIamRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: app-iam-role
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'ecs:*'
+                  - 'ecr:*'
+                  - 'sns:*'
+                  - 'logs:*'
+                Resource: '*'
+  AppInstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Path: /
+      Roles:
+        - !Ref AppIamRole
+  LaunchConfig:
+    Type: 'AWS::AutoScaling::LaunchConfiguration'
+    Properties:
+      AssociatePublicIpAddress: true
+      ImageId: !FindInMap
+        - AWSRegionToAMI
+        - !Ref 'AWS::Region'
+        - AMIID
+      InstanceType: t2.micro
+      KeyName: dev-instance-regain-access
+      IamInstanceProfile: !Ref AppInstanceProfile
+      SecurityGroups:
+        - !Ref AppSecurityGroup
+      UserData:
+        Fn::Base64:
+          Fn::Join: ["", [
+            "#cloud-boothook\n",
+            "#!/bin/bash\n",
+            "sudo yum update -y ecs-init\n",
+            "cloud-init-per once docker_options",
+            " echo 'OPTIONS=\"${OPTIONS} --storage-opt dm.basesize=20G\"'",
+            " >> /etc/sysconfig/docker\n",
+            "#!/bin/bash -xe\n",
+            "echo ECS_CLUSTER=", { "Ref" : "ECSCluster" }, " >> /etc/ecs/ecs.config",
+            "\n",
+            "echo ECS_ENGINE_TASK_CLEANUP_WAIT_DURATION=2h >> /etc/ecs/ecs.config\n",
+            "yum install -y aws-cfn-bootstrap\n",
+            "/opt/aws/bin/cfn-signal -e $? --stack ", { "Ref" : "AWS::StackName" },
+            " --resource AutoScalingGroup ",
+            " --region ", { "Ref" : "AWS::Region" },
+            "\n",
+            "sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm\n"
+          ] ]
+  AutoScalingGroup:
+    Type: 'AWS::AutoScaling::AutoScalingGroup'
+    Properties:
+      Tags:
+        - Key: ECSClusterName
+          Value: !Ref ECSCluster
+          PropagateAtLaunch: true
+        - Key: AutoStopEnabled
+          Value: 'true'
+          PropagateAtLaunch: true
+        - Key: Name
+          Value: !Sub learnops-frontend-${Stage}
+          PropagateAtLaunch: true
+      LaunchConfigurationName: !Ref LaunchConfig
+      MinSize: '1'
+      MaxSize: '2'
+      DesiredCapacity: '1'
+      VPCZoneIdentifier:
+        - !Ref InstanceSubnet
+      HealthCheckGracePeriod: 600
+      HealthCheckType: ELB
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT15M
+    UpdatePolicy:
+      AutoScalingReplacingUpdate:
+        WillReplace: true
+  ECSCluster:
+    Type: 'AWS::ECS::Cluster'
+  ECSService:
+    DependsOn:
+      - RedirectLoadBalancerListener
+      - LoadBalancerListener
+      - AutoScalingGroup
+    Type: 'AWS::ECS::Service'
+    Properties:
+      Cluster: !Ref ECSCluster
+      DesiredCount: 1
+      Role: !Ref ECSServiceRole
+      TaskDefinition: !Ref TaskDefinition
+      LoadBalancers:
+        - ContainerName: learnops-frontend
+          ContainerPort: 3000
+          TargetGroupArn: !Ref ECSTG
+  ECSServiceRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs.amazonaws.com
+                - ecs-tasks.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: ecs-service
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'elasticloadbalancing:DeregisterInstancesFromLoadBalancer'
+                  - 'elasticloadbalancing:DeregisterTargets'
+                  - 'elasticloadbalancing:Describe*'
+                  - 'elasticloadbalancing:RegisterInstancesWithLoadBalancer'
+                  - 'elasticloadbalancing:RegisterTargets'
+                  - 'ec2:Describe*'
+                  - 'ec2:AuthorizeSecurityGroupIngress'
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - 's3:GetObject'
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - 's3:GetBucketLocation'
+                Resource:
+                  - 'arn:aws:s3:::envfiles-dev'
+              - Effect: Allow
+                Action:
+                  - 'ecr:GetAuthorizationToken'
+                  - 'ecr:BatchCheckLayerAvailability'
+                  - 'ecr:GetDownloadUrlForLayer'
+                  - 'ecr:BatchGetImage'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource: '*'
+  TaskDefinition:
+    Type: 'AWS::ECS::TaskDefinition'
+    Properties:
+      ExecutionRoleArn: !GetAtt ECSServiceRole.Arn
+      ContainerDefinitions:
+        - Image: !Sub 675441604370.dkr.ecr.us-east-1.amazonaws.com/learnops-frontend-${Stage}:${ImageTag}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref ECSLogGroup
+              awslogs-region: !Ref 'AWS::Region'
+              awslogs-stream-prefix: '[learnops-frontend]'
+          Memory: 256
+          Name: learnops-frontend
+          PortMappings:
+            - ContainerPort: 3000
+  ECSLogGroup:
+    Type: 'AWS::Logs::LogGroup'
+Outputs:
+  URL:
+    Value: !Join
+      - ''
+      - - 'https://'
+        - !Ref ApplicationHost
+        - .
+        - !Ref Route53HostedZone
+Mappings:
+  AWSRegionToAMI:
+    us-east-1:
+      AMIID: ami-a7a242da
+    us-east-2:
+      AMIID: ami-b86a5ddd
+    us-west-1:
+      AMIID: none
+    us-west-2:
+      AMIID: none
+    eu-west-1:
+      AMIID: none
+    eu-central-1:
+      AMIID: none
+    ap-northeast-1:
+      AMIID: none
+    ap-southeast-1:
+      AMIID: none
+    ap-southeast-2:
+      AMIID: none

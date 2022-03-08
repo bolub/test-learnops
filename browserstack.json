@@ -1,0 +1,43 @@
+{
+    "auth": {
+        "username": "ektester1",
+        "access_key": "AJe234KeL2MbyL13SfTS"
+    },
+    "browsers": [
+        {
+            "browser": "chrome",
+            "os": "OS X Catalina",
+            "versions": [
+                "latest"
+            ]
+        },
+        {
+            "browser": "edge",
+            "os": "OS X Catalina",
+            "versions": [
+                "latest"
+            ]
+        }
+    ],
+    "run_settings": {
+        "cypress_config_file": "cypress.json",
+        "project_name": "learnops-frontend",
+        "build_name": "learnops-frontend-build",
+        "exclude": [],
+        "parallels": "1",
+        "npm_dependencies": {
+            "@testing-library/cypress": "^8.0.1",
+            "aws-amplify": "^4.2.1",
+            "lodash": "^4.17.21"
+        },
+        "package_config_options": {},
+        "headless": true
+    },
+    "connection_settings": {
+        "local": true,
+        "local_identifier": null,
+        "local_mode": "always-on",
+        "local_config_file": null
+    },
+    "disable_usage_reporting": false
+}

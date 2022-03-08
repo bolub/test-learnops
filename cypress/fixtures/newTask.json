@@ -1,0 +1,13 @@
+{
+    "assignedUserIds": [
+        "918d7b0d-878a-40ac-aa47-24d16983a825"
+    ],
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris efficitur non nisi at condimentum",
+    "due_date": "2022-05-21T23:00:00.000Z",
+    "estimate_hours": "20",
+    "name": "Custom Task Index",
+    "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+    "project_id": "d5b298c3-9393-4efe-b1bf-8fabd5306484",
+    "start_date": "2022-04-30T23:00:00.000Z",
+    "type": "Research"
+}

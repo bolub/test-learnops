@@ -1,0 +1,9 @@
+{
+  "authentication": {
+    "region": "us-east-1",
+    "poolId": "us-east-1_Tc6yWbj5x",
+    "clientId": "7apjbmu45sedin01mkn4t0g416",
+    "redirectSignOut": "https://learnops.staging.getsynapse.com/login"
+  },
+  "backendURL": "https://learnops-backend.staging.getsynapse.com/api/"
+}

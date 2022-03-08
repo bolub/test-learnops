@@ -1,0 +1,208 @@
+{
+  "routes": [
+    "/new-project",
+    "/project"
+  ],
+  "selectors": {
+    "formBody": "[data-cy=project-form-body]",
+    "linkRequestTrigger": "[data-cy=request-search-projects-to-link]",
+    "linkRequestSearchInput": "[data-cy=autocomplete-search-input]",
+    "availableRequestsToLinkList": "[data-cy=autocomplete-options-list]",
+    "linkRequestSaveButton": "[data-cy=add-to-linked-projects-table]",
+    "linkRequestCancelButton": "[data-cy=cancel-project-link-to-table]",
+    "linkedRequestsTable": "[data-cy=linked-requests-table]",
+    "viewLinkedRequestButton": "[data-cy=view-linked-request-$]",
+    "unlinkRequestButton": "[data-cy=unlink-request]",
+    "deleteProjectButton": "[data-cy=delete-project-button]",
+    "moreActionsMenu": {
+      "triggerButton": "[data-cy=more-action-menu-trigger]",
+      "optionsList": "[data-cy=more-action-menu-options-list]"
+    },
+    "deleteProjectModal": {
+      "modalWindow": "[data-cy=delete-project-modal]",
+      "confirmButton": "[data-cy=confirm-button]",
+      "cancelButton": "[data-cy=cancel-button]"
+    },
+    "closeProject": {
+      "trigger": "[data-cy=close-project-button]",
+      "modalWindow": "[data-cy=close-project-modal]",
+      "finalCommentsInput": "[data-cy=close-project-comments]",
+      "confirmButton": "[data-cy=confirm-button]",
+      "cancelButton": "[data-cy=cancel-button]",
+      "closedNotification": "[data-cy=closed-inline-notification]",
+      "viewDetailsButton": "[data-cy=view-closed-details]",
+      "closedNotificationDate": "[data-cy=closed-notification-date]"
+    },
+    "cancelProject": {
+      "trigger": "[data-cy=cancel-project-button]",
+      "modalWindow": "[data-cy=cancel-project-modal]",
+      "reasonPicker": "[data-cy=cancel-reason-picker]",
+      "specifyReason": "[data-cy=specify-cancel-reason-input]",
+      "confirmButton": "[data-cy=confirm-button]",
+      "cancelButton": "[data-cy=cancel-button]"
+    },
+    "viewLinkedRequestModal": "[data-cy=view-linked-request-modal]",
+    "viewLinkedRequestModalTitle": "[data-testid=modal-title]",
+    "viewLinkedRequestModalCloseButton": "[data-testid=modal-close-button]",
+    "putProjectOnHold": {
+      "modalWindow": "[data-cy=put-project-on-hold-modal]",
+      "holdReasonPicker": "[data-cy=hold-reason-picker]",
+      "specifyReasonInput": "[data-cy=specify-hold-reason-input]",
+      "confirmButton": "[data-cy=confirm-button]",
+      "cancelButton": "[data-cy=cancel-button]",
+      "onHoldInlineNotification": "[data-cy=on-hold-inline-notification]",
+      "viewHoldReasonButton": "[data-cy=view-hold-reason-button]"
+    },
+    "tabs": {
+      "files": "[data-cy=tab-files]"
+    },
+    "filesTab": {
+      "filesTable": "[data-cy=project-files-table]",
+      "attachFilesButton": "[data-cy=attach-file-button]",
+      "linkFileButton": "[data-cy=link-file-button]",
+      "filePicker": "[data-cy=project-file-picker]",
+      "cancelFileAttachButton": "[data-cy=cancel-file-attach-button]",
+      "deleteFileButton": "[data-cy=delete-file-button]",
+      "linkFileName": "[data-cy=link-file-name]",
+      "linkFileUrl": "[data-cy=link-file-url]",
+      "linkFileNameInput": "[data-cy=link-file-name-input]",
+      "linkFileUrlInput": "[data-cy=link-file-url-input]",
+      "confirmLinkFileButton": "[data-cy=confirm-link-file-button]",
+      "cancelLinkFileButton": "[data-cy=cancel-link-file-button]",
+      "projectFilesTableRow": "[data-cy=project-file-$]"
+    },
+    "comments": {
+      "trigger": "[data-cy=project-comments-trigger]",
+      "list": "[data-cy=project-comments-list]",
+      "addCommentInput": "[data-cy=add-new-comment]",
+      "submitComment": "[data-cy=post-comment-button]",
+      "cancelComment": "[data-cy=cancel-comment-button]",
+      "comment": "[data-cy=comment-$]",
+      "editCommentInput": "[data-cy=edit-comment-input]",
+      "editCommentButton": "[data-testid=update-button]",
+      "hiddenCommentsButton": "[data-testid=project-comments-list-hidden-comments-button]",
+      "hiddenCommentsList": "[data-testid=project-comments-list-hidden-comments-list]",
+      "actionsMenu": {
+        "triggerButton": "[data-cy=overflow-button]",
+        "editButton": "[data-testid=edit-button]",
+        "deleteButton": "[data-testid=delete-button]"
+      }
+    },
+    "peopleTab": {
+      "projectResourceType": "[data-cy=project-resource-input]",
+      "projectResourceVendorDropdown": "[data-cy=project-vendor-dropdown]",
+      "projectResourceCancelButton": "[data-cy=resource-plan-cancel-button]",
+      "projectResourceSaveButton": "[data-cy=resource-plan-update-button]"
+    }
+  },
+  "constantTexts": {
+    "emptyLinkedRequestsTableMessage": "No request linked",
+    "emptyProjectFilesTableMessage": "No files attached",
+    "requiredInformation": "Required information",
+    "emptyCommentsMessage": "No comments yet"
+  },
+  "stubbedResponses": {
+    "linkedProjectFile": {
+      "metadata": {
+        "url": "https://loremflickr.com/640/360",
+        "handle": "991d1eb1-7d06-44f3-9d2c-fc8684f0c09e",
+        "filename": "Lorem ipsum dolor sit amet",
+        "mimetype": "link"
+      },
+      "uploadDate": "Mon Dec 13 2021 16:03:51 GMT-0600 (Central Standard Time)",
+      "uploadedBy": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+      "linkedTasks": []
+    },
+    "newComment": {
+      "code": 200,
+      "data": {
+        "id": "484b8e61-44a0-419f-ac6f-313ac196515c",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lobortis in pellentesque tempor, pellentesque proin nullam",
+        "projectId": "",
+        "commentCreatorId": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "commentCreator": {
+          "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+          "data": {
+            "firstName": "Abir",
+            "lastName": "Halwa"
+          }
+        },
+        "createdAt": "2021-11-30 16:49:21.031+00",
+        "updatedAt": "2021-11-30 16:49:21.73+00"
+      },
+      "success": true
+    },
+    "commentsList": {
+      "code": 200,
+      "data": {
+        "projectComments": [
+          {
+            "id": "65e0e90b-ce9a-486b-931d-363a56bb8044",
+            "content": "Curabitur vestibulum faucibus ipsum. Quisque pellentesque neque sem, id posuere purus pulvinar in",
+            "projectId": "58ecb7d7-daea-44f8-a02c-fe8440613d7c",
+            "commentCreatorId": "a8385fbc-5110-4275-b2ca-3d8f777eb777",
+            "commentCreator": {
+              "id": "a8385fbc-5110-4275-b2ca-3d8f777eb777",
+              "data": {
+                "email": "abir+test@getsynapse.com",
+                "lastName": "Drine",
+                "firstName": "Sara"
+              }
+            },
+            "createdAt": "2021-11-30 16:49:21.031+00",
+            "updatedAt": "2021-11-30 16:49:21.73+00"
+          },
+          {
+            "id": "9e04ef07-5b7e-4512-a40d-24ff85cb505f",
+            "content": "Sed lobortis, arcu eget ullamcorper eleifend, purus turpis suscipit enim, id fermentum lacus ex eu elit.",
+            "projectId": "58ecb7d7-daea-44f8-a02c-fe8440613d7c",
+            "commentCreatorId": "2dd60a88-9c85-435a-a1bb-495978e9823a",
+            "commentCreator": {
+              "id": "2dd60a88-9c85-435a-a1bb-495978e9823a",
+              "data": {
+                "email": "test6@getsynapse.com",
+                "lastName": "Howe",
+                "firstName": "Raven"
+              }
+            },
+            "createdAt": "2021-11-30 16:49:21.031+00",
+            "updatedAt": "2021-11-30 16:49:21.73+00"
+          },
+          {
+            "id": "4bb2efed-2e06-4369-bd47-6c9db11d8e84",
+            "content": "Morbi vestibulum consectetur ultricies. Quisque non suscipit justo, sodales aliquam tellus",
+            "projectId": "58ecb7d7-daea-44f8-a02c-fe8440613d7c",
+            "commentCreatorId": "cfc2d6bf-4191-449f-942e-63f0272641d7",
+            "commentCreator": {
+              "id": "cfc2d6bf-4191-449f-942e-63f0272641d7",
+              "data": {
+                "email": "test8@getsynapse.com",
+                "lastName": "Woodward",
+                "firstName": "Unity"
+              }
+            },
+            "createdAt": "2021-11-30 16:49:21.031+00",
+            "updatedAt": "2021-11-30 16:49:21.73+00"
+          },
+          {
+            "id": "484b8e61-44a0-419f-ac6f-313ac196515c",
+            "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lobortis in pellentesque tempor, pellentesque proin nullam",
+            "projectId": "58ecb7d7-daea-44f8-a02c-fe8440613d7c",
+            "commentCreatorId": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+            "commentCreator": {
+              "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+              "data": {
+                "email": "alex+test@getsynapse.com",
+                "firstName": "Abir",
+                "lastName": "Halwa"
+              }
+            },
+            "createdAt": "2021-11-30 16:49:21.031+00",
+            "updatedAt": "2021-11-30 16:49:21.73+00"
+          }
+        ]
+      },
+      "success": true
+    }
+  }
+}

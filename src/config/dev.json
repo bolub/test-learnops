@@ -1,0 +1,12 @@
+{
+  "accountsURL": "https://learnopsdev.getsynapse.com",
+  "authentication": {
+    "region": "us-east-1",
+    "poolId": "us-east-1_iVqKZsoFl",
+    "clientId": "5aois8v1eq61c14epjujqmd98q",
+    "oauthDomain": "https://learnops-dev.auth.us-east-1.amazoncognito.com",
+    "redirectSignOut": "https://learnops.dev.getsynapse.com/login",
+    "redirectSignIn": "https://learnops.dev.getsynapse.com/callback"
+  },
+  "backendURL": "https://learnops-backend.dev.getsynapse.com/api/"
+}

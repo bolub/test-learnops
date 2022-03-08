@@ -1,0 +1,7 @@
+{
+    "mandatorySignIn": true,
+    "region": "us-east-1",
+    "authenticationFlowType": "USER_PASSWORD_AUTH",
+    "userPoolId": "",
+    "userPoolWebClientId": ""
+}

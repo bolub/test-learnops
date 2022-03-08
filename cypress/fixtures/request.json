@@ -1,0 +1,1205 @@
+{
+  "selectors": {
+    "trainingTypeDropdown": "[data-cy=training-type]",
+    "formTypeDropdown": "[data-cy=form-type]",
+    "applyButton": "[data-cy=apply-button]",
+    "nextButton": "[data-cy=request_next-button]",
+    "submitButton": "[data-cy=request_submit-button]",
+    "changeFormModal": "[data-cy=change-request-form]",
+    "changeFormButton": "[data-cy=change-form-button",
+    "cancelChangeFormButton": "[data-cy=cancel-change-form-button",
+    "downloadPdfButton": "[data-cy=download_pdf-button]",
+    "deleteRequestButton": "[data-cy=request-delete-button-$]",
+    "saveExitButton": "[data-cy=request_save-exit-button]",
+    "updateRequestButton": "[data-cy=request_update-button]",
+    "landDTab": "[data-testid=tab-3]",
+    "updateButton": ".space-x-4 > .bg-primary",
+    "ldRequestTabButton": "[data-testid=tab-3]",
+    "ldOnlyTitle": "[data-cy=ld-only_title]",
+    "ldOnlyPriorityDropdown": "[data-cy=ld-only_priority-dropdown]",
+    "ldOnlyEstimatedCost": "[data-cy=ld-only_estimated-cost]",
+    "ldOnlyEstimatedEffort": "[data-cy=ld-only_estimated-effort]",
+    "ldOnlyComments": "[data-cy=ld-only_comments]",
+    "approveRequestButton": "[data-cy=approve-request_topbar-button]",
+    "declineRequestButton": "[data-cy=decline-request_topbar-button]",
+    "moreActionsButton": "[data-cy=more-actions-button]",
+    "cancelRequestButton": "[data-cy=cancel-request-button]",
+    "cancelRequestModal": {
+      "cancellationReasonDropdown": "[data-cy=cancellation-reason-dropdown]",
+      "otherSpecificationInput": "[data-cy=other-specification-input]",
+      "requestCancellationButton": "[data-cy=request-cancellation-button]"
+    },
+    "confirmCancellationModal": {
+      "cancellationReasonText": "[data-cy=cancellation-reason-text]",
+      "otherSpecificationText": "[data-cy=other-specification-text]",
+      "ldRemarkInput": "[data-cy=ld-remark-input]",
+      "confirmCancellationButton": "[data-cy=confirm-cancellation-button]"
+    },
+    "pendingCancellationBanner": "[data-cy=pending-cancellation-banner]",
+    "pendingCancellationButton": "[data-cy=pending-cancellation-button]",
+    "declineRequestModal": {
+      "declineReasonDropdown": "[data-cy=declination-reason-dropdown]",
+      "otherSpecificationInput": "[data-cy=other-specification-input__decline]",
+      "requestDeclineButton": "[data-cy=request-declination-button]"
+    },
+    "requestDetailsOverFlow": "[data-cy=request-details-overflow]"
+  },
+  "stubbedResponses": {
+    "requestId": "dddd983e-c101-49af-8a6b-6ba92997fbf7",
+    "newRequestId": "f6f121d8-b41f-4d34-b9fb-4cfd7670ed24",
+    "otherFormId": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+    "otherFormData": {
+      "label": "Sample Form 2",
+      "value": "a8385fbc-5110-4275-b2ca-3d8f777eb776"
+    },
+    "requestResponse": {
+      "code": 200,
+      "data": {
+        "id": "dddd983e-c101-49af-8a6b-6ba92997fbf7",
+        "title": "Request 1",
+        "description": null,
+        "request_form_used": null,
+        "request_type": "ASSESSMENT_EVALUATION",
+        "training_topics": null,
+        "requester_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "owner_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "executive_stakeholder": null,
+        "type": "request",
+        "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "ld_objective_id": null,
+        "learn_initiative_id": null,
+        "priority": null,
+        "business_team_id": null,
+        "form_creator_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "audiences": null,
+        "audiences_size": null,
+        "data": {
+          "published": true,
+          "baseFormId": "a8385fbc-5110-4275-b2ca-3d8f777eb778"
+        },
+        "requestIdentifier": "1",
+        "decision_date": null,
+        "draft_date": null,
+        "questionsOrder": [
+          "902525c6-0131-4f5e-b95d-6c98202bdd8a",
+          "44717925-818b-4fc4-a93a-1f6bab792588",
+          "44a160f3-508c-4682-868b-94283e193c32",
+          "1cca9697-a8b7-419e-ab33-4065e329b37f",
+          "e3adee0a-5d08-46f1-8f03-1077ffe2aed8",
+          "f75c4f68-2be1-4b2b-b524-54018a430bb9",
+          "22ded685-a2c1-430f-bbed-a597e978485d",
+          "9a0a0177-bfb5-48ac-8509-b77594d4178a",
+          "eca402c1-478b-4873-8378-add977e4f5fa",
+          "26a87afa-18c8-4c0c-ac75-766138259581"
+        ],
+        "status": "draft",
+        "submittedAt": null,
+        "deletedAt": null,
+        "ownerData": {
+          "email": "alex+test@getsynapse.com",
+          "lastName": "Tester",
+          "firstName": "Richard"
+        },
+        "requester": {
+          "email": "alex+test@getsynapse.com",
+          "lastName": "Tester",
+          "firstName": "Richard"
+        }
+      },
+      "success": true
+    },
+    "questionResponse": {
+      "code": 200,
+      "data": [
+        {
+          "id": "902525c6-0131-4f5e-b95d-6c98202bdd8a",
+          "data": {
+            "label": "Radio Buttons",
+            "value": {
+              "value": null,
+              "options": [
+                {
+                  "id": "044f6b3d-17b3-47f4-83be-11b14f34b41e",
+                  "text": "Foo"
+                },
+                {
+                  "id": "dafe85d9-4a78-42c3-8ba5-2b2919f9911c",
+                  "text": "Bar"
+                }
+              ]
+            }
+          },
+          "type": "radio",
+          "section": "basicDetail",
+          "questionnaireId": "a8385fbc-5110-4275-b2ca-3d8f777eb778",
+          "requestId": "dddd983e-c101-49af-8a6b-6ba92997fbf7"
+        },
+        {
+          "id": "44717925-818b-4fc4-a93a-1f6bab792588",
+          "data": {
+            "label": "Checkboxes",
+            "value": {
+              "items": [
+                {
+                  "item": "Foo",
+                  "index": "7afbb2c5-fe13-4a8f-af55-99563bd8b818",
+                  "checked": false
+                },
+                {
+                  "item": "Bar",
+                  "index": "6bcbeb9b-d9c0-45ce-a2f0-de23a54e60af",
+                  "checked": false
+                }
+              ]
+            },
+            "isRequired": false
+          },
+          "type": "checkbox",
+          "section": "basicDetail",
+          "questionnaireId": "a8385fbc-5110-4275-b2ca-3d8f777eb778",
+          "requestId": "dddd983e-c101-49af-8a6b-6ba92997fbf7"
+        },
+        {
+          "id": "44a160f3-508c-4682-868b-94283e193c32",
+          "data": {
+            "label": "Range",
+            "value": {
+              "to": 65,
+              "from": 18,
+              "value": 0
+            }
+          },
+          "type": "range",
+          "section": "basicDetail",
+          "questionnaireId": "a8385fbc-5110-4275-b2ca-3d8f777eb778",
+          "requestId": "dddd983e-c101-49af-8a6b-6ba92997fbf7"
+        },
+        {
+          "id": "1cca9697-a8b7-419e-ab33-4065e329b37f",
+          "data": {
+            "label": "URL",
+            "value": ""
+          },
+          "type": "url",
+          "section": "requestDetails",
+          "questionnaireId": "a8385fbc-5110-4275-b2ca-3d8f777eb778",
+          "requestId": "dddd983e-c101-49af-8a6b-6ba92997fbf7"
+        },
+        {
+          "id": "e3adee0a-5d08-46f1-8f03-1077ffe2aed8",
+          "data": {
+            "label": "Text",
+            "value": ""
+          },
+          "type": "customTextArea",
+          "section": "additionalDetails",
+          "questionnaireId": "a8385fbc-5110-4275-b2ca-3d8f777eb778",
+          "requestId": "dddd983e-c101-49af-8a6b-6ba92997fbf7"
+        },
+        {
+          "id": "f75c4f68-2be1-4b2b-b524-54018a430bb9",
+          "data": {
+            "label": "Number",
+            "value": ""
+          },
+          "type": "number",
+          "section": "requestDetails",
+          "questionnaireId": "a8385fbc-5110-4275-b2ca-3d8f777eb778",
+          "requestId": "dddd983e-c101-49af-8a6b-6ba92997fbf7"
+        },
+        {
+          "id": "22ded685-a2c1-430f-bbed-a597e978485d",
+          "data": {
+            "label": "Date",
+            "value": ""
+          },
+          "type": "date",
+          "section": "requestDetails",
+          "questionnaireId": "a8385fbc-5110-4275-b2ca-3d8f777eb778",
+          "requestId": "dddd983e-c101-49af-8a6b-6ba92997fbf7"
+        },
+        {
+          "id": "9a0a0177-bfb5-48ac-8509-b77594d4178a",
+          "data": {
+            "label": "Dropdown",
+            "value": {
+              "items": [
+                {
+                  "value": "2bdc1e00-c4e0-4277-9f35-fd41bc93a47b",
+                  "display": "Foo"
+                },
+                {
+                  "value": "f567d3d6-f708-4cb4-a75b-e0ba38fbc5a3",
+                  "display": "Bar"
+                }
+              ],
+              "value": null
+            }
+          },
+          "type": "dropdown",
+          "section": "additionalDetails",
+          "questionnaireId": "a8385fbc-5110-4275-b2ca-3d8f777eb778",
+          "requestId": "dddd983e-c101-49af-8a6b-6ba92997fbf7"
+        },
+        {
+          "id": "eca402c1-478b-4873-8378-add977e4f5fa",
+          "data": null,
+          "type": null,
+          "section": null,
+          "questionnaireId": null,
+          "requestId": "dddd983e-c101-49af-8a6b-6ba92997fbf7"
+        },
+        {
+          "id": "26a87afa-18c8-4c0c-ac75-766138259581",
+          "data": {
+            "label": "File",
+            "value": {}
+          },
+          "type": "file",
+          "section": "requestDetails",
+          "questionnaireId": "a8385fbc-5110-4275-b2ca-3d8f777eb778",
+          "requestId": "dddd983e-c101-49af-8a6b-6ba92997fbf7"
+        }
+      ],
+      "success": true
+    },
+    "formOptions": [
+      {
+        "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "title": "Sample Form 2",
+        "description": null,
+        "request_form_used": null,
+        "request_type": "FACILITATION",
+        "training_topics": null,
+        "requester_id": null,
+        "owner_id": null,
+        "executive_stakeholder": null,
+        "type": "form",
+        "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "ld_objective_id": null,
+        "learn_initiative_id": null,
+        "priority": null,
+        "business_team_id": null,
+        "form_creator_id": null,
+        "audiences": null,
+        "audiences_size": null,
+        "data": {
+          "title": "Sample form title 2",
+          "published": true
+        },
+        "requestIdentifier": "a8385fbc-5110-4275-b2ca-3d8f777eb777",
+        "decision_date": null,
+        "draft_date": null,
+        "questionsOrder": [
+          "b0230a8a-d50d-413c-9586-dc770cba1c91",
+          "8ef9bea6-9437-4b66-a123-3f68039b0d7a",
+          "7055eaa8-3cd7-4062-9524-e5274a1a9b32",
+          "71af36c5-5b5a-4d94-8dfa-624ace748464",
+          "d0dac177-d5e0-4b9e-850b-858dd894e08e",
+          "bae9d087-28bd-49a9-ba29-3ef6bc2ea95a",
+          "6d62cfce-5f31-4f90-81c6-d23befa788cb",
+          "31029683-e015-48ad-b0d0-9644d2d5e111",
+          "df8a7a62-51a9-4210-8e5f-20a6acda90d8",
+          "caa1151a-8a5c-4cdc-b0a0-ca72baf741fe"
+        ],
+        "status": "draft",
+        "submittedAt": null,
+        "deletedAt": null
+      },
+      {
+        "id": "a8385fbc-5110-4275-b2ca-3d8f777eb778",
+        "title": "Sample Form",
+        "description": null,
+        "request_form_used": null,
+        "request_type": "CONSULTING",
+        "training_topics": null,
+        "requester_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "owner_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "executive_stakeholder": null,
+        "type": "form",
+        "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "ld_objective_id": null,
+        "learn_initiative_id": null,
+        "priority": null,
+        "business_team_id": null,
+        "form_creator_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "audiences": null,
+        "audiences_size": null,
+        "data": {
+          "title": "Sample form title",
+          "published": true
+        },
+        "requestIdentifier": "a8385fbc-5110-4275-b2ca-3d8f777eb777",
+        "decision_date": null,
+        "draft_date": null,
+        "questionsOrder": [
+          "b0230a8a-d50d-413c-9586-dc770cba1c91",
+          "8ef9bea6-9437-4b66-a123-3f68039b0d7a",
+          "7055eaa8-3cd7-4062-9524-e5274a1a9b32",
+          "71af36c5-5b5a-4d94-8dfa-624ace748464",
+          "d0dac177-d5e0-4b9e-850b-858dd894e08e",
+          "bae9d087-28bd-49a9-ba29-3ef6bc2ea95a",
+          "6d62cfce-5f31-4f90-81c6-d23befa788cb",
+          "31029683-e015-48ad-b0d0-9644d2d5e111",
+          "df8a7a62-51a9-4210-8e5f-20a6acda90d8",
+          "caa1151a-8a5c-4cdc-b0a0-ca72baf741fe"
+        ],
+        "status": "draft",
+        "submittedAt": null,
+        "deletedAt": null
+      }
+    ],
+    "newRequest": {
+      "code": 200,
+      "data": {
+        "id": "f6f121d8-b41f-4d34-b9fb-4cfd7670ed24",
+        "title": "",
+        "description": null,
+        "request_form_used": null,
+        "request_type": "ASSESSMENT_EVALUATION",
+        "training_topics": null,
+        "requester_id": "a8385fbc-5110-4275-b2ca-3d8f777eb770",
+        "owner_id": null,
+        "executive_stakeholder": null,
+        "type": "request",
+        "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "ld_objective_id": null,
+        "learn_initiative_id": null,
+        "priority": null,
+        "business_team_id": null,
+        "form_creator_id": null,
+        "audiences": null,
+        "audiences_size": null,
+        "data": {
+          "title": "Sample form title 2",
+          "published": true,
+          "baseFormId": "a8385fbc-5110-4275-b2ca-3d8f777eb776"
+        },
+        "requestIdentifier": "2",
+        "decision_date": null,
+        "draft_date": null,
+        "questionsOrder": [
+          "690735e2-f9c7-4c03-983b-a609e7b32b5d",
+          "26f2d938-b6f5-4dd4-885b-95e768f7ed50",
+          "5ec63528-7cbd-4173-bf2d-80340901e78e",
+          "2c11d230-35b7-474c-b97b-2f3b6904bcc1",
+          "a3063782-f323-4409-904e-fcfe3aace51c",
+          "af84da08-4766-498e-a6c2-b8986b1a0742",
+          "7c6e1ef4-4ed3-47bf-b83c-0e398df2d23d",
+          "5ddda583-ca13-4381-8d86-eb507aec4351",
+          "7781638d-164a-4e44-8497-6e8d840110fe",
+          "ac8a7054-e251-4467-bb4b-24bca187ea29"
+        ],
+        "status": "draft",
+        "submittedAt": null,
+        "deletedAt": null,
+        "questions": [
+          {
+            "id": "690735e2-f9c7-4c03-983b-a609e7b32b5d",
+            "requestId": "f6f121d8-b41f-4d34-b9fb-4cfd7670ed24",
+            "data": null,
+            "type": null,
+            "section": null,
+            "questionnaireId": null
+          },
+          {
+            "id": "26f2d938-b6f5-4dd4-885b-95e768f7ed50",
+            "requestId": "f6f121d8-b41f-4d34-b9fb-4cfd7670ed24",
+            "data": null,
+            "type": null,
+            "section": null,
+            "questionnaireId": null
+          },
+          {
+            "id": "5ec63528-7cbd-4173-bf2d-80340901e78e",
+            "requestId": "f6f121d8-b41f-4d34-b9fb-4cfd7670ed24",
+            "data": null,
+            "type": null,
+            "section": null,
+            "questionnaireId": null
+          },
+          {
+            "id": "2c11d230-35b7-474c-b97b-2f3b6904bcc1",
+            "requestId": "f6f121d8-b41f-4d34-b9fb-4cfd7670ed24",
+            "data": null,
+            "type": null,
+            "section": null,
+            "questionnaireId": null
+          },
+          {
+            "id": "a3063782-f323-4409-904e-fcfe3aace51c",
+            "requestId": "f6f121d8-b41f-4d34-b9fb-4cfd7670ed24",
+            "data": null,
+            "type": null,
+            "section": null,
+            "questionnaireId": null
+          },
+          {
+            "id": "af84da08-4766-498e-a6c2-b8986b1a0742",
+            "requestId": "f6f121d8-b41f-4d34-b9fb-4cfd7670ed24",
+            "data": null,
+            "type": null,
+            "section": null,
+            "questionnaireId": null
+          },
+          {
+            "id": "7c6e1ef4-4ed3-47bf-b83c-0e398df2d23d",
+            "requestId": "f6f121d8-b41f-4d34-b9fb-4cfd7670ed24",
+            "data": null,
+            "type": null,
+            "section": null,
+            "questionnaireId": null
+          },
+          {
+            "id": "5ddda583-ca13-4381-8d86-eb507aec4351",
+            "requestId": "f6f121d8-b41f-4d34-b9fb-4cfd7670ed24",
+            "data": null,
+            "type": null,
+            "section": null,
+            "questionnaireId": null
+          },
+          {
+            "id": "7781638d-164a-4e44-8497-6e8d840110fe",
+            "requestId": "f6f121d8-b41f-4d34-b9fb-4cfd7670ed24",
+            "data": null,
+            "type": null,
+            "section": null,
+            "questionnaireId": null
+          },
+          {
+            "id": "ac8a7054-e251-4467-bb4b-24bca187ea29",
+            "requestId": "f6f121d8-b41f-4d34-b9fb-4cfd7670ed24",
+            "data": null,
+            "type": null,
+            "section": null,
+            "questionnaireId": null
+          }
+        ],
+        "requester": {
+          "email": "paula@getsynapse.com",
+          "lastName": "Gomez",
+          "firstName": "Paula"
+        }
+      },
+      "success": true
+    },
+    "submittedRequestResponseId": "0698ab75-a5d4-4ad2-bdc6-c2609bd24d67",
+    "submittedRequestResponse": {
+      "code": 200,
+      "data": {
+        "id": "23537e8d-4a0a-408b-bfc2-bcc9aace3aa9",
+        "title": "Request List",
+        "description": null,
+        "request_form_used": null,
+        "request_type": "COACHING_MENTORING",
+        "training_topics": null,
+        "requester_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "executive_stakeholder": null,
+        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+        "ld_objective_id": null,
+        "learn_initiative_id": null,
+        "priority": null,
+        "business_team_id": null,
+        "form_creator_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "audiences": null,
+        "audiences_size": null,
+        "data": {
+          "title": "Sample form title",
+          "published": true,
+          "baseFormId": "a8385fbc-5110-4275-b2ca-3d8f777eb778"
+        },
+        "requestIdentifier": "66",
+        "decision_date": null,
+        "draft_date": null,
+        "questionsOrder": [
+          "75083b38-61de-482c-9733-d9471d1884eb",
+          "cb4d0aaf-923c-4aae-9715-1b795277dd5e",
+          "97c06682-518c-4876-854d-589a9d4c7ae6",
+          "9659a725-4b31-44c2-92b4-d292f086431d",
+          "a3e7ab6e-eeed-4451-8e1a-7052c6c6258d",
+          "e8778dc7-8898-4e10-90b1-042e7a3fc2c1",
+          "8aa14c8f-07a1-4e83-ad4c-a8d5fd88a1fe",
+          "2aa37801-33f4-4127-8489-79ea9f586d4b",
+          "c0b248b7-732d-4f83-885c-e386bffa9b0a",
+          "f70dfbe0-b94b-4b73-842b-0663ae0f7dbc"
+        ],
+        "type": "request",
+        "status": "submitted",
+        "ldPriority": "unassigned",
+        "compliance": false,
+        "effort": null,
+        "cost": null,
+        "submittedAt": "2021-11-18T20:04:32.423Z",
+        "location_id": null,
+        "createdAt": "2021-07-19T19:18:43.926Z",
+        "updatedAt": "2021-11-18T20:04:32.423Z",
+        "deletedAt": null,
+        "owners": [],
+        "requestProjects": [],
+        "requester": {
+          "data": {
+            "email": "alex+test@getsynapse.com",
+            "lastName": "Halwa",
+            "firstName": "Abir"
+          },
+          "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776"
+        },
+        "businessTeam": null
+      },
+      "success": true
+    },
+    "approvedRequestResponseId": "b5848c2b-b865-4e71-b05a-f1a3a8925486",
+    "approvedRequestResponse": {
+      "code": 200,
+      "data": {
+        "id": "b5848c2b-b865-4e71-b05a-f1a3a8925486",
+        "title": "My title 3",
+        "description": "Another description",
+        "request_form_used": null,
+        "request_type": "CONSULTING",
+        "training_topics": null,
+        "requester_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "executive_stakeholder": null,
+        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+        "ld_objective_id": null,
+        "learn_initiative_id": null,
+        "priority": null,
+        "business_team_id": "c6a1687f-ba60-4840-9a10-fd50a11111a3",
+        "form_creator_id": null,
+        "audiences": null,
+        "audiences_size": null,
+        "data": {
+          "title": "Sample form title 2",
+          "published": true,
+          "baseFormId": "a8385fbc-5110-4275-b2ca-3d8f777eb776"
+        },
+        "requestIdentifier": "3",
+        "decision_date": null,
+        "draft_date": null,
+        "questionsOrder": [
+          "9efc850b-a056-4ff2-8967-c8d0ffe8a15b",
+          "a64cf160-243f-4995-8952-686609d879b1",
+          "dd77da69-fd70-454b-b522-cc1cf79ad692",
+          "4f655583-78f0-491f-b260-0b964a09f031",
+          "a8916d51-38fb-4e2f-9ffe-854610afc98b",
+          "b5975c3e-4c4e-4246-ad74-293568c5d2d9",
+          "9506827b-08e9-47ec-96c1-622e3d982c10",
+          "f7805ba4-047f-4c20-9b0a-3160fad00c20",
+          "6942cc68-a040-4f60-8d3c-3e8e47072c21",
+          "e8009e92-2523-4877-b0d7-bbcd97497eea"
+        ],
+        "type": "request",
+        "status": "approved",
+        "submittedAt": "2021-10-19T07:01:41.405Z",
+        "createdAt": "2021-07-19T19:18:43.926Z",
+        "updatedAt": "2021-10-19T07:01:41.406Z",
+        "deletedAt": null,
+        "owners": [
+          {
+            "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+            "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+            "ldTeam_id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
+            "businessTeam_id": "c6a1687f-ba60-4840-9a10-fd50a11111a3",
+            "type": "ld",
+            "status": "registered",
+            "note": null,
+            "data": {
+              "email": "alex+test@getsynapse.com",
+              "lastName": "Halwa",
+              "firstName": "Abir"
+            },
+            "createdAt": "2020-10-05T00:00:00.000Z",
+            "updatedAt": "2020-10-05T00:00:00.000Z",
+            "deletedAt": null,
+            "request_owners": {
+              "createdAt": "2021-10-19T07:01:24.676Z",
+              "updatedAt": "2021-10-19T07:01:24.676Z",
+              "requestId": "b5848c2b-b865-4e71-b05a-f1a3a8925486",
+              "userId": "a8385fbc-5110-4275-b2ca-3d8f777eb776"
+            }
+          }
+        ]
+      },
+      "success": true
+    },
+    "submitStatusRequestId": "6141846c-6f01-4665-b340-75c15254c0e6",
+    "submitStatusRequestResponse": {
+      "code": 200,
+      "data": {
+        "id": "6141846c-6f01-4665-b340-75c15254c0e6",
+        "title": "ee",
+        "description": "dd",
+        "request_form_used": null,
+        "request_type": "ASSESSMENT_EVALUATION",
+        "training_topics": null,
+        "requester_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "executive_stakeholder": null,
+        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+        "ld_objective_id": null,
+        "learn_initiative_id": null,
+        "priority": null,
+        "business_team_id": null,
+        "form_creator_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "audiences": null,
+        "audiences_size": null,
+        "data": {
+          "title": "Sample form title",
+          "published": true,
+          "baseFormId": "a8385fbc-5110-4275-b2ca-3d8f777eb778"
+        },
+        "requestIdentifier": "66",
+        "decision_date": null,
+        "draft_date": null,
+        "questionsOrder": [
+          "a818427a-4c4e-4b28-b29a-36714ebb85a5",
+          "bf32a986-4119-40c8-81a8-617e7f6f9230",
+          "a1dd48b2-2cf2-40e9-950e-8dbbcd64d974",
+          "2a6aa202-a143-4a66-a3b7-bfe26d7d8567",
+          "98b732aa-651d-4240-be2a-30c9580f0a4b",
+          "eea08e66-f9c0-44eb-a0cb-9e97c9c53446",
+          "97636b8c-ac48-48ab-bfcb-af2b4b54609d",
+          "1b3f81cc-3d80-4449-a7fe-ed0947b80df1",
+          "ee2de51b-22e5-43e2-876c-886b24006067",
+          "8bc4710b-a5b5-4a6c-98be-e8819057b91d"
+        ],
+        "type": "request",
+        "status": "submitted",
+        "ldPriority": "unassigned",
+        "compliance": false,
+        "effort": null,
+        "cost": null,
+        "submittedAt": "2021-11-18T19:19:19.806Z",
+        "location_id": null,
+        "createdAt": "2021-07-19T19:18:43.926Z",
+        "updatedAt": "2021-11-18T19:19:19.806Z",
+        "deletedAt": null,
+        "owners": [],
+        "requestProjects": [],
+        "requester": {
+          "data": {
+            "email": "alex+test@getsynapse.com",
+            "lastName": "Halwa",
+            "firstName": "Abir"
+          },
+          "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776"
+        },
+        "businessTeam": null
+      },
+      "success": true
+    },
+    "submittedRequestWithOwnerId": "93cb165a-045f-42ae-b258-4a9b7d23e1d1",
+    "submittedRequestWithOwner": {
+      "code": 200,
+      "data": {
+        "id": "93cb165a-045f-42ae-b258-4a9b7d23e1d1",
+        "title": "Submitted Request",
+        "description": "Request 1",
+        "request_form_used": null,
+        "request_type": "TRAINING",
+        "training_topics": null,
+        "requester_id": "a8385fbc-5110-4275-b2ca-3d8f777eb716",
+        "executive_stakeholder": null,
+        "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "ld_objective_id": null,
+        "learn_initiative_id": null,
+        "priority": null,
+        "business_team_id": null,
+        "form_creator_id": "a8385fbc-5110-4275-b2ca-3d8f777eb716",
+        "audiences": null,
+        "audiences_size": null,
+        "data": {
+          "title": "Sample form title",
+          "published": true,
+          "baseFormId": "a8385fbc-5110-4275-b2ca-3d8f777eb778"
+        },
+        "requestIdentifier": "3",
+        "decision_date": "2021-11-12T12:51:55.090Z",
+        "draft_date": null,
+        "questionsOrder": [
+          "2339dd0f-0694-4f27-99ad-110aaacfffa9",
+          "3fbd8e71-12ec-43e5-aa9d-5e6149604182",
+          "b5fe3a08-4fc7-46f8-9ace-541f5cc0f490",
+          "f4b23e76-5eb4-4a23-a70d-670f1d76ebb1",
+          "ac318000-9951-453c-85f5-41c6accb2392",
+          "cf36da09-af97-46f2-95c0-f57e44eb568b",
+          "7768d7ed-5a82-41de-b2d2-43c8e2d3a078",
+          "06d2bec2-5427-4c38-9eed-d2030116a179",
+          "ddf63d98-4f05-4392-877a-657f943739b2",
+          "9be661f0-ffd2-46b8-bcbe-5c42927b88f4"
+        ],
+        "type": "request",
+        "status": "submitted",
+        "ldPriority": "unassigned",
+        "compliance": false,
+        "effort": null,
+        "cost": null,
+        "submittedAt": "2021-11-12T11:33:35.848Z",
+        "location_id": null,
+        "createdAt": "2021-07-19T19:18:43.926Z",
+        "updatedAt": "2021-11-12T12:51:55.091Z",
+        "deletedAt": null,
+        "owners": [
+          {
+            "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+            "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+            "ldTeam_id": null,
+            "businessTeam_id": null,
+            "type": "ld",
+            "status": "registered",
+            "note": null,
+            "data": {
+              "email": "alex+test@getsynapse.com",
+              "lastName": "Halwa",
+              "firstName": "Abir"
+            },
+            "createdAt": "2020-10-05T00:00:00.000Z",
+            "updatedAt": "2020-10-05T00:00:00.000Z",
+            "deletedAt": null,
+            "request_owners": {
+              "createdAt": "2021-11-12T11:33:08.481Z",
+              "updatedAt": "2021-11-12T11:33:08.481Z",
+              "requestId": "93cb165a-045f-42ae-b258-4a9b7d23e1d1",
+              "userId": "a8385fbc-5110-4275-b2ca-3d8f777eb776"
+            }
+          }
+        ],
+        "requestProjects": [],
+        "requester": {
+          "data": {
+            "role": "admin",
+            "email": "alex+test3@getsynapse.com",
+            "jobTitle": "Software Developer",
+            "lastName": "Payne",
+            "firstName": "Herman",
+            "freeTrial": false,
+            "resourceId": "",
+            "companyName": "Test Company 1"
+          },
+          "id": "a8385fbc-5110-4275-b2ca-3d8f777eb716"
+        },
+        "businessTeam": null
+      },
+      "success": true
+    },
+    "cancelledRequestDetail": {
+      "code": 200,
+      "data": {
+        "id": "f5e72a34-ee46-4a80-9adf-f98e9fb21c91",
+        "title": "Cancelled Request",
+        "description": "Cancelled request description",
+        "request_form_used": null,
+        "request_type": "CONSULTING",
+        "training_topics": null,
+        "requester_id": "a1385fbc-5110-4275-b2ca-3d8f777eb776",
+        "executive_stakeholder": null,
+        "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "ld_objective_id": null,
+        "learn_initiative_id": null,
+        "priority": null,
+        "business_team_id": null,
+        "form_creator_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "audiences": null,
+        "audiences_size": null,
+        "data": {
+          "title": "Sample form title",
+          "published": true,
+          "baseFormId": "a8385fbc-5110-4275-b2ca-3d8f777eb778",
+          "cancellation": {
+            "reason": "LACK_OF_RESOURCE"
+          }
+        },
+        "requestIdentifier": "4",
+        "decision_date": "2021-12-07T18:38:50.000Z",
+        "draft_date": null,
+        "questionsOrder": [
+          "8c3d8a67-d6e0-4610-be87-552fa4ac9caa",
+          "106e0ef1-461c-4143-aa55-93c5c20196f4",
+          "d669007f-1753-4767-be3c-71f0b6f2b08f",
+          "28953a50-72c1-470d-b7b5-82e83c66fc2f",
+          "8b370f71-dbd4-4e47-b2ce-66988870e1ea",
+          "11b0b295-6082-4a2f-bafe-d83f136e5a20",
+          "c1e42b17-f9d8-407b-8c0c-9947c29eded9",
+          "778602cc-727e-4081-85cd-34acc347a4a2",
+          "c68a0167-90ae-467c-a009-7687a662fadb",
+          "ddf6ad40-8d64-4aab-95bc-316af7b5c0ea"
+        ],
+        "type": "request",
+        "status": "pending_cancellation",
+        "ldPriority": "unassigned",
+        "compliance": false,
+        "effort": null,
+        "cost": null,
+        "submittedAt": "2021-12-06T17:58:47.066Z",
+        "location_id": null,
+        "createdAt": "2021-07-19T19:18:43.926Z",
+        "updatedAt": "2021-12-08T15:02:33.013Z",
+        "deletedAt": null,
+        "owners": [
+          {
+            "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+            "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+            "ldTeam_id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
+            "businessTeam_id": "c6a1687f-ba60-4840-9a10-fd50a11111a3",
+            "type": "ld",
+            "cost": null,
+            "default_capacity": 40,
+            "status": "registered",
+            "country_iso_3166_1_alpha_2_code": "UNDEFINED",
+            "position_title": null,
+            "location": null,
+            "note": "Account 1 - Test User 8",
+            "data": {
+              "role": "admin",
+              "email": "alex+test@getsynapse.com",
+              "jobTitle": "Software Developer",
+              "lastName": "Woodward",
+              "firstName": "Unity",
+              "freeTrial": false,
+              "resourceId": "",
+              "companyName": "Test Company 1"
+            },
+            "createdAt": "2021-12-06T11:18:05.295Z",
+            "updatedAt": "2021-12-06T11:18:06.170Z",
+            "deletedAt": null,
+            "request_owners": {
+              "createdAt": "2021-12-06T17:58:40.084Z",
+              "updatedAt": "2021-12-06T17:58:40.084Z",
+              "requestId": "f5e72a34-ee46-4a80-9adf-f98e9fb21c91",
+              "userId": "cfc2d6bf-4191-449f-942e-63f0272641d7"
+            }
+          }
+        ],
+        "requestProjects": [],
+        "requester": {
+          "data": {
+            "email": "alex+test@getsynapse.com",
+            "lastName": "Halwa",
+            "firstName": "Abir"
+          },
+          "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776"
+        },
+        "businessTeam": null
+      },
+      "success": true
+    },
+    "additonalQuestionsResponse": {
+      "code": 200,
+      "data": [
+        {
+          "id": "5a1c43ec-71d6-45ba-8c0e-de2347b55328",
+          "data": null,
+          "type": null,
+          "section": null,
+          "createdAt": "2021-12-06T07:32:52.978Z",
+          "updatedAt": "2021-12-06T07:32:52.978Z",
+          "deletedAt": null,
+          "questionnaireId": null,
+          "requestId": "83194320-23a1-4556-9aab-3cc2c873a0ea"
+        },
+        {
+          "id": "fcb0f3d5-6448-4efe-a160-aa69557b27fb",
+          "data": null,
+          "type": null,
+          "section": null,
+          "createdAt": "2021-12-06T07:32:52.978Z",
+          "updatedAt": "2021-12-06T07:32:52.978Z",
+          "deletedAt": null,
+          "questionnaireId": null,
+          "requestId": "83194320-23a1-4556-9aab-3cc2c873a0ea"
+        },
+        {
+          "id": "1271ff0f-4136-485f-a39d-fe8d3e4f0fb8",
+          "data": null,
+          "type": null,
+          "section": null,
+          "createdAt": "2021-12-06T07:32:52.979Z",
+          "updatedAt": "2021-12-06T07:32:52.979Z",
+          "deletedAt": null,
+          "questionnaireId": null,
+          "requestId": "83194320-23a1-4556-9aab-3cc2c873a0ea"
+        },
+        {
+          "id": "f905cd0d-d7ef-493e-b4b5-d4412562fb96",
+          "data": null,
+          "type": null,
+          "section": null,
+          "createdAt": "2021-12-06T07:32:52.979Z",
+          "updatedAt": "2021-12-06T07:32:52.979Z",
+          "deletedAt": null,
+          "questionnaireId": null,
+          "requestId": "83194320-23a1-4556-9aab-3cc2c873a0ea"
+        },
+        {
+          "id": "f0f9e94f-a3f2-420c-9cff-837ecde5a50f",
+          "data": null,
+          "type": null,
+          "section": null,
+          "createdAt": "2021-12-06T07:32:52.979Z",
+          "updatedAt": "2021-12-06T07:32:52.979Z",
+          "deletedAt": null,
+          "questionnaireId": null,
+          "requestId": "83194320-23a1-4556-9aab-3cc2c873a0ea"
+        },
+        {
+          "id": "f1413cb9-df16-4e6f-b084-ccf73efe3168",
+          "data": null,
+          "type": null,
+          "section": null,
+          "createdAt": "2021-12-06T07:32:52.979Z",
+          "updatedAt": "2021-12-06T07:32:52.979Z",
+          "deletedAt": null,
+          "questionnaireId": null,
+          "requestId": "83194320-23a1-4556-9aab-3cc2c873a0ea"
+        },
+        {
+          "id": "1126d3b3-0efb-478a-9132-6d379d607de2",
+          "data": null,
+          "type": null,
+          "section": null,
+          "createdAt": "2021-12-06T07:32:52.979Z",
+          "updatedAt": "2021-12-06T07:32:52.979Z",
+          "deletedAt": null,
+          "questionnaireId": null,
+          "requestId": "83194320-23a1-4556-9aab-3cc2c873a0ea"
+        },
+        {
+          "id": "00978912-c58e-4de1-bc56-219a3a5ed011",
+          "data": null,
+          "type": null,
+          "section": null,
+          "createdAt": "2021-12-06T07:32:52.979Z",
+          "updatedAt": "2021-12-06T07:32:52.979Z",
+          "deletedAt": null,
+          "questionnaireId": null,
+          "requestId": "83194320-23a1-4556-9aab-3cc2c873a0ea"
+        },
+        {
+          "id": "0fe382d0-3b29-401f-8298-9c6ac593a452",
+          "data": null,
+          "type": null,
+          "section": null,
+          "createdAt": "2021-12-06T07:32:52.979Z",
+          "updatedAt": "2021-12-06T07:32:52.979Z",
+          "deletedAt": null,
+          "questionnaireId": null,
+          "requestId": "83194320-23a1-4556-9aab-3cc2c873a0ea"
+        },
+        {
+          "id": "844bf2a5-6581-4afc-b004-d694943890a2",
+          "data": null,
+          "type": null,
+          "section": null,
+          "createdAt": "2021-12-06T07:32:52.980Z",
+          "updatedAt": "2021-12-06T07:32:52.980Z",
+          "deletedAt": null,
+          "questionnaireId": null,
+          "requestId": "83194320-23a1-4556-9aab-3cc2c873a0ea"
+        },
+        {
+          "id": "cbe3f04b-26f6-4525-9533-08f5447263dc",
+          "data": {
+            "label": "Text",
+            "value": "",
+            "showMenu": true
+          },
+          "type": "customTextArea",
+          "section": "additionalDetails",
+          "createdAt": "2021-12-06T09:05:11.688Z",
+          "updatedAt": "2021-12-06T09:05:11.688Z",
+          "deletedAt": null,
+          "questionnaireId": "83194320-23a1-4556-9aab-3cc2c873a0ea",
+          "requestId": "83194320-23a1-4556-9aab-3cc2c873a0ea"
+        },
+        {
+          "id": "401ea727-bddc-490b-aee9-31c0c63c0308",
+          "data": {
+            "label": "URL",
+            "value": "",
+            "showMenu": true
+          },
+          "type": "url",
+          "section": "additionalDetails",
+          "createdAt": "2021-12-06T09:22:45.968Z",
+          "updatedAt": "2021-12-06T09:22:45.968Z",
+          "deletedAt": null,
+          "questionnaireId": "83194320-23a1-4556-9aab-3cc2c873a0ea",
+          "requestId": "83194320-23a1-4556-9aab-3cc2c873a0ea"
+        },
+        {
+          "id": "5928ee85-5c0a-4112-ace2-21d31d423dee",
+          "data": {
+            "label": "File",
+            "value": "",
+            "showMenu": true
+          },
+          "type": "file",
+          "section": "additionalDetails",
+          "createdAt": "2021-12-06T09:23:41.755Z",
+          "updatedAt": "2021-12-06T09:23:41.755Z",
+          "deletedAt": null,
+          "questionnaireId": "83194320-23a1-4556-9aab-3cc2c873a0ea",
+          "requestId": "83194320-23a1-4556-9aab-3cc2c873a0ea"
+        }
+      ],
+      "success": true
+    },
+    "requestLdUsers": {
+      "code": 200,
+      "data": [{
+        "id": "cfc2d6bf-4191-449f-942e-63f0272641d7",
+        "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "ldTeam_id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
+        "businessTeam_id": "c6a1687f-ba60-4840-9a10-fd50a11111a3",
+        "type": "ld",
+        "cost": null,
+        "default_capacity": 40,
+        "status": "registered",
+        "country_iso_3166_1_alpha_2_code": "UNDEFINED",
+        "position_title": null,
+        "location": null,
+        "note": "Account 1 - Test User 8",
+        "data": {
+          "role": "admin",
+          "email": "alex+test@getsynapse.com",
+          "jobTitle": "Software Developer",
+          "lastName": "Kingsley",
+          "firstName": "Daniels",
+          "freeTrial": false,
+          "resourceId": "",
+          "companyName": "Test Company 1"
+        },
+        "createdAt": "2021-12-06T11:18:05.295Z",
+        "updatedAt": "2021-12-06T11:18:06.170Z",
+        "deletedAt": null
+      }, {
+        "id": "a8385fbc-5110-4275-b2ca-3d8f777ec776",
+        "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "ldTeam_id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
+        "businessTeam_id": "c6a1687f-ba60-4840-9a10-fd50a11111a3",
+        "type": "ld",
+        "cost": null,
+        "default_capacity": 40,
+        "status": "registered",
+        "country_iso_3166_1_alpha_2_code": "UNDEFINED",
+        "position_title": null,
+        "location": null,
+        "note": "Account 1 - Test User 8",
+        "data": {
+          "role": "admin",
+          "email": "abraham+test@getsynapse.com",
+          "jobTitle": "Software Developer",
+          "lastName": "John",
+          "firstName": "Patterson",
+          "freeTrial": false,
+          "resourceId": "",
+          "companyName": "Test Company 1"
+        },
+        "createdAt": "2021-12-06T11:18:05.295Z",
+        "updatedAt": "2021-12-06T11:18:06.170Z",
+        "deletedAt": null
+      }],
+      "success": true
+    }, 
+    "cancelledRequestDetail": {
+      "code": 200,
+      "data": {
+        "id": "f5e72a34-ee46-4a80-9adf-f98e9fb21c91",
+        "title": "Cancelled Request",
+        "description": "Cancelled request description",
+        "request_form_used": null,
+        "request_type": "CONSULTING",
+        "training_topics": null,
+        "requester_id": "a1385fbc-5110-4275-b2ca-3d8f777eb776",
+        "executive_stakeholder": null,
+        "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "ld_objective_id": null,
+        "learn_initiative_id": null,
+        "priority": null,
+        "business_team_id": null,
+        "form_creator_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "audiences": null,
+        "audiences_size": null,
+        "data": {
+          "title": "Sample form title",
+          "published": true,
+          "baseFormId": "a8385fbc-5110-4275-b2ca-3d8f777eb778",
+          "cancellation": {
+            "reason": "LACK_OF_RESOURCE"
+          }
+        },
+        "requestIdentifier": "4",
+        "decision_date": "2021-12-07T18:38:50.000Z",
+        "draft_date": null,
+        "questionsOrder": [
+          "8c3d8a67-d6e0-4610-be87-552fa4ac9caa",
+          "106e0ef1-461c-4143-aa55-93c5c20196f4",
+          "d669007f-1753-4767-be3c-71f0b6f2b08f",
+          "28953a50-72c1-470d-b7b5-82e83c66fc2f",
+          "8b370f71-dbd4-4e47-b2ce-66988870e1ea",
+          "11b0b295-6082-4a2f-bafe-d83f136e5a20",
+          "c1e42b17-f9d8-407b-8c0c-9947c29eded9",
+          "778602cc-727e-4081-85cd-34acc347a4a2",
+          "c68a0167-90ae-467c-a009-7687a662fadb",
+          "ddf6ad40-8d64-4aab-95bc-316af7b5c0ea"
+        ],
+        "type": "request",
+        "status": "pending_cancellation",
+        "ldPriority": "unassigned",
+        "compliance": false,
+        "effort": null,
+        "cost": null,
+        "submittedAt": "2021-12-06T17:58:47.066Z",
+        "location_id": null,
+        "createdAt": "2021-07-19T19:18:43.926Z",
+        "updatedAt": "2021-12-08T15:02:33.013Z",
+        "deletedAt": null,
+        "owners": [
+          {
+            "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+            "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+            "ldTeam_id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
+            "businessTeam_id": "c6a1687f-ba60-4840-9a10-fd50a11111a3",
+            "type": "ld",
+            "cost": null,
+            "default_capacity": 40,
+            "status": "registered",
+            "country_iso_3166_1_alpha_2_code": "UNDEFINED",
+            "position_title": null,
+            "location": null,
+            "note": "Account 1 - Test User 8",
+            "data": {
+              "role": "admin",
+              "email": "alex+test@getsynapse.com",
+              "jobTitle": "Software Developer",
+              "lastName": "Woodward",
+              "firstName": "Unity",
+              "freeTrial": false,
+              "resourceId": "",
+              "companyName": "Test Company 1"
+            },
+            "createdAt": "2021-12-06T11:18:05.295Z",
+            "updatedAt": "2021-12-06T11:18:06.170Z",
+            "deletedAt": null,
+            "request_owners": {
+              "createdAt": "2021-12-06T17:58:40.084Z",
+              "updatedAt": "2021-12-06T17:58:40.084Z",
+              "requestId": "f5e72a34-ee46-4a80-9adf-f98e9fb21c91",
+              "userId": "cfc2d6bf-4191-449f-942e-63f0272641d7"
+            }
+          }
+        ],
+        "requestProjects": [],
+        "requester": {
+          "data": {
+            "email": "alex+test@getsynapse.com",
+            "lastName": "Halwa",
+            "firstName": "Abir"
+          },
+          "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776"
+        },
+        "businessTeam": null
+      },
+      "success": true
+    }
+  }
+}

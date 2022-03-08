@@ -1,0 +1,52 @@
+{
+  "accountsURL": "http://localhost:7001",
+  "authentication": {
+    "region": "us-east-1",
+    "poolId": "us-east-1_nl3w1caiU",
+    "clientId": "1spbfikl1vtlfmrpevdqjds2f8",
+    "oauthDomain": "learnops-local.auth.us-east-1.amazoncognito.com",
+    "redirectSignOut": "http://localhost:3005/login",
+    "redirectSignIn": "http://localhost:3005/callback"
+  },
+  "backendURL": "http://localhost:8001/api/",
+  "fileStack": {
+    "apiKey": "ATU1IMljITuuLrVERX2wMz",
+    "policy": "eyJleHBpcnkiOjE3MDYyMjcyMDAsImNhbGwiOlsicGljayIsInJlYWQiLCJ3cml0ZSIsInN0b3JlIl19",
+    "signature": "b1c1f431282d7614cfb6b9a790943de912780941cf76a563742eb3e3f3fa97e3",
+    "cname": "fs.app.getsynapse.com",
+    "sources": [
+      "local_file_system",
+      "imagesearch",
+      "googledrive",
+      "dropbox",
+      "box",
+      "onedrive",
+      "onedriveforbusiness",
+      "audio",
+      "video"
+    ],
+    "accept": [
+      "image/*",
+      "video/mp4",
+      "audio/mpeg",
+      "mp3",
+      "application/pdf",
+      "text/plain",
+      ".ppt",
+      ".pptx",
+      ".xls",
+      ".xlsx",
+      ".doc",
+      ".docx",
+      ".odt",
+      ".odp",
+      ".ai",
+      ".psd",
+      ".ods"
+    ]
+  },
+  "pusher": {
+    "cluster": "us2",
+    "key": "689dba05034d0df6b659"
+  }
+}

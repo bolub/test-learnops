@@ -1,0 +1,10 @@
+{
+  "processName": "Test Process",
+  "description": "Test Process",
+  "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+  "data": {
+    "createdBy": {
+      "name": "Abir Halwa"
+    }
+  }
+}

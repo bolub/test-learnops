@@ -1,0 +1,365 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Launches codepipeline for learnops frontend
+
+Parameters:
+  ChatBotStackName:
+    Type: String
+    Default: synapse-chatbot
+  ServiceStackName:
+    ConstraintDescription: must be provided
+    Description: "CloudFormation stack name for the service components that will be deployed"
+    Type: String
+    Default: learnops-frontend-dev
+  ServiceDockerRepositoryUrl:
+    ConstraintDescription: must be provided
+    Description: "CloudFormation stack name for the service components that will be deployed"
+    Type: String
+    Default: 675441604370.dkr.ecr.us-east-1.amazonaws.com/learnops-frontend-dev
+  ArtifactsS3Bucket:
+    Type: String
+    Default: ci-cd-deployment-artifacts-675441604370
+  PipelinePath:
+    Type: String
+    Default: learnopsFrontend
+  GitHubOwner:
+    Type: String
+    Default: GetSynapse
+  GitHubRepositoryName:
+    Type: String
+    Default: learnops-frontend
+  GitHubBranch:
+    Type: String
+    Default: develop
+  GitHubSecret:
+    Type: String
+    Default: 2tJyVBgAmfSscV5vauPqKMY3F2KwMm
+  GitHubOAuthToken:
+    Type: String
+    Default: 78b82563ae1471ecdec6ed9af702b1cffd34ef42
+  Stage:
+    Description: Deployment stage. AWS CodePipeline is only used for demo, staging and prod
+    Type: String
+    Default: dev
+
+Resources:
+  FullEventsPipelineNotification:
+    Type: AWS::CodeStarNotifications::NotificationRule
+    Properties:
+      DetailType: FULL
+      EventTypeIds:
+        - codepipeline-pipeline-action-execution-succeeded
+        - codepipeline-pipeline-action-execution-failed
+        - codepipeline-pipeline-action-execution-canceled
+        - codepipeline-pipeline-action-execution-started
+        - codepipeline-pipeline-stage-execution-started
+        - codepipeline-pipeline-stage-execution-succeeded
+        - codepipeline-pipeline-stage-execution-resumed
+        - codepipeline-pipeline-stage-execution-canceled
+        - codepipeline-pipeline-stage-execution-failed
+        - codepipeline-pipeline-pipeline-execution-failed
+        - codepipeline-pipeline-pipeline-execution-canceled
+        - codepipeline-pipeline-pipeline-execution-started
+        - codepipeline-pipeline-pipeline-execution-resumed
+        - codepipeline-pipeline-pipeline-execution-succeeded
+        - codepipeline-pipeline-pipeline-execution-superseded
+        - codepipeline-pipeline-manual-approval-failed
+        - codepipeline-pipeline-manual-approval-needed
+        - codepipeline-pipeline-manual-approval-succeeded
+      Name: !Sub "AllEvents-${AWS::StackName}"
+      Resource: !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${ServicePipeline}"
+      Status: ENABLED
+      Targets:
+        - TargetAddress:
+            Fn::ImportValue:
+             !Sub "${ChatBotStackName}-FullEventsChannelConfiguration"
+          TargetType: AWSChatbotSlack
+
+  SelectedEventsPipelineNotification:
+    Type: AWS::CodeStarNotifications::NotificationRule
+    Properties:
+      DetailType: FULL
+      EventTypeIds:
+        - codepipeline-pipeline-pipeline-execution-failed
+        - codepipeline-pipeline-pipeline-execution-canceled
+        - codepipeline-pipeline-pipeline-execution-started
+        - codepipeline-pipeline-pipeline-execution-resumed
+        - codepipeline-pipeline-pipeline-execution-succeeded
+        - codepipeline-pipeline-pipeline-execution-superseded
+      Name: !Sub "SelectedEvents-${AWS::StackName}"
+      Resource: !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${ServicePipeline}"
+      Status: DISABLED
+      Targets:
+        - TargetAddress:
+            Fn::ImportValue:
+             !Sub "${ChatBotStackName}-SelectedEventsChannelConfiguration"
+          TargetType: AWSChatbotSlack
+
+  CodeBuildProjectBuildDockerImage:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub '${PipelinePath}-${Stage}'
+      Description: CodeBuild project for ECS service
+      ServiceRole: !GetAtt CodeBuildServiceRole.Arn
+      Artifacts:
+        Packaging: NONE
+        Name: buildoutput
+        NamespaceType: BUILD_ID
+        Location: !Ref ArtifactsS3Bucket
+        Path:
+          Fn::Join:
+            - ''
+            - - 'buildpackages/'
+              - !Ref PipelinePath
+        Type: S3
+      Cache:
+        Type: LOCAL
+        Location: LOCAL
+        Modes:
+          - LOCAL_DOCKER_LAYER_CACHE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_LARGE
+        Image: aws/codebuild/standard:2.0
+        PrivilegedMode: true
+        EnvironmentVariables:
+        - Name: AWS_DEFAULT_REGION
+          Value: !Ref AWS::Region
+        - Name: STAGE
+          Value: !Ref Stage
+        - Name: DOCKER_IMAGE_REPOSITORY_URI
+          Value:
+            !Ref ServiceDockerRepositoryUrl
+        - Name: SERVICE_STACK_NAME
+          Value: !Ref ServiceStackName
+        - Name: CLOUDFORMATION_SERVICE_ROLE_ARN
+          Value: !GetAtt CloudFormationServiceRole.Arn
+
+      Source:
+        Type: GITHUB
+        Location: !Sub 'https://github.com/${GitHubOwner}/${GitHubRepositoryName}.git'
+        BuildSpec: buildspecs/build-docker.yml
+      TimeoutInMinutes: 30
+
+  ServicePipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name:
+        !Sub '${PipelinePath}-${Stage}'
+      RoleArn: !GetAtt CodePipelineServiceRole.Arn
+      ArtifactStore:
+        Location: !Ref ArtifactsS3Bucket
+        Type: S3
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: GetLatestCodeGitHub
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Version: '1'
+                Provider: GitHub
+              OutputArtifacts:
+                - Name: SourceOutputGitHub
+              Configuration:
+                Owner: !Ref GitHubOwner
+                Repo: !Ref GitHubRepositoryName
+                Branch: !Ref GitHubBranch
+                OAuthToken: !Ref GitHubOAuthToken
+                PollForSourceChanges: false
+              RunOrder: 1
+
+        - Name: BuildDockerImage
+          Actions:
+            - Name: BuildDockerImage
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: '1'
+                Provider: CodeBuild
+              InputArtifacts:
+                - Name: SourceOutputGitHub
+              OutputArtifacts:
+                - Name: BuildOutput
+              Configuration:
+                ProjectName: !Ref CodeBuildProjectBuildDockerImage
+              RunOrder: 1
+
+        - Name: DeployDev
+          Actions:
+            - Name: CreateChangeSetDev
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: '1'
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuildOutput
+              OutputArtifacts: []
+              Configuration:
+                ActionMode: CHANGE_SET_REPLACE
+                Capabilities: CAPABILITY_IAM
+                RoleArn: !GetAtt CloudFormationServiceRole.Arn
+                StackName: !Ref ServiceStackName
+                ChangeSetName: deploy-dev
+                TemplateConfiguration: BuildOutput::cloudformation/learnops-frontend-service-config.json
+                TemplatePath: BuildOutput::cloudformation/learnops-frontend-resource.yml
+                ParameterOverrides: |
+                  {
+                    "ImageTag" : { "Fn::GetParam" : ["BuildOutput", "cloudformation/learnops-frontend-service-param-overrides.json", "ImageTag"]}
+                  }
+              RunOrder: 1
+            - Name: ApproveChangeSetDev
+              ActionTypeId:
+                Category: Approval
+                Owner: AWS
+                Provider: Manual
+                Version: '1'
+              Configuration:
+                CustomData: !Sub 'A new change set was created for the ${ServiceStackName} stack. Do you want to implement the changes?'
+              RunOrder: 2
+            - Name: ExecuteChangeSetDev
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: '1'
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuildOutput
+              OutputArtifacts: []
+              Configuration:
+                ActionMode: CHANGE_SET_EXECUTE
+                Capabilities: CAPABILITY_IAM
+                ChangeSetName: deploy-dev
+                StackName: !Ref ServiceStackName
+                RoleArn: !GetAtt CloudFormationServiceRole.Arn
+              RunOrder: 3
+
+  GitHubWebhook:
+    Type: AWS::CodePipeline::Webhook
+    Properties:
+      Authentication: GITHUB_HMAC
+      AuthenticationConfiguration:
+        SecretToken: !Ref GitHubSecret
+      Filters:
+        - JsonPath: "$.ref"
+          MatchEquals: refs/heads/{Branch}
+      Name: !Sub '${PipelinePath}GitHubWebhook-${Stage}'
+      RegisterWithThirdParty: false
+      TargetAction: GetLatestCodeGitHub
+      TargetPipeline: !Ref ServicePipeline
+      TargetPipelineVersion: !GetAtt ServicePipeline.Version
+
+  CodeBuildServiceRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+          - Effect: Allow
+            Principal:
+              Service: [codebuild.amazonaws.com]
+            Action: ['sts:AssumeRole']
+        Path: /
+        Policies:
+        - PolicyName: codebuild
+          PolicyDocument:
+            Statement:
+            - Effect: Allow
+              Action:
+                - 'logs:*'
+                - 's3:*'
+                - 'ssm:*'
+                - 'codecommit:*'
+                - 'codedeploy:*'
+                - 'sns:*'
+                - 'ecr:*'
+                - 'ecs:*'
+                - 'ec2:*'
+                - 'rds:*'
+                - 'lambda:*'
+                - 'iam:PassRole'
+                - 'cloudformation:*'
+                - 'cloudfront:*'
+              Resource: '*'
+
+  CodePipelineServiceRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+          - Effect: Allow
+            Principal:
+              Service: [codepipeline.amazonaws.com]
+            Action: ['sts:AssumeRole']
+        Path: /
+        Policies:
+        - PolicyName: codepipeline
+          PolicyDocument:
+            Statement:
+            - Effect: Allow
+              Action:
+                - 'codecommit:*'
+                - 'codebuild:*'
+                - 'codedeploy:*'
+                - 'elasticbeanstalk:*'
+                - 'ec2:*'
+                - 'elasticloadbalancing:*'
+                - 'autoscaling:*'
+                - 'cloudwatch:*'
+                - 's3:*'
+                - 'sns:*'
+                - 'cloudformation:*'
+                - 'cloudfront:*'
+                - 'rds:*'
+                - 'sqs:*'
+                - 'ecs:*'
+                - 'ecr:*'
+                - 'lambda:*'
+                - 'iam:PassRole'
+              Resource: '*'
+
+  CloudFormationServiceRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+          - Effect: Allow
+            Principal:
+              Service: [cloudformation.amazonaws.com]
+            Action: ['sts:AssumeRole']
+        Path: /
+        Policies:
+        - PolicyName: cloudformation
+          PolicyDocument:
+            Statement:
+            - Effect: Allow
+              Action:
+                - 'codecommit:*'
+                - 'codebuild:*'
+                - 'codedeploy:*'
+                - 'codepipeline:*'
+                - 'codestar-notifications:*'
+                - 'elasticbeanstalk:*'
+                - 'ec2:*'
+                - 'elasticloadbalancing:*'
+                - 'autoscaling:*'
+                - 'application-autoscaling:*'
+                - 'cloudwatch:*'
+                - 's3:*'
+                - 'route53:*'
+                - 'sns:*'
+                - 'elasticache:*'
+                - 'cloudformation:*'
+                - 'rds:*'
+                - 'sqs:*'
+                - 'ecs:*'
+                - 'ecr:*'
+                - 'lambda:*'
+                - 'logs:*'
+                - 'apigateway:*'
+                - 'iam:*'
+              Resource: '*'
+
+Outputs:
+  AwsConsoleLocation:
+    Description: URL of the created pipeline in the AWS console
+    Value: !Sub 'https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/view/${ServicePipeline}'

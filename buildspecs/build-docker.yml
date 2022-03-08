@@ -1,0 +1,38 @@
+version: 0.2
+
+env:
+  parameter-store:
+    DOCKER_PASS: docker_hub_pass
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+      nodejs: 10
+  pre_build:
+    commands:
+      - "apt install jq"
+      - "$(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)"
+      - docker login -u "feiyang0219" -p $DOCKER_PASS
+
+  build:
+    commands:
+      - "export GIT_COMMIT=$CODEBUILD_RESOLVED_SOURCE_VERSION"
+      - "docker build -t $DOCKER_IMAGE_REPOSITORY_URI:$GIT_COMMIT --build-arg STAGE=$STAGE ."
+      - "docker push $DOCKER_IMAGE_REPOSITORY_URI:$GIT_COMMIT"
+
+  post_build:
+    commands:
+      - "export InstanceSubnet=$(aws cloudformation describe-stacks --stack-name $SERVICE_STACK_NAME --output text --query \"Stacks[0].Parameters[?ParameterKey=='InstanceSubnet'].ParameterValue\" )"
+      - "export SecondarySubnet=$(aws cloudformation describe-stacks --stack-name $SERVICE_STACK_NAME --output text --query \"Stacks[0].Parameters[?ParameterKey=='SecondarySubnet'].ParameterValue\" )"
+      - "export Route53HostedZone=$(aws cloudformation describe-stacks --stack-name $SERVICE_STACK_NAME --output text --query \"Stacks[0].Parameters[?ParameterKey=='Route53HostedZone'].ParameterValue\" )"
+      - "export VPCId=$(aws cloudformation describe-stacks --stack-name $SERVICE_STACK_NAME --output text --query \"Stacks[0].Parameters[?ParameterKey=='VPCId'].ParameterValue\" )"
+      - 'echo "{\"Parameters\" : {\"InstanceSubnet\" : \"$InstanceSubnet\", \"SecondarySubnet\" : \"$SecondarySubnet\",
+      \"Route53HostedZone\" : \"$Route53HostedZone\", \"VPCId\" : \"$VPCId\"}}" > cloudformation/learnops-frontend-service-config.json'
+      - "aws cloudformation get-template --stack-name $SERVICE_STACK_NAME --output text --query TemplateBody > cloudformation/learnops-frontend-resource.yml"
+      - 'echo "{\"ImageTag\" : \""$GIT_COMMIT"\"}" > cloudformation/learnops-frontend-service-param-overrides.json'
+
+artifacts:
+  files:
+    - cloudformation/learnops-frontend-resource.yml
+    - cloudformation/learnops-frontend-service-config.json
+    - cloudformation/learnops-frontend-service-param-overrides.json

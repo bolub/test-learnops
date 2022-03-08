@@ -1,0 +1,318 @@
+{
+  "selectors": {
+    "organizationTab": "[data-testid=tab-1]:contains('Organization')",
+    "learningTeamsTab": "[data-testid=tab-0]:contains('Learning Teams')",
+    "businessTeamsTab": "[data-testid=tab-1]:contains('Business Teams')",
+    "vendorsTab": "[data-testid=tab-2]:contains('Vendors')",
+    "addLDTeam": "[data-testid=add-ld-team_button]",
+    "addBusinessTeam": "[data-testid=add-business-team_button]",
+    "addLDTeamModal": "[data-testid=add-ld-team_modal]",
+    "addBusinessTeamModal": "[data-testid=add-business-team_modal]",
+    "newLdTeamModal": {
+      "name": "[data-testid=team-name_input]",
+      "description": "[data-testid=team-description_input]",
+      "parent": "[data-testid=team-parent_dropdown]",
+      "manager": "[data-testid=team-manager_dropdown]",
+      "parentOption": "[data-value*=f8bf7b58-7662-49a5-b234-3fa1680f2603]",
+      "managerOption": "[data-value*=b273facf-50e3-43b3-b1ce-28cad430ce12]",
+      "save": "[data-cy=confirm-button]",
+      "newTeamRow": "[data-testid='ld-team_row-719b93b8-ceed-4985-a6ae-95b1ea254003']"
+    },
+    "newBusinessTeamModal": {
+      "name": "[data-testid=business-team_name]",
+      "description": "[data-testid=business-team_description]",
+      "newTeamRow": "[data-testid='business-team_row-fba584e8-ec66-4368-82d4-68b07988b16f']",
+      "save": "[data-cy=save-new-business-team]"
+    },
+    "ldTableHeader": {
+      "teamName": "[data-testid=team-name]",
+      "teamManager": "[data-testid=team-manager]",
+      "teamReportsTo": "[data-testid=team-reports-to]",
+      "teamCreateDate": "[data-testid=team-create-date]"
+    },
+    "ldTeamRow": "[data-testid=ld-team_row-$]",
+    "teamsTableEmpty": "[data-testid=teams_table-empty]",
+    "businessTableHeader": {
+      "teamName": "[data-testid=team-name]",
+      "teamDescription": "[data-testid=team-description]",
+      "teamCreateDate": "[data-testid=team-create-date]"
+    },
+    "businessTeamRow": "[data-testid=business-team_row-$]"
+  },
+  "orgMockData": {
+    "code": 200,
+    "data": {
+      "project_hold_reason": [],
+      "project_cancel_reason": [],
+      "id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+      "account_name": "Test Account",
+      "account_URL": null,
+      "custom_URL": null,
+      "account_owner": "918d7b0d-878a-40ac-aa47-24d16983a825",
+      "company_name": "Test Company",
+      "company_address": "Toronto, Ontario",
+      "primary_contact": null,
+      "fiscal_start_date": null,
+      "trial_end_date": null,
+      "license_tier": null,
+      "renewal_date": null,
+      "data": null,
+      "createdAt": "2022-01-25T22:25:03.319Z",
+      "updatedAt": "2022-01-25T22:25:03.319Z",
+      "deletedAt": null,
+      "businessTeams": [
+        {
+          "id": "2e7449fe-1787-42cf-a7e8-cf478c11bd9f",
+          "data": null,
+          "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+          "title": "Test Company 1 - Business Team 1",
+          "description": "Business Team 1",
+          "fiscal_year": null,
+          "outcomes": null,
+          "target_result": null,
+          "results_forecast": null,
+          "actual_result": null,
+          "target_completion": null,
+          "status": null,
+          "next_steps": null,
+          "owner": null,
+          "createdAt": "2022-01-25T22:25:03.535Z",
+          "updatedAt": "2022-01-25T22:25:03.535Z",
+          "deletedAt": null
+        },
+        {
+          "id": "2618dc02-80df-4c73-ba19-51c2c7447924",
+          "data": null,
+          "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+          "title": "Test Company 1 - Business Team 4",
+          "description": "Business Team 2",
+          "fiscal_year": null,
+          "outcomes": null,
+          "target_result": null,
+          "results_forecast": null,
+          "actual_result": null,
+          "target_completion": null,
+          "status": null,
+          "next_steps": null,
+          "owner": null,
+          "createdAt": "2022-01-25T22:25:03.545Z",
+          "updatedAt": "2022-01-25T22:25:03.545Z",
+          "deletedAt": null
+        }
+      ],
+      "learningTeams": [
+        {
+          "id": "f8bf7b58-7662-49a5-b234-3fa1680f2603",
+          "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+          "name": "Test Company 1 - Learning Team 1",
+          "description": "Learning Team 1",
+          "status": null,
+          "enabled": null,
+          "parent_id": null,
+          "note": null,
+          "team_manager_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+          "primary_settings": null,
+          "additional_settings": null,
+          "data": null,
+          "createdAt": "2022-01-25T22:25:03.507Z",
+          "updatedAt": "2022-01-25T22:25:03.507Z",
+          "deletedAt": null
+        },
+        {
+          "id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
+          "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+          "name": "Test Company 1 - Learning Team 2",
+          "description": "Learning Team 2",
+          "status": null,
+          "enabled": null,
+          "parent_id": null,
+          "note": null,
+          "team_manager_id": "b273facf-50e3-43b3-b1ce-28cad430ce12",
+          "primary_settings": null,
+          "additional_settings": null,
+          "data": null,
+          "createdAt": "2022-01-25T22:25:03.510Z",
+          "updatedAt": "2022-01-25T22:25:03.510Z",
+          "deletedAt": null
+        }
+      ],
+      "companyObjectives": [],
+      "users": [
+        {
+          "id": "b273facf-50e3-43b3-b1ce-28cad430ce12",
+          "role": "admin",
+          "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+          "ldTeam_id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
+          "businessTeam_id": "2e7449fe-1787-42cf-a7e8-cf478c11bd9f",
+          "type": "ld",
+          "cost": null,
+          "public_holidays_in_capacity_enabled": true,
+          "default_capacity": 40,
+          "status": "registered",
+          "country_iso_3166_1_alpha_2_code": "UNDEFINED",
+          "position_title": null,
+          "location": null,
+          "note": "Account 1 - Test User 4",
+          "data": {
+            "role": "admin",
+            "email": "test4@getsynapse.com",
+            "jobTitle": "Software Developer",
+            "lastName": "May",
+            "firstName": "Violet",
+            "freeTrial": false,
+            "resourceId": "",
+            "companyName": "Test Company 1"
+          },
+          "createdAt": "2022-01-25T22:25:03.478Z",
+          "updatedAt": "2022-01-25T22:25:03.976Z",
+          "deletedAt": null
+        },
+        {
+          "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+          "role": "admin",
+          "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+          "ldTeam_id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
+          "businessTeam_id": "419e455d-5027-403c-91e4-0cb66142bc2a",
+          "type": "ld",
+          "cost": null,
+          "public_holidays_in_capacity_enabled": true,
+          "default_capacity": 40,
+          "status": "registered",
+          "country_iso_3166_1_alpha_2_code": "UNDEFINED",
+          "position_title": null,
+          "location": null,
+          "note": "Account 1 - Test User 6",
+          "data": {
+            "role": "admin",
+            "email": "alex+test@getsynapse.com",
+            "jobTitle": "Software Developer",
+            "lastName": "Halwa",
+            "firstName": "Abir",
+            "freeTrial": false,
+            "resourceId": "",
+            "companyName": "Test Company 1"
+          },
+          "createdAt": "2022-01-25T22:25:03.484Z",
+          "updatedAt": "2022-01-25T22:25:03.986Z",
+          "deletedAt": null
+        }
+      ],
+      "projectCategories": [],
+      "projectVendors": [
+        {
+          "id": "8ead66fb-30cc-42f7-8c18-07d9c878653e",
+          "vendorName": "test vendor 1",
+          "description": "test data for vendor  1",
+          "enabled": null,
+          "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+          "country_iso_3166_1_alpha_2_code": "UNDEFINED",
+          "data": null,
+          "createdAt": "2022-01-25T22:25:03.424Z",
+          "updatedAt": "2022-01-25T22:25:03.424Z",
+          "deletedAt": null
+        },
+        {
+          "id": "a9a1d7ae-4eb7-4340-9674-58c03b66c34b",
+          "vendorName": "test vendor 2",
+          "description": "test data for vendor 2",
+          "enabled": null,
+          "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+          "country_iso_3166_1_alpha_2_code": "UNDEFINED",
+          "data": null,
+          "createdAt": "2022-01-25T22:25:03.430Z",
+          "updatedAt": "2022-01-25T22:25:03.430Z",
+          "deletedAt": null
+        },
+        {
+          "id": "8f5b17ae-9a34-4711-93df-403e08106d87",
+          "vendorName": "test vendor 3",
+          "description": "test data for vendor  3",
+          "enabled": null,
+          "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+          "country_iso_3166_1_alpha_2_code": "UNDEFINED",
+          "data": null,
+          "createdAt": "2022-01-25T22:25:03.434Z",
+          "updatedAt": "2022-01-25T22:25:03.434Z",
+          "deletedAt": null
+        },
+        {
+          "id": "121033bc-e554-4b56-849f-95833aa4f31d",
+          "vendorName": "test vendor 4",
+          "description": "test data for vendor  4",
+          "enabled": null,
+          "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+          "country_iso_3166_1_alpha_2_code": "UNDEFINED",
+          "data": null,
+          "createdAt": "2022-01-25T22:25:03.437Z",
+          "updatedAt": "2022-01-25T22:25:03.437Z",
+          "deletedAt": null
+        },
+        {
+          "id": "0c6da2aa-0a9e-4266-a5c5-bdf36c99265b",
+          "vendorName": "test vendor 5",
+          "description": "test data for vendor  5",
+          "enabled": null,
+          "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+          "country_iso_3166_1_alpha_2_code": "UNDEFINED",
+          "data": null,
+          "createdAt": "2022-01-25T22:25:03.441Z",
+          "updatedAt": "2022-01-25T22:25:03.441Z",
+          "deletedAt": null
+        }
+      ],
+      "locations": [],
+      "organizationResourceRoles": []
+    },
+    "success": true
+  },
+  "newLDTeamMock": {
+    "code":201,
+    "data":{
+      "learningTeam":{
+        "id":"719b93b8-ceed-4985-a6ae-95b1ea254003",
+        "name":"Team name",
+        "description":"Team description",
+        "parent_id":"f8bf7b58-7662-49a5-b234-3fa1680f2603",
+        "team_manager_id":"b273facf-50e3-43b3-b1ce-28cad430ce12",
+        "organization_id":"39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+        "updatedAt":"2022-02-04T03:57:19.681Z",
+        "createdAt":"2022-02-04T03:57:19.681Z",
+        "enabled":null,
+        "status":null,
+        "note":null,
+        "primary_settings":null,
+        "additional_settings":null,
+        "data":null,
+        "deletedAt":null,
+        "manager_id":null
+      }
+    },
+    "success":true
+  },
+  "newBusinessMock": {
+    "code":201,
+    "data":{
+      "businessTeam":{
+        "id":"fba584e8-ec66-4368-82d4-68b07988b16f",
+        "organization_id":"39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+        "title":"Team name",
+        "description":"team description",
+        "updatedAt":"2022-02-08T21:31:43.605Z",
+        "createdAt":"2022-02-08T21:31:43.605Z",
+        "fiscal_year":null,
+        "outcomes":null,
+        "target_result":null,
+        "result_forecast":null,
+        "actual_result":null,
+        "target_completion":null,
+        "status":null,
+        "next_steps":null,
+        "data":null,
+        "deletedAt":null,
+        "results_forecast":null,
+        "owner":null
+      }
+    },
+    "success":true
+  }
+}

@@ -1,0 +1,178 @@
+{
+    "selectors": {
+        "organizationTab": "[data-testid=tab-1]:contains('Organization')",
+        "learningTeamsTab": "[data-testid=tab-0]:contains('Learning Teams')",
+        "businessTeamsTab": "[data-testid=tab-1]:contains('Business Teams')",
+        "learningTeamsTableRow": "[data-testid=ld-team_row-$]",
+        "updateButton": "[data-cy=update-team_button]",
+        "teamMembersTable": "[data-cy=team-members_table]",
+        "teamNameInput": "[data-cy=team-name_input]",
+        "businessTeamsTableRow": "[data-testid=business-team_row-$]",
+        "moreActionsDropdown":"[data-cy=team-more-actions_dropdown]",
+        "deleteTeamOption": "[data-cy=delete-team_option]",
+        "deleteTeamModal": {
+            "modal": "[data-cy=delete-team_modal]",
+            "deleteButton": "[data-cy=delete-team_button]",
+            "cancelButton": "[data-cy=cancel-delete-team_button]"
+        },
+        "noDeleteTooltip":"[data-cy=no-delete_tooltip]"
+    },
+    "learningTeams": {
+        "code": 200,
+        "data": {
+            "learningTeams": [
+                {
+                    "id":"f8bf7b58-7662-49a5-b234-3fa1680f2603",
+                    "name":"Test Company 1 - Learning Team 1",
+                    "parent_id":"9b65072b-469a-4ae6-a3da-355fb8a1825f",
+                    "team_manager_id":"b273facf-50e3-43b3-b1ce-28cad430ce12",
+                    "createdAt":"2022-02-08T19:05:34.546Z",
+                    "teamManager": {
+                        "id":"b273facf-50e3-43b3-b1ce-28cad430ce12",
+                        "data": {
+                            "lastName":"May",
+                            "firstName":"Violet"
+                        }
+                    },
+                    "parentTeam": {
+                        "id":"9b65072b-469a-4ae6-a3da-355fb8a1825f",
+                        "name":"Test Company 1 - Learning Team 2"
+                    }
+                },
+                {
+                    "id":"9b65072b-469a-4ae6-a3da-355fb8a1825f",
+                    "name":"Test Company 1 - Learning Team 2",
+                    "parent_id": null,
+                    "team_manager_id":"b273facf-50e3-43b3-b1ce-28cad430ce12",
+                    "createdAt":"2022-02-08T19:05:34.546Z",
+                    "teamManager": {
+                        "id":"b273facf-50e3-43b3-b1ce-28cad430ce12",
+                        "data": {
+                            "lastName":"May",
+                            "firstName":"Violet"
+                        }
+                    },
+                    "parentTeam": null
+                }
+            ]
+        }
+    },
+    "learningTeamData": {
+        "code":200,
+        "data": {
+            "learningTeam": {
+                "id":"f8bf7b58-7662-49a5-b234-3fa1680f2603",
+                "name":"Test Company 1 - Learning Team 1",
+                "description":"Learning Team 1",
+                "parent_id":"9b65072b-469a-4ae6-a3da-355fb8a1825f",
+                "team_manager_id":"b273facf-50e3-43b3-b1ce-28cad430ce12",
+                "ldTeamMembers": [
+                    {
+                        "id":"b273facf-50e3-43b3-b1ce-28cad430ce12",
+                        "status":"registered",
+                        "country_iso_3166_1_alpha_2_code":"DZ",
+                        "data": {
+                            "email":"test4@getsynapse.com",
+                            "jobTitle":"Software Developer",
+                            "lastName":"May",
+                            "firstName":"Violet"
+                        }
+                    }
+                ],
+                "teamManager": {
+                    "id":"b273facf-50e3-43b3-b1ce-28cad430ce12",
+                    "data": {
+                        "lastName":"May",
+                        "firstName":"Violet"
+                    }
+                },
+                "parentTeam": {
+                    "id":"9b65072b-469a-4ae6-a3da-355fb8a1825f",
+                    "name":"Test Company 1 - Learning Team 2"
+                }
+            }
+        },
+        "success":true
+    },
+    "noMembersLearningTeam": {
+        "code":200,
+        "data": {
+            "learningTeam": {
+                "id":"f8bf7b58-7662-49a5-b234-3fa1680f2603",
+                "name":"Test Company 1 - Learning Team 1",
+                "description":"Learning Team 1",
+                "parent_id":"9b65072b-469a-4ae6-a3da-355fb8a1825f",
+                "team_manager_id":"b273facf-50e3-43b3-b1ce-28cad430ce12",
+                "ldTeamMembers": [],
+                "teamManager": {
+                    "id":"b273facf-50e3-43b3-b1ce-28cad430ce12",
+                    "data": {
+                        "lastName":"May",
+                        "firstName":"Violet"
+                    }
+                },
+                "parentTeam": {
+                    "id":"9b65072b-469a-4ae6-a3da-355fb8a1825f",
+                    "name":"Test Company 1 - Learning Team 2"
+                }
+            }
+        },
+        "success":true
+    },
+    "businessTeams": {
+        "code": 200,
+        "data": {
+            "businessTeams": [
+                {
+                    "id": "2618dc02-80df-4c73-ba19-51c2c7447924",
+                    "title": "Test Company 1 - Business Team 4",
+                    "description": "Business Team 2",
+                    "createdAt": "2022-02-08T19:05:34.619Z"
+                },
+                {
+                    "id": "419e455d-5027-403c-91e4-0cb66142bc2a",
+                    "title": "Test Company 1 - Business Team 3",
+                    "description": "Business Team 1",
+                    "createdAt": "2022-02-08T19:05:34.613Z"
+                }
+            ]
+        },
+        "success": true
+    },
+    "businessTeamData": {
+        "code": 200,
+        "data": {
+            "businessTeam": {
+                "id": "419e455d-5027-403c-91e4-0cb66142bc2a",
+                "title": "Test Company 1 - Business Team 3",
+                "description": "Business Team 1",
+                "users": [
+                    {
+                        "id": "a8385fbc-5110-4275-b2ca-3d8f777eb777",
+                        "status":"registered",
+                        "country_iso_3166_1_alpha_2_code": null,
+                        "data": {
+                            "email": "abir+test@getsynapse.com",
+                            "jobTitle": "Software Developer",
+                            "lastName": "Drine",
+                            "firstName": "Sara"
+                        }
+                    }
+                ]
+            }
+        },
+        "success": true
+    },
+    "noMembersBusinessTeam": {
+        "code": 200,
+        "data": {
+            "businessTeam": {
+                "id": "419e455d-5027-403c-91e4-0cb66142bc2a",
+                "title": "Test Company 1 - Business Team 3",
+                "description": "Business Team 1",
+                "users": []
+            }
+        },
+        "success": true
+    }
+}

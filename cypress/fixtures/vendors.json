@@ -1,0 +1,97 @@
+{
+    "selectors": {
+        "vendorsTable": {
+            "vendorName": "[data-cy=head_vendor-name]",
+            "description": "[data-cy=head_vendor-description]",
+            "country": "[data-cy=head_vendor-country]",
+            "location": "[data-cy=head_vendor-location]",
+            "creationDate": "[data-cy=head_vendor-creation]",
+            "enabled": "[data-cy=head_vendor-enabled]"
+        },
+        "vendorRow": "[data-cy=vendor_row-$]",
+        "organiztionTab": "Organization",
+        "vendorsTab": "Vendors",
+        "addVendorButton":"[data-cy=add-vendor-button]",
+        "saveVendorDetails":"[data-cy=confirm-button]",
+        "cancelButton":"[data-cy=cancel-button]",
+        "vendorModal":"[data-cy=add-vendor-modal]",
+        "vendorNameInput":"[data-cy=vendor-name-input]",
+        "vendorAddressInput":"[data-cy=vendor-address-input]",
+        "vendorCountryInput":"[data-cy=vendor-country-input]",
+        "vendorWebsiteInput":"[data-cy=vendor-website-input]",
+        "vendorEmailInput":"[data-cy=vendor-email-input]",
+        "vendorDescriptionInput":"[data-cy=vendor-description-input]",
+        "vendorProvinceInput":"[data-cy=vendor-province-input]",
+        "vendorPhoneInput":"[data-cy=vendor-phone-input]",
+        "vendorContactInput":"[data-cy=vendor-contact-input]",
+        "vendorName":"Abir Paula",
+        "vendorAddress":"Stoney Creek, Ontario, Canada",
+        "vendorWebsite":"getsynapse.com",
+        "vendorEmail":"test@getsynapse.com",
+        "vendorDescription":"A new vendor to be added",
+        "vendorPhone":"+345289881812",
+        "vendorDetailTitle": "[data-cy=vendor-name_title]",
+        "vendorSwitch": "[data-cy=vendor_enable-disable]"
+    },
+    "routes": {
+        "vendorsApi": "http://localhost:8001/api/vendor",
+        "vendorsPage": "settings"
+    },
+    "vendors": {
+        "code": 200,
+        "data": {
+            "vendors": [
+                {
+                    "id": "0c6da2aa-0a9e-4266-a5c5-bdf36c99265b",
+                    "vendorName": "Saddington, Co.",
+                    "description": "A vendor is a general term used to describe any supplier of goods or services",
+                    "enabled": true,
+                    "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+                    "country_iso_3166_1_alpha_2_code": "CA",
+                    "createdAt": "2021-07-19T19:18:43.926Z",
+                    "data": {
+                        "province": "Ontario"
+                    }
+                },
+                {
+                    "id": "0c6da2aa-0a9e-4266-a5c5-bdf36c99265c",
+                    "vendorName": "Acme",
+                    "description": "A vendor sells products or services to another company or individual",
+                    "enabled": false,
+                    "organization_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+                    "country_iso_3166_1_alpha_2_code": "CA",
+                    "createdAt": "2021-07-19T19:18:43.926Z",
+                    "data": {
+                        "province": "Quebec"
+                    }
+                }
+            ]
+        },
+        "success": true
+    },
+    "newVendor": {
+        "code": 201,
+        "data": {
+            "vendor": {
+                "id": "811c2e1f-a487-4279-b25d-fe45b902fcbc",
+                "country_iso_3166_1_alpha_2_code": "AT",
+                "vendorName": "Abir Paula",
+                "description": "A new vendor to be added",
+                "data": {
+                    "email": "test@getsynapse.com",
+                    "phone": "+345289881812",
+                    "address": "Stoney Creek, Ontario, Canada",
+                    "website": "getsynapse.com",
+                    "province": "Burgenland",
+                    "contactName": "Abir Paula"
+                },
+                "updatedAt": "2022-02-09T13:37:34.770Z",
+                "createdAt": "2022-02-09T13:37:34.770Z",
+                "enabled": null,
+                "organization_id": null,
+                "deletedAt": null
+            }
+        },
+        "success": true
+    }
+}
