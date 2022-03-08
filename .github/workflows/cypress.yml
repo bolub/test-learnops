@@ -1,43 +1,12 @@
-name: Cypress e2e run
-
-on:
-  # push
-  pull_request:
-    branches:
-      - develop
-
+name: End-to-end tests
+on: [push]
 jobs:
   cypress-run:
-    runs-on: macos-latest
-
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Install node
-        uses: actions/setup-node@v2
-
-      - name: Cypress run chrome
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
         uses: cypress-io/github-action@v2
-        with:
-          build: npm run build
-          start: npx serve -s build -l 3005
-          spec: "**/Auth/*"
-
-      - uses: actions/upload-artifact@v2
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
-
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: cypress-videos
-          path: cypress/videos
-
-      - name: Cypress run edge
-        uses: cypress-io/github-action@v2
-        with:
-          spec: "**/Auth/*"
-
