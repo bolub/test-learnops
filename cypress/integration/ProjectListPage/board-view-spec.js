@@ -35,7 +35,7 @@ describe('Projects list board view', () => {
       'fetchOrganizationProcesses'
     );
     cy.visit(routes.projectsList);
-    cy.wait('@teamProjectsList');
+    // cy.wait('@teamProjectsList');
     cy.get(boardViewSwitchButton).should('be.visible').click();
     cy.get(boardView.teamBoard).should('be.visible');
     const stages =
@@ -63,7 +63,7 @@ describe('Projects list board view', () => {
       'fetchOrganizationProcesses'
     );
     cy.visit(routes.projectsList);
-    cy.wait('@teamProjectsList');
+    // cy.wait('@teamProjectsList');
     cy.get(boardViewSwitchButton).should('be.visible').click();
     cy.get(boardView.emptyBoard)
       .should('be.visible')
