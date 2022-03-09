@@ -67,7 +67,10 @@ describe('Update Project', () => {
     cy.get(selectors.updateProjectButton).should('be.disabled');
     cy.get(selectors.cancelProjectUpdate).should('be.visible').click();
     cy.wait('@fetchAllProjects');
-    cy.url().should('eq', `http://localhost:3005${routes.projectsList}`);
+    cy.url().should(
+      'eq',
+      `https://learnops.dev.getsynapse.com${routes.projectsList}`
+    );
   });
 
   it('checks if an error banner appears notifying the user that the project is missing information when not all details are inputed', () => {

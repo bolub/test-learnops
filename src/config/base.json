@@ -5,8 +5,8 @@
     "poolId": "us-east-1_nl3w1caiU",
     "clientId": "1spbfikl1vtlfmrpevdqjds2f8",
     "oauthDomain": "learnops-local.auth.us-east-1.amazoncognito.com",
-    "redirectSignOut": "http://localhost:3005/login",
-    "redirectSignIn": "http://localhost:3005/callback"
+    "redirectSignOut": "https://learnops.dev.getsynapse.com/login",
+    "redirectSignIn": "https://learnops.dev.getsynapse.com/callback"
   },
   "backendURL": "http://localhost:8001/api/",
   "fileStack": {

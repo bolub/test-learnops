@@ -31,7 +31,7 @@
             "taskStatus": "[data-cy=header__task-status]",
             "taskSearchInput": "[data-testid=table-header__search-input]",
             "taskEmpty": "[data-cy=no-task-found]",
-            "menuButton":"[data-cy=menu-button]",
+            "menuButton": "[data-cy=menu-button]",
             "duplicateMenuOption": "[data-cy=task-$-duplicate-option",
             "taskReorderButton": "[data-testid=table-header__reorder-button]",
             "taskReorderUpRowIcon": "[data-cy=task-reorder-up-$]",
@@ -55,8 +55,8 @@
             "linkFileButton": "[data-cy=search-files-to-link]"
         },
         "linkFiles": {
-          "confirmLinkFileButton": "[data-cy=add-to-linked-files-table]",
-          "unlinkFileButton": "[data-cy=unlink-file-button]"
+            "confirmLinkFileButton": "[data-cy=add-to-linked-files-table]",
+            "unlinkFileButton": "[data-cy=unlink-file-button]"
         },
         "deleteTask": {
             "deleteTaskButton": "[data-cy=delete-task-button]",
@@ -66,10 +66,10 @@
         }
     },
     "constantTexts": {
-      "noFilesLinked": "No files attached",
-      "linkedFileName": "Linked file",
-      "attachedFileName": "cat_caviar.jpg",
-      "linkedFileTaskName": "Test project 1 - task 1"
+        "noFilesLinked": "No files attached",
+        "linkedFileName": "Linked file",
+        "attachedFileName": "cat_caviar.jpg",
+        "linkedFileTaskName": "Test project 1 - task 1"
     },
     "stubbedResponses": {
         "teamsTasks": {
@@ -115,7 +115,7 @@
                                 "note": "Account 1 - Test User 4",
                                 "data": {
                                     "role": "admin",
-                                    "email": "alex+test@getsynapse.com",
+                                    "email": "jeremy+dev@getsynapse.com",
                                     "jobTitle": "Software Developer",
                                     "lastName": "May",
                                     "firstName": "Violet",
@@ -209,7 +209,7 @@
                                 "note": "Account 1 - Test User 4",
                                 "data": {
                                     "role": "admin",
-                                    "email": "alex+test@getsynapse.com",
+                                    "email": "jeremy+dev@getsynapse.com",
                                     "jobTitle": "Software Developer",
                                     "lastName": "May",
                                     "firstName": "Violet",
@@ -303,7 +303,7 @@
                                 "note": "Account 1 - Test User 4",
                                 "data": {
                                     "role": "admin",
-                                    "email": "alex+test@getsynapse.com",
+                                    "email": "jeremy+dev@getsynapse.com",
                                     "jobTitle": "Software Developer",
                                     "lastName": "May",
                                     "firstName": "Violet",
@@ -397,7 +397,7 @@
                                 "note": "Account 1 - Test User 4",
                                 "data": {
                                     "role": "admin",
-                                    "email": "alex+test@getsynapse.com",
+                                    "email": "jeremy+dev@getsynapse.com",
                                     "jobTitle": "Software Developer",
                                     "lastName": "May",
                                     "firstName": "Violet",
@@ -604,7 +604,7 @@
                                 "note": "Account 1 - Test User 4",
                                 "data": {
                                     "role": "admin",
-                                    "email": "alex+test@getsynapse.com",
+                                    "email": "jeremy+dev@getsynapse.com",
                                     "jobTitle": "Software Developer",
                                     "lastName": "May",
                                     "firstName": "Violet",
@@ -698,7 +698,7 @@
                                 "note": "Account 1 - Test User 4",
                                 "data": {
                                     "role": "admin",
-                                    "email": "alex+test@getsynapse.com",
+                                    "email": "jeremy+dev@getsynapse.com",
                                     "jobTitle": "Software Developer",
                                     "lastName": "May",
                                     "firstName": "Violet",
@@ -1000,7 +1000,7 @@
                         },
                         {
                             "data": {
-                                "email": "alex+test@getsynapse.com",
+                                "email": "jeremy+dev@getsynapse.com",
                                 "lastName": "Halwa",
                                 "firstName": "Abir"
                             },
@@ -1094,7 +1094,7 @@
                         {
                             "data": {
                                 "role": "admin",
-                                "email": "alex+test@getsynapse.com",
+                                "email": "jeremy+dev@getsynapse.com",
                                 "jobTitle": "Software Developer",
                                 "lastName": "May",
                                 "firstName": "Violet",

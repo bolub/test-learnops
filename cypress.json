@@ -1,5 +1,5 @@
 {
-    "baseUrl": "http://localhost:3005",
+    "baseUrl": "https://learnops.dev.getsynapse.com/",
     "viewportWidth": 1300,
     "viewportHeight": 1000,
     "defaultCommandTimeout": 100000,

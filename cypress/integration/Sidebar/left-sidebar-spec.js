@@ -30,24 +30,42 @@ describe('Test for left sidebar', () => {
       .click();
 
     cy.get(leftSideBar.sidebarInsights).should('be.visible').click();
-    cy.url().should('eq', `http://localhost:3005${routes.insight}`);
+    cy.url().should(
+      'eq',
+      `https://learnops.dev.getsynapse.com${routes.insight}`
+    );
 
     cy.get(leftSideBar.sidebarIntake).should('be.visible').click();
-    cy.url().should('eq', `http://localhost:3005${routes.requestList}`);
+    cy.url().should(
+      'eq',
+      `https://learnops.dev.getsynapse.com${routes.requestList}`
+    );
 
     cy.get(leftSideBar.sidebarProjects).should('be.visible').click();
-    cy.url().should('eq', `http://localhost:3005${routes.projectsList}`);
+    cy.url().should(
+      'eq',
+      `https://learnops.dev.getsynapse.com${routes.projectsList}`
+    );
 
     cy.get(leftSideBar.sidebarDesign).should('be.visible').click();
-    cy.url().should('eq', `http://localhost:3005${routes.design}`);
+    cy.url().should(
+      'eq',
+      `https://learnops.dev.getsynapse.com${routes.design}`
+    );
 
     cy.get(leftSideBar.sidebarTeams).should('be.visible').click();
-    cy.url().should('eq', `http://localhost:3005${routes.teams}`);
+    cy.url().should('eq', `https://learnops.dev.getsynapse.com${routes.teams}`);
 
     cy.get(leftSideBar.sidebarSettings).should('be.visible').click();
-    cy.url().should('eq', `http://localhost:3005${routes.settings}`);
+    cy.url().should(
+      'eq',
+      `https://learnops.dev.getsynapse.com${routes.settings}`
+    );
 
     cy.get(leftSideBar.sidebarLogout).should('be.visible').click();
-    cy.url().should('eq', `http://localhost:3005${routes.loginPage}`);
+    cy.url().should(
+      'eq',
+      `https://learnops.dev.getsynapse.com${routes.loginPage}`
+    );
   });
 });

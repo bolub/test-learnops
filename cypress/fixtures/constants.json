@@ -1,6 +1,6 @@
 {
     "routes": {
-        "baseURL": "http://localhost:3005/",
+        "baseURL": "https://learnops.dev.getsynapse.com/",
         "backendURL": "http://localhost:8001",
         "requestList": "/requests-list",
         "requestDetails": "/request/**",
