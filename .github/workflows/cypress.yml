@@ -10,6 +10,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install node
+        uses: actions/setup-node@v2
+
       - name: Cypress install
         uses: cypress-io/github-action@v2
         with:
