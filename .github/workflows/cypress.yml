@@ -1,42 +1,46 @@
-name: Cypress e2e run
+name: Cypress Tests using Cypress Docker Image
 
-on:
-  push
-  # pull_request:
-  #   branches:
-  #     - develop
+on: push
 
 jobs:
-  cypress-run:
+  install:
     runs-on: ubuntu-latest
-
+    container: cypress/browsers:node12.18.3-chrome87-ff82
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # - name: Install node
-      #   uses: actions/setup-node@v2
+      - name: Save build folder
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          if-no-files-found: error
+          path: build
 
-      - name: Cypress run chrome
+      - name: Cypress install
         uses: cypress-io/github-action@v2
         with:
+          # Disable running of tests within install job
+          runTests: false
           build: npm run build
+
+  cypress-run:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node12.18.3-chrome87-ff82
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download the build folders
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
+
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
           start: npx serve -s build -l 3005
           spec: '**/ProjectListPage/*'
-
-      - uses: actions/upload-artifact@v2
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
-
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: cypress-videos
-          path: cypress/videos
-
-      # - name: Cypress run edge
-      #   uses: cypress-io/github-action@v2
-      #   with:
-      #     spec: '**/Projects/*'
