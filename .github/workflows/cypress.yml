@@ -10,9 +10,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Upgrade NPM
-        run: npm install -g npm
-
       - name: Cypress install
         uses: cypress-io/github-action@v2
         with:
