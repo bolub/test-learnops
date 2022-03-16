@@ -4,11 +4,14 @@ on: push
 
 jobs:
   install:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     container: cypress/browsers:node14.17.0-chrome88-ff89
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Upgrade NPM
+        run: npm install -g npm
 
       - name: Cypress install
         uses: cypress-io/github-action@v2
@@ -24,7 +27,7 @@ jobs:
           path: build
 
   cypress-run:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     container: cypress/browsers:node14.17.0-chrome88-ff89
     strategy:
       # when one test fails, DO NOT cancel the other
