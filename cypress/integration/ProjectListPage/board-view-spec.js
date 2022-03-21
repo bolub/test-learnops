@@ -30,19 +30,19 @@ describe('Projects list board view', () => {
         projectsListTable,
       },
     } = projects;
-    // cy.intercept(api.fetchProjects, projectList).as('teamProjectsList');
-    // cy.intercept(api.fetchAllProjectProcesses, projectProcesses).as(
-    //   'fetchOrganizationProcesses'
-    // );
+    cy.intercept(api.fetchProjects, projectList).as('teamProjectsList');
+    cy.intercept(api.fetchAllProjectProcesses, projectProcesses).as(
+      'fetchOrganizationProcesses'
+    );
     cy.visit(routes.projectsList);
-    // cy.wait('@teamProjectsList');
+    cy.wait('@teamProjectsList');
     cy.get(boardViewSwitchButton).should('be.visible').click();
     cy.get(boardView.teamBoard).should('be.visible');
-    // const stages =
-    //   projectProcesses.data[projectProcesses.data.length - 1].projectStages;
-    // cy.wrap(stages).each((stage) => {
-    //   cy.get(boardView.stage.replace('$', stage.id)).should('be.visible');
-    // });
+    const stages =
+      projectProcesses.data[projectProcesses.data.length - 1].projectStages;
+    cy.wrap(stages).each((stage) => {
+      cy.get(boardView.stage.replace('$', stage.id)).should('be.visible');
+    });
     cy.get(boardView.myBoardTab).click();
     cy.get(boardView.myBoard).should('be.visible');
     cy.get(listViewSwitchButton).click();
