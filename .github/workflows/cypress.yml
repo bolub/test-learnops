@@ -1,60 +1,42 @@
-name: Cypress Tests using Cypress Docker Image
+name: Cypress e2e run
 
-on: push
+on:
+  # push
+  pull_request:
+    branches:
+      - develop
 
 jobs:
-  install:
-    runs-on: ubuntu-latest
-    container: cypress/browsers:node14.17.0-chrome88-ff89
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Cypress install
-        uses: cypress-io/github-action@v2
-        with:
-          runTests: false
-          build: npm run build
-
-      - name: Save build folder
-        uses: actions/upload-artifact@v2
-        with:
-          name: build
-          if-no-files-found: error
-          path: build
-
   cypress-run:
-    runs-on: ubuntu-latest
-    container: cypress/browsers:node14.17.0-chrome88-ff89
-    strategy:
-      # when one test fails, DO NOT cancel the other
-      # containers, because this will kill Cypress processes
-      # leaving the Dashboard hanging ...
-      # https://github.com/cypress-io/github-action/issues/48
-      fail-fast: false
-      matrix:
-        # run copies of the current job in parallel
-        containers: [1, 2, 3, 4, 5]
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Download the build folders
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build
+      - name: Install node
+        uses: actions/setup-node@v2
 
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
+      - name: Cypress run chrome
         uses: cypress-io/github-action@v2
         with:
+          build: npm run build
           start: npx serve -s build -l 3005
-          # spec: '**/ProjectListPage/*'
-          spec: board-view-spec.js
-          wait-on: 'http://localhost:3005'
-          wait-on-timeout: 120
-          browser: chrome
-          record: true
+          spec: 'board-view-spec'
+
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+
+      # - name: Cypress run edge
+      #   uses: cypress-io/github-action@v2
+      #   with:
+      #     spec: "**/Auth/*"
