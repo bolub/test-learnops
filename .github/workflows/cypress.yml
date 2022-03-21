@@ -20,6 +20,7 @@ jobs:
       - name: Cypress run chrome
         uses: cypress-io/github-action@v2
         with:
+          record: true
           build: npm run build
           start: npx serve -s build -l 3005
           spec: 'cypress/integration/ProjectListPage/board-view-spec.js'
