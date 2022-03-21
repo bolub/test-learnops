@@ -22,7 +22,7 @@ jobs:
         with:
           build: npm run build
           start: npx serve -s build -l 3005
-          spec: 'board-view-spec'
+          spec: 'cypress/integration/ProjectListPage/board-view-spec.js'
 
       - uses: actions/upload-artifact@v2
         if: failure()
