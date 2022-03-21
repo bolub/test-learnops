@@ -94,12 +94,7 @@ Cypress.Commands.add('checkDropdownItemVisibility', (label, value) => {
   cy.get(`[data-value='${JSON.stringify(data)}']`).should('be.visible');
 });
 
-Cypress.Commands.add('selectDropdownItem', (label, value) => {
-  const data = {
-    value,
-    label,
-  };
-
+Cypress.Commands.add('selectDropdownItem', (data) => {
   cy.get(`[data-value='${JSON.stringify(data)}']`)
     .should('be.visible')
     .click();
@@ -142,14 +137,15 @@ Cypress.Commands.add('checkEmptyNotificationList', (response) => {
   expect(response).to.be.empty;
 });
 
-Cypress.Commands.add('pickStartAndEndDates', (datePickerSelector) => {
-  const startDate = 14;
-  const endDate = 20;
-  cy.get(datePickerSelector).click();
-  cy.get(`[data-value=${startDate}]`).click();
-  cy.get(`[data-value=${endDate}]`).click();
-  cy.get(datePickerSelector).click();
-});
+Cypress.Commands.add(
+  'pickStartAndEndDates',
+  (datePickerSelector, startDate = 14, endDate = 20) => {
+    cy.get(datePickerSelector).click();
+    cy.get(`[data-value=${startDate}]`).click();
+    cy.get(`[data-value=${endDate}]`).click();
+    cy.get(datePickerSelector).click();
+  }
+);
 
 Cypress.Commands.add('customRequest', (method, url, body) => {
   const getJwtToken = Auth.currentAuthenticatedUser().then(

@@ -101,7 +101,6 @@ describe('Budget Details Page', () => {
       cy.get(budgetTab).should('be.visible').click();
       cy.get(budgetTable).should('be.visible').click();
       const responseData = get(payload, 'response.body.data.budgets');
-      expect(responseData).not.to.be.empty;
       cy.get(budgetRow.replace('*', responseData[1].id)).should('be.visible');
       cy.get(editBudgetButton.replace('*', responseData[1].id))
         .should('be.visible')
@@ -267,7 +266,7 @@ describe('Budget Details Page', () => {
     cy.wait('@fetchProject');
     cy.get(budgetHeaderTab).should('be.visible').click();
     cy.get(projectBudgetSource).click();
-    cy.selectDropdownItem('Special funding', 'special');
+    cy.selectDropdownItem({ label: 'Special funding', value: 'special' });
     cy.get(projectAllocationBudget).clear().type('8');
     cy.intercept('PUT', `${api.fetchProjects}/${projectId}`).as(
       'updateProject'

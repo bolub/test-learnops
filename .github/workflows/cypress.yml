@@ -52,7 +52,8 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           start: npx serve -s build -l 3005
-          spec: '**/ProjectListPage/*'
+          # spec: '**/ProjectListPage/*'
+          spec: board-view-spec.js
           wait-on: 'http://localhost:3005'
           wait-on-timeout: 120
           browser: chrome

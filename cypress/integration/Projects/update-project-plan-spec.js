@@ -80,7 +80,7 @@ describe('Update project plan e2e', () => {
     visitProjectBudgetPage();
 
     cy.get(projectBudgetSource).click();
-    cy.selectDropdownItem('Special funding', 'special');
+    cy.selectDropdownItem({ label: 'Special funding', value: 'special' });
     cy.get(projectEstimatedBudget).clear().type('4000');
     cy.get(projectAllocationBudget).clear().type('8000');
 

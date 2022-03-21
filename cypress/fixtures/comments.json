@@ -9,12 +9,12 @@
     "commentUpdateText": "Is the content updated?",
     "updateButton": "[data-testid=update-button]",
     "postComment": "[data-cy=post-comment-button]",
-    "replyCommentUpdateText": "Yes, it is updated",
-    "replyComment": "[data-cy=basic-details] > .grid > :nth-child(1) > .mb-2 > :nth-child(2) > .w-96 > form > .px-6 > .rounded",
-    "replyCommentBusiness": ":nth-child(2) > :nth-child(1) > .right-0 > .w-96 > form > .px-6 > .rounded",
-    "replyCommentTitle": ":nth-child(3) > :nth-child(1) > .right-0 > .w-96 > form > .px-6 > .rounded",
+    "replyCommentUpdateText":"Yes, it is updated",
+    "replyComment":"[data-cy=basic-details] > .grid > :nth-child(1) > .mb-2 > :nth-child(2) > .w-96 > form > .px-6 > .rounded",
+    "replyCommentBusiness":":nth-child(2) > :nth-child(1) > .right-0 > .w-96 > form > .px-6 > .rounded",
+    "replyCommentTitle":":nth-child(3) > :nth-child(1) > .right-0 > .w-96 > form > .px-6 > .rounded",
     "replyCommentEntry": ".w-96 > .overflow-y-auto > :nth-child(1) > :nth-child(2)",
-    "replyCommentOrder": ".w-96 > .overflow-y-auto > :nth-child(1)"
+    "replyCommentOrder":".w-96 > .overflow-y-auto > :nth-child(1)"    
   },
   "routes": {
     "commentsRoute": "/request/"
@@ -92,7 +92,7 @@
                 "status": "registered",
                 "note": null,
                 "data": {
-                  "email": "jeremy+dev@getsynapse.com",
+                  "email": "alex+test@getsynapse.com",
                   "lastName": "Halwa",
                   "firstName": "Abir"
                 },
@@ -402,7 +402,7 @@
                 "status": "registered",
                 "note": null,
                 "data": {
-                  "email": "jeremy+dev@getsynapse.com",
+                  "email": "alex+test@getsynapse.com",
                   "lastName": "Halwa",
                   "firstName": "Abir"
                 },
@@ -466,7 +466,7 @@
                 "status": "registered",
                 "note": null,
                 "data": {
-                  "email": "jeremy+dev@getsynapse.com",
+                  "email": "alex+test@getsynapse.com",
                   "lastName": "Halwa",
                   "firstName": "Abir"
                 },
@@ -530,7 +530,7 @@
                 "status": "registered",
                 "note": null,
                 "data": {
-                  "email": "jeremy+dev@getsynapse.com",
+                  "email": "alex+test@getsynapse.com",
                   "lastName": "Halwa",
                   "firstName": "Abir"
                 },
@@ -594,7 +594,7 @@
                 "status": "registered",
                 "note": null,
                 "data": {
-                  "email": "jeremy+dev@getsynapse.com",
+                  "email": "alex+test@getsynapse.com",
                   "lastName": "Halwa",
                   "firstName": "Abir"
                 },
@@ -658,7 +658,7 @@
                 "status": "registered",
                 "note": null,
                 "data": {
-                  "email": "jeremy+dev@getsynapse.com",
+                  "email": "alex+test@getsynapse.com",
                   "lastName": "Halwa",
                   "firstName": "Abir"
                 },
@@ -722,7 +722,7 @@
                 "status": "registered",
                 "note": null,
                 "data": {
-                  "email": "jeremy+dev@getsynapse.com",
+                  "email": "alex+test@getsynapse.com",
                   "lastName": "Halwa",
                   "firstName": "Abir"
                 },
@@ -786,7 +786,7 @@
                 "status": "registered",
                 "note": null,
                 "data": {
-                  "email": "jeremy+dev@getsynapse.com",
+                  "email": "alex+test@getsynapse.com",
                   "lastName": "Halwa",
                   "firstName": "Abir"
                 },
@@ -850,7 +850,7 @@
                 "status": "registered",
                 "note": null,
                 "data": {
-                  "email": "jeremy+dev@getsynapse.com",
+                  "email": "alex+test@getsynapse.com",
                   "lastName": "Halwa",
                   "firstName": "Abir"
                 },
@@ -914,7 +914,7 @@
                 "status": "registered",
                 "note": null,
                 "data": {
-                  "email": "jeremy+dev@getsynapse.com",
+                  "email": "alex+test@getsynapse.com",
                   "lastName": "Halwa",
                   "firstName": "Abir"
                 },
@@ -978,7 +978,7 @@
                 "status": "registered",
                 "note": null,
                 "data": {
-                  "email": "jeremy+dev@getsynapse.com",
+                  "email": "alex+test@getsynapse.com",
                   "lastName": "Halwa",
                   "firstName": "Abir"
                 },

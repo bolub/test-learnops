@@ -1,0 +1,25 @@
+{
+  "selectors": {
+    "tabs": {
+      "allocationTab": "[data-testid=tab-1]"
+    },
+    "addParticipantButton": "[data-cy=add-participant-button]",
+    "participantModal": {
+      "container": "[data-cy=add-participant-modal]",
+      "participantForm": {
+        "typeField": "[data-cy=participant-form__type-field]",
+        "roleField": "[data-cy=participant-form__role-field]",
+        "dateRangeField": "[data-cy=participant-form__date-range-field]",
+        "userField": "[data-cy=participant-form__user-field]",
+        "totalAvailability": "[data-cy=project-form__total-availability]",
+        "allocatedHoursField": "[data-cy=participant-form__allocated-hours]",
+        "estimatedHoursField": "[data-cy=participant-form__estimated-hours]",
+        "saveButton": "[data-cy=confirm-button]",
+        "cancelButton": "[data-cy=cancel-button]"
+      }
+    }
+  },
+  "constantTexts": {
+    "participantAddedSuccesfully": "New participant was succesfully added to the team!"
+  }
+}

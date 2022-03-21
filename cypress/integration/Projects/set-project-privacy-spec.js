@@ -26,7 +26,7 @@ describe('Projects Privacy', () => {
     cy.get(`${selectors.addProjectButton}`).should('be.visible').click();
     cy.get('[data-cy=project-form-body]').scrollTo('bottom');
     cy.get(`${selectors.projectPrivacy}`).should('be.visible').click();
-    cy.selectDropdownItem('Private', 'private');
+    cy.selectDropdownItem({ label: 'Private', value: 'private' });
     cy.get('[data-cy=project-privacy-helper-text]')
       .should('be.visible')
       .contains('The project access is limited to your account');
@@ -39,16 +39,16 @@ describe('Projects Privacy', () => {
     cy.get(`${selectors.addProjectButton}`).should('be.visible').click();
     cy.get('[data-cy=project-form-body]').scrollTo('bottom');
     cy.get(`${selectors.projectPrivacy}`).should('be.visible').click();
-    cy.selectDropdownItem('Team', 'team');
+    cy.selectDropdownItem({ label: 'Team', value: 'team' });
     cy.get('[data-cy=project-team-input]').should('be.visible').click();
-    cy.selectDropdownItem(
-      'Test Company 1 - Learning Team 1',
-      'f8bf7b58-7662-49a5-b234-3fa1680f2603'
-    );
-    cy.selectDropdownItem(
-      'Test Company 1 - Learning Team 2',
-      '9b65072b-469a-4ae6-a3da-355fb8a1825f'
-    );
+    cy.selectDropdownItem({
+      label: 'Test Company 1 - Learning Team 1',
+      value: 'f8bf7b58-7662-49a5-b234-3fa1680f2603',
+    });
+    cy.selectDropdownItem({
+      label: 'Test Company 1 - Learning Team 2',
+      value: '9b65072b-469a-4ae6-a3da-355fb8a1825f',
+    });
   });
 
   it('checks public privacy option in basic details section', () => {
@@ -58,7 +58,7 @@ describe('Projects Privacy', () => {
     cy.get(`${selectors.addProjectButton}`).should('be.visible').click();
     cy.get('[data-cy=project-form-body]').scrollTo('bottom');
     cy.get(`${selectors.projectPrivacy}`).should('be.visible').click();
-    cy.selectDropdownItem('Public', 'public');
+    cy.selectDropdownItem({ label: 'Public', value: 'public' });
     cy.get('[data-cy=project-privacy-helper-text]')
       .should('not.contain', 'The project access is limited to your account')
       .should(

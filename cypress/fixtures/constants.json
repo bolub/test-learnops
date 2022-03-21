@@ -1,6 +1,6 @@
 {
     "routes": {
-        "baseURL": "https://learnops.dev.getsynapse.com/",
+        "baseURL": "http://localhost:3005/",
         "backendURL": "http://localhost:8001",
         "requestList": "/requests-list",
         "requestDetails": "/request/**",
@@ -20,6 +20,7 @@
         "fetchRequestDetail": "api/request/**",
         "fetchRequestQuestions": "api/request/**/questions",
         "fetchForms": "api/form/?organization_id=**&published=true",
+        "fetchAllForms": "api/form/?organization_id=**",
         "createRequest": "api/form/**/requests",
         "newRequest": "/request",
         "updateRequest": "/api/request/$",
@@ -61,6 +62,8 @@
         "updateUser": "/api/user",
         "fetchLearningTeams": "/api/learningTeam/organization/all",
         "learningTeam": "/api/learningTeam/$",
+        "addProjectParticipant": "/api/project/$/participants",
+        "addProjectCollaborator": "/api/project/$/collaborators",
         "fetchBudgetCategories": "/api/budgetCategory/projectBudgets/*",
         "updateBudgetCategories": "/api/budget",
         "fetchVendors": "/api/vendor"

@@ -1,187 +1,174 @@
 {
-  "ldUser": {
-    "code": 200,
-    "data": {
-      "user": {
-        "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
-        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
-        "ldTeam_id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
-        "businessTeam_id": null,
-        "type": "ld",
-        "status": "registered",
-        "note": null,
+    "ldUser": {
+        "code": 200,
         "data": {
-          "email": "jeremy+dev@getsynapse.com",
-          "lastName": "Halwa",
-          "firstName": "Abir"
+            "user": {
+                "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+                "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                "ldTeam_id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
+                "businessTeam_id": null,
+                "type": "ld",
+                "status": "registered",
+                "note": null,
+                "data": {
+                    "email": "alex+test@getsynapse.com",
+                    "lastName": "Halwa",
+                    "firstName": "Abir"
+                },
+                "createdAt": "2020-10-05T00:00:00.000Z",
+                "updatedAt": "2020-10-05T00:00:00.000Z",
+                "deletedAt": null,
+                "role": "admin"
+            }
         },
-        "createdAt": "2020-10-05T00:00:00.000Z",
-        "updatedAt": "2020-10-05T00:00:00.000Z",
-        "deletedAt": null,
-        "role": "admin"
-      }
+        "success": true
     },
-    "success": true
-  },
-  "businessUser": {
-    "code": 200,
-    "data": {
-      "user": {
-        "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
-        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
-        "ldTeam_id": null,
-        "businessTeam_id": null,
-        "type": "business",
-        "status": "registered",
-        "note": null,
+    "businessUser": {
+        "code": 200,
         "data": {
-          "email": "jeremy+dev@getsynapse.com",
-          "lastName": "Halwa",
-          "firstName": "Abir"
+            "user": {
+                "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+                "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+                "ldTeam_id": null,
+                "businessTeam_id": null,
+                "type": "business",
+                "status": "registered",
+                "note": null,
+                "data": {
+                    "email": "alex+test@getsynapse.com",
+                    "lastName": "Halwa",
+                    "firstName": "Abir"
+                },
+                "createdAt": "2020-10-05T00:00:00.000Z",
+                "updatedAt": "2020-10-05T00:00:00.000Z",
+                "deletedAt": null
+            }
         },
-        "createdAt": "2020-10-05T00:00:00.000Z",
-        "updatedAt": "2020-10-05T00:00:00.000Z",
-        "deletedAt": null
-      }
+        "success": true
     },
-    "success": true
-  },
-  "ldUsers": {
-    "code": 200,
-    "data": [
-      {
-        "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
-        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
-        "ldTeam_id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
-        "businessTeam_id": "419e455d-5027-403c-91e4-0cb66142bc2a",
-        "type": "ld",
-        "status": "registered",
-        "note": null,
-        "data": {
-          "email": "jeremy+dev@getsynapse.com",
-          "lastName": "Halwa",
-          "firstName": "Abir"
+    "ldUsers": {
+      "code": 200,
+      "data": [
+        {
+          "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+          "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+          "ldTeam_id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
+          "businessTeam_id": "419e455d-5027-403c-91e4-0cb66142bc2a",
+          "type": "ld",
+          "status": "registered",
+          "note": null,
+          "data": {
+              "email": "alex+test@getsynapse.com",
+              "lastName": "Halwa",
+              "firstName": "Abir"
+          },
+          "createdAt": "2020-10-05T00:00:00.000Z",
+          "updatedAt": "2020-10-05T00:00:00.000Z",
+          "deletedAt": null
         },
-        "createdAt": "2020-10-05T00:00:00.000Z",
-        "updatedAt": "2020-10-05T00:00:00.000Z",
-        "deletedAt": null
+        {
+          "id": "a8385fbc-5110-4275-b2ca-3d8f777eb777",
+          "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+          "ldTeam_id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
+          "businessTeam_id": "419e455d-5027-403c-91e4-0cb66142bc2a",
+          "type": "ld",
+          "status": "registered",
+          "note": null,
+          "data": {
+            "email": "abir+test@getsynapse.com",
+            "lastName": "Drine",
+            "firstName": "Sara"
+          },
+          "createdAt": "2020-10-05T00:00:00.000Z",
+          "updatedAt": "2020-10-05T00:00:00.000Z",
+          "deletedAt": null
+        }
+      ],
+      "success": true
+    },
+    "selectors": {
+      "userName":"User Name",
+      "userType":  "User Type",
+      "team": "Team",
+      "jobTitle": "Job Title",
+      "employmentType":"Employment Type",
+      "location": "Location",
+      "hourlyRate":  "Hourly Rate",
+      "status": "Account Status",
+      "tableRow": "[data-testid=table-row-$]",
+      "addUserButton": "[data-cy=add-user_button]",
+      "addUserModal": {
+        "userEmailInput": "[data-cy=user-email_input]",
+        "userTypeDropdown": "[data-cy=user-type_dropdown]",
+        "continueAddUserButton": "[data-cy=continue-add-user_button]"
       },
-      {
-        "id": "a8385fbc-5110-4275-b2ca-3d8f777eb777",
-        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
-        "ldTeam_id": "9b65072b-469a-4ae6-a3da-355fb8a1825f",
-        "businessTeam_id": "419e455d-5027-403c-91e4-0cb66142bc2a",
-        "type": "ld",
-        "status": "registered",
-        "note": null,
-        "data": {
-          "email": "abir+test@getsynapse.com",
-          "lastName": "Drine",
-          "firstName": "Sara"
-        },
-        "createdAt": "2020-10-05T00:00:00.000Z",
-        "updatedAt": "2020-10-05T00:00:00.000Z",
-        "deletedAt": null
+      "userPage": {
+        "firstNameInput": "[data-cy=field__first-name]",
+        "lastNameInput": "[data-cy=field__last-name]",
+        "emailInput": "[data-cy=field__email]",
+        "countryDropdown": "[data-cy=field__country]",
+        "jobTitleInput": "[data-cy=field__job-title]",
+        "employmentTypeDropdown": "[data-cy=field__employment-type]",
+        "weeklyCapacityInput": "[data-cy=weekly-capacity_input]",
+        "businessTeamsDropdown": "[data-cy=field__business-team]",
+        "companyNameInput": "[data-cy=field__company-name]",
+        "updateButton": "[data-cy=update-user_button]"
       }
-    ],
-    "success": true
-  },
-  "selectors": {
-    "userName": "User Name",
-    "userType": "User Type",
-    "team": "Team",
-    "jobTitle": "Job Title",
-    "employmentType": "Employment Type",
-    "location": "Location",
-    "hourlyRate": "Hourly Rate",
-    "status": "Account Status",
-    "platformTab": "[data-cy=platform-tab]",
-    "platformRequest": "[data-cy=platform-request]",
-    "tableHeader": "[data-testid=table-header]",
-    "formWindow": "#tabs--4--panel--1",
-    "formSearch": "[data-testid=table-header__search-input]",
-    "formTitle": "Request Form Title",
-    "requestTitle": "Request Type",
-    "formCreator": "Form Creator",
-    "lastUpdate": "Last Update",
-    "platformStatus": "Status",
-    "creationDate": "Creation Date",
-    "description": "Description",
-    "filteredSearch": "Test Company 1 - Request 6",
-    "tableRow": "[data-testid=table-row-$]",
-    "addUserButton": "[data-cy=add-user_button]",
-    "addUserModal": {
-      "userEmailInput": "[data-cy=user-email_input]",
-      "userTypeDropdown": "[data-cy=user-type_dropdown]",
-      "continueAddUserButton": "[data-cy=continue-add-user_button]"
     },
-    "userPage": {
-      "firstNameInput": "[data-cy=field__first-name]",
-      "lastNameInput": "[data-cy=field__last-name]",
-      "emailInput": "[data-cy=field__email]",
-      "countryDropdown": "[data-cy=field__country]",
-      "jobTitleInput": "[data-cy=field__job-title]",
-      "employmentTypeDropdown": "[data-cy=field__employment-type]",
-      "weeklyCapacityInput": "[data-cy=weekly-capacity_input]",
-      "businessTeamsDropdown": "[data-cy=field__business-team]",
-      "companyNameInput": "[data-cy=field__company-name]",
-      "updateButton": "[data-cy=update-user_button]"
-    }
-  },
-  "routes": {
-    "usersApi": "http://localhost:8001/api/user/orgUsers",
-    "usersPage": "settings"
-  },
-  "allUsers": {
-    "code": 200,
-    "data": [
-      {
-        "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
-        "role": null,
-        "ldTeam_id": null,
-        "businessTeam_id": "419e455d-5027-403c-91e4-0cb66142bc2a",
-        "type": "business",
-        "status": "registered",
-        "country_iso_3166_1_alpha_2_code": "CA",
-        "data": {
-          "email": "jeremy+dev@getsynapse.com",
-          "jobTitle": "Software Developer",
-          "lastName": "Ariz",
-          "province": "Ontario",
-          "rateHour": "40",
-          "firstName": "Alex"
+    "routes": {
+      "usersApi": "http://localhost:8001/api/user/orgUsers",
+      "usersPage": "settings"
+    },
+    "allUsers": {
+      "code": 200,
+      "data": [
+        {
+          "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+          "role": null,
+          "ldTeam_id": null,
+          "businessTeam_id": "419e455d-5027-403c-91e4-0cb66142bc2a",
+          "type": "business",
+          "status": "registered",
+          "country_iso_3166_1_alpha_2_code": "CA",
+          "data": {
+            "email": "alex+test@getsynapse.com",
+            "jobTitle": "Software Developer",
+            "lastName": "Ariz",
+            "province": "Ontario",
+            "rateHour": "40",
+            "firstName": "Alex"
+          },
+          "businessTeams": {
+            "title": "Test Company 1 - Business Team 3"
+          },
+          "registeredLearningTeams": []
         },
-        "businessTeams": {
-          "title": "Test Company 1 - Business Team 3"
-        },
-        "registeredLearningTeams": []
-      },
-      {
-        "id": "a8385fbc-5110-4275-b2ca-3d8f777eb777",
-        "role": "admin",
-        "ldTeam_id": "f8bf7b58-7662-49a5-b234-3fa1680f2604",
-        "businessTeam_id": null,
-        "type": "ld",
-        "status": "registered",
-        "country_iso_3166_1_alpha_2_code": "CA",
-        "data": {
-          "email": "abir+test@getsynapse.com",
-          "jobTitle": "Software Developer",
-          "lastName": "Halwa",
-          "province": "Ontario",
-          "rateHour": "40",
-          "firstName": "Abir",
-          "employmentType": "PART_TIME"
-        },
-        "businessTeams": null,
-        "registeredLearningTeams": [
-          {
-            "name": "Team A"
-          }
-        ]
-      }
-    ],
-    "success": true
-  },
-  "stubRoute": "http://localhost:8001/api/user/userEmail/jeremy+dev@getsynapse.com"
+        {
+          "id": "a8385fbc-5110-4275-b2ca-3d8f777eb777",
+          "role": "admin",
+          "ldTeam_id": "f8bf7b58-7662-49a5-b234-3fa1680f2604",
+          "businessTeam_id": null,
+          "type": "ld",
+          "status": "registered",
+          "country_iso_3166_1_alpha_2_code": "CA",
+          "data": {
+            "email": "abir+test@getsynapse.com",
+            "jobTitle": "Software Developer",
+            "lastName": "Halwa",
+            "province": "Ontario",
+            "rateHour": "40",
+            "firstName": "Abir",
+            "employmentType": "PART_TIME"
+          },
+          "businessTeams": null,
+          "registeredLearningTeams": [
+            {
+              "name": "Team A"
+            }
+          ]
+        }
+      ],
+      "success": true
+    },
+    "stubRoute": "http://localhost:8001/api/user/userEmail/alex+test@getsynapse.com"
 }

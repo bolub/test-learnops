@@ -149,5 +149,6 @@ describe('View Vendors', () => {
     cy.intercept('POST', routes.vendorsApi, newVendor).as('addVendor');
     cy.get(selectors.saveVendorDetails).should('be.visible').click();
     cy.wait('@addVendor');
+    cy.location('pathname').should('eq', routes.settings);
   });
 });

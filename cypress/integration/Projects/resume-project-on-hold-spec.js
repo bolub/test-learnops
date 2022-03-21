@@ -48,7 +48,7 @@ describe('Resume an on-hold status project', () => {
       cy.get(projectStatus)
         .should('have.attr', 'data-value', 'On Hold')
         .click();
-      cy.selectDropdownItem('New', 'new');
+      cy.selectDropdownItem({ label: 'New', value: 'new' });
       cy.get(updateProjectButton).should('not.be.disabled').click();
       cy.get(putProjectOnHold.onHoldInlineNotification).should('not.exist');
       cy.get(projectSuccessModal).should('be.visible');

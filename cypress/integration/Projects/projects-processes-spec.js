@@ -161,7 +161,6 @@ describe('Projects Processes', () => {
         interception,
         `response.body.data.stagesOrdering.${processStagesCount}`
       );
-      console.log('[newStageId]', newStageId);
       cy.get(selectors.appInlineNotification)
         .should('be.visible')
         .contains(constantTexts.processUpdatedSuccesfully);

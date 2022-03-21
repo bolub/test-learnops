@@ -67,10 +67,7 @@ describe('Update Project', () => {
     cy.get(selectors.updateProjectButton).should('be.disabled');
     cy.get(selectors.cancelProjectUpdate).should('be.visible').click();
     cy.wait('@fetchAllProjects');
-    cy.url().should(
-      'eq',
-      `https://learnops.dev.getsynapse.com${routes.projectsList}`
-    );
+    cy.url().should('eq', `http://localhost:3005${routes.projectsList}`);
   });
 
   it('checks if an error banner appears notifying the user that the project is missing information when not all details are inputed', () => {
@@ -93,20 +90,20 @@ describe('Update Project', () => {
       `${constantTexts.projectDescription}-updated`
     );
     cy.get(selectors.projectBusiness).should('be.visible').click();
-    cy.selectDropdownItem(
-      'Test Company 1 - Business Team 1',
-      '2e7449fe-1787-42cf-a7e8-cf478c11bd9f'
-    );
+    cy.selectDropdownItem({
+      label: 'Test Company 1 - Business Team 1',
+      value: '2e7449fe-1787-42cf-a7e8-cf478c11bd9f',
+    });
     cy.get(selectors.projectCategory).should('be.visible').click();
     cy.contains(selectors.projectCategoryInput).click();
     cy.get(selectors.projectDate).click();
     cy.get(selectors.projectStartDate).click();
     cy.get(selectors.projectPriorityInput).click({ force: true });
-    cy.selectDropdownItem('Medium', 'medium');
+    cy.selectDropdownItem({ label: 'Medium', value: 'medium' });
     cy.get(selectors.projectStatus).should('be.visible').click();
-    cy.selectDropdownItem('Completed', 'completed');
+    cy.selectDropdownItem({ label: 'Completed', value: 'completed' });
     cy.get(selectors.projectPrivacy).should('be.visible').click();
-    cy.selectDropdownItem('Team', 'team');
+    cy.selectDropdownItem({ label: 'Team', value: 'team' });
     cy.get('[data-cy=project-form-body]').scrollTo('bottom');
     cy.get(selectors.projectProcessInput).click();
     cy.get(selectors.updateProjectButton).should('be.visible').click();
@@ -143,28 +140,28 @@ describe('Update Project', () => {
         .clear()
         .type(`${constantTexts.projectDescription}-updated`);
       cy.get(selectors.projectBusiness).should('be.visible').click();
-      cy.selectDropdownItem(
-        'Test Company 1 - Business Team 1',
-        '2e7449fe-1787-42cf-a7e8-cf478c11bd9f'
-      );
+      cy.selectDropdownItem({
+        label: 'Test Company 1 - Business Team 1',
+        value: '2e7449fe-1787-42cf-a7e8-cf478c11bd9f',
+      });
       cy.get(selectors.projectCategory).should('be.visible').click();
       cy.contains(selectors.projectCategoryInput).click();
       cy.pickStartAndEndDates(selectors.projectDate);
       cy.get(selectors.projectTargetDate).click();
       cy.get(`[data-value=${21}]`).click();
       cy.get(selectors.projectPriorityInput).click({ force: true });
-      cy.selectDropdownItem('Medium', 'medium');
+      cy.selectDropdownItem({ label: 'Medium', value: 'medium' });
       cy.get(selectors.projectStatus).should('be.visible').click();
-      cy.selectDropdownItem('In Progress', 'in_progress');
+      cy.selectDropdownItem({ label: 'In Progress', value: 'in_progress' });
       cy.get(selectors.projectPrivacy).should('be.visible').click();
-      cy.selectDropdownItem('Team', 'team');
+      cy.selectDropdownItem({ label: 'Team', value: 'team' });
       cy.get('[data-cy=project-form-body]').scrollTo('bottom');
       cy.get(selectors.projectProcessInput).click();
       cy.get(selectors.projectStageInput).should('be.visible').click();
-      cy.selectDropdownItem(
-        'test stages 1',
-        '575eebd2-c629-4550-88c7-bf668067f559'
-      );
+      cy.selectDropdownItem({
+        label: 'Analysis',
+        value: '575eebd2-c629-4550-88c7-bf668067f559',
+      });
       cy.get(selectors.updateProjectButton).should('be.visible').click();
       cy.wait('@updateProject');
       cy.wait('@updateProjectStatus');

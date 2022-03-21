@@ -1,0 +1,182 @@
+{
+  "selectors": {
+    "platformRequest": "[data-cy=platform-request]",
+    "tableHeader": "[data-testid=table-header]",
+    "formWindow": "#tabs--4--panel--1",
+    "formSearch": "[data-testid=table-header__search-input]",
+    "formTitle": "Request Form Title",
+    "requestTitle": "Request Type",
+    "formCreator": "Form Creator",
+    "lastUpdate": "Last Update",
+    "platformStatus": "Status",
+    "creationDate": "Creation Date",
+    "description": "Description",
+    "filteredSearch": "Test Company 1 - Request 6",
+    "addFormBtn": "[data-cy=add-form_button]",
+    "formTitleInput": "[data-cy=form-title_input]",
+    "formRequestType": "[data-cy=form-request_type]",
+    "typeOption": "[data-value*=CONSULTING]",
+    "formDescriptionInput": "[data-cy=form-description_input]",
+    "formOwner": "[data-cy=form-owner_selector]",
+    "formNextBtn": "[data-cy=from-next_button]",
+    "formSaveBtn": "[data-cy=from-save-exit_button]",
+    "formRow": "[data-cy=form-table__row-$$]",
+    "formId": "d8379751-80b7-4d1b-b045-4df0699a048c",
+    "publishedFormWarning": "[data-cy=published-modal-warning]",
+    "unpublishedFormWarning": "[data-cy=unpublished-modal-warning]",
+    "unpublishedFormSave": "[data-cy=unpublished-modal_save]",
+    "publishedFormSave": "[data-cy=published-modal_save]"
+  },
+  "forms": {
+    "code": 200,
+    "data": [
+      {
+        "id": "d8379751-80b7-4d1b-b045-4df0699a048c",
+        "title": "new one",
+        "form_description": "yet another one description",
+        "request_type": "EMPLOYEE_RESEARCH",
+        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+        "form_creator_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "type": "form",
+        "status": "draft",
+        "ldPriority": "unassigned",
+        "compliance": false,
+        "createdAt": "2022-02-25T23:20:51.350Z",
+        "updatedAt": "2022-02-25T23:20:51.350Z",
+        "data": {
+          "published": false
+        }
+      },
+      {
+        "id": "b674812b-4bff-44eb-8fd4-2b13171322eb",
+        "title": "Another test",
+        "form_description": "another test description",
+        "request_type": "CONSULTING",
+        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+        "form_creator_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+        "data": {
+          "published": false
+        },
+        "type": "form",
+        "status": "draft",
+        "ldPriority": "unassigned",
+        "compliance": false,
+        "createdAt": "2022-02-26T01:07:05.154Z",
+        "updatedAt": "2022-02-26T01:07:05.154Z"
+      },
+      {
+        "id": "3d8cda63-5093-4386-a4aa-baaf1c0e9c18",
+        "title": "Test Company 1 - Request 3",
+        "description": "Request 1",
+        "request_type": "COACHING_MENTORING",
+        "requester_id": "595b9820-5d9a-41fa-b7a1-330ac728f39c",
+        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+        "ld_objective_id": "04a01cdd-2c00-4987-8181-8846cf58a6db",
+        "learn_initiative_id": "591b31c2-87d4-45e8-aa2d-ddf0a560379c",
+        "business_team_id": "2e7449fe-1787-42cf-a7e8-cf478c11bd9f",
+        "data": {
+          "published": true
+        },
+        "type": "form",
+        "status": "draft",
+        "ldPriority": "unassigned",
+        "compliance": false,
+        "createdAt": "2022-02-25T17:22:56.553Z",
+        "updatedAt": "2022-02-28T15:25:36.910Z"
+      },
+      {
+        "id": "a7c3f1f2-d980-4ef4-8f2e-9239880fffa9",
+        "title": "Test Company 1 - Request 4",
+        "description": "Request 2",
+        "request_type": "EVENTS",
+        "requester_id": "595b9820-5d9a-41fa-b7a1-330ac728f39c",
+        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+        "ld_objective_id": "04a01cdd-2c00-4987-8181-8846cf58a6db",
+        "learn_initiative_id": "591b31c2-87d4-45e8-aa2d-ddf0a560379c",
+        "business_team_id": "c6a1687f-ba60-4840-9a10-fd50a11111a3",
+        "data": {
+          "published": true
+        },
+        "type": "form",
+        "status": "draft",
+        "ldPriority": "unassigned",
+        "compliance": false,
+        "createdAt": "2022-02-25T17:22:56.594Z",
+        "updatedAt": "2022-02-28T15:25:36.921Z"
+      },
+      {
+        "id": "d279b503-3564-4e5d-b538-cf74692935a8",
+        "title": "Test Company 1 - Request 5",
+        "description": "Request 1",
+        "request_type": "ASSESSMENT_EVALUATION",
+        "requester_id": "595b9820-5d9a-41fa-b7a1-330ac728f39c",
+        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+        "ld_objective_id": "af7be1a1-efcd-4985-b83c-1880e1107857",
+        "learn_initiative_id": "88a0e3b4-8e14-4a0d-97d9-da6e8d1606d5",
+        "business_team_id": "419e455d-5027-403c-91e4-0cb66142bc2a",
+        "data": {
+          "published": true
+        },
+        "type": "form",
+        "status": "draft",
+        "ldPriority": "unassigned",
+        "compliance": false,
+        "createdAt": "2022-02-25T17:22:56.635Z",
+        "updatedAt": "2022-02-28T15:25:36.934Z"
+      },
+      {
+        "id": "5a4bc25e-cfd3-48db-b899-6d95e05c1057",
+        "title": "Test Company 1 - Request 6",
+        "description": "Request 2",
+        "request_type": "TRAINING",
+        "requester_id": "595b9820-5d9a-41fa-b7a1-330ac728f39c",
+        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+        "ld_objective_id": "af7be1a1-efcd-4985-b83c-1880e1107857",
+        "learn_initiative_id": "88a0e3b4-8e14-4a0d-97d9-da6e8d1606d5",
+        "business_team_id": "2618dc02-80df-4c73-ba19-51c2c7447924",
+        "data": {
+          "published": true
+        },
+        "type": "form",
+        "status": "draft",
+        "ldPriority": "unassigned",
+        "compliance": false,
+        "createdAt": "2022-02-25T17:22:56.674Z",
+        "updatedAt": "2022-02-28T15:25:36.944Z"
+      }
+    ],
+    "success": true
+  },
+  "newForm": {
+    "code": 200,
+    "data": {
+      "id": "5e404e37-6d17-40d1-861d-425168727d0f",
+      "questionsOrder": [],
+      "status": "draft",
+      "ldPriority": "unassigned",
+      "compliance": false,
+      "form_creator_id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
+      "type": "form",
+      "data": {
+        "published": false
+      },
+      "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+      "title": "Form Title",
+      "form_description": "Form Description",
+      "request_type": "ASSESSMENT_EVALUATION",
+      "updatedAt": "2022-03-01T02:52:51.339Z",
+      "createdAt": "2022-03-01T02:52:51.339Z",
+      "creatorData": {
+        "role": "admin",
+        "email": "alex+test@getsynapse.com",
+        "jobTitle": "Software Developer",
+        "lastName": "Halwa",
+        "firstName": "Abir",
+        "freeTrial": false,
+        "resourceId": "",
+        "companyName": "Test Company 1"
+      }
+    },
+    "success": true
+  }
+}

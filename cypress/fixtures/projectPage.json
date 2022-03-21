@@ -54,7 +54,8 @@
       "viewHoldReasonButton": "[data-cy=view-hold-reason-button]"
     },
     "tabs": {
-      "files": "[data-cy=tab-files]"
+      "files": "[data-cy=tab-files]",
+      "people": "[data-cy=tab-people]"
     },
     "filesTab": {
       "filesTable": "[data-cy=project-files-table]",
@@ -192,7 +193,7 @@
             "commentCreator": {
               "id": "a8385fbc-5110-4275-b2ca-3d8f777eb776",
               "data": {
-                "email": "jeremy+dev@getsynapse.com",
+                "email": "alex+test@getsynapse.com",
                 "firstName": "Abir",
                 "lastName": "Halwa"
               }

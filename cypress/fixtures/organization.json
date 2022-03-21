@@ -184,7 +184,7 @@
           "note": "Account 1 - Test User 6",
           "data": {
             "role": "admin",
-            "email": "jeremy+dev@getsynapse.com",
+            "email": "alex+test@getsynapse.com",
             "jobTitle": "Software Developer",
             "lastName": "Halwa",
             "firstName": "Abir",
@@ -266,53 +266,53 @@
     "success": true
   },
   "newLDTeamMock": {
-    "code": 201,
-    "data": {
-      "learningTeam": {
-        "id": "719b93b8-ceed-4985-a6ae-95b1ea254003",
-        "name": "Team name",
-        "description": "Team description",
-        "parent_id": "f8bf7b58-7662-49a5-b234-3fa1680f2603",
-        "team_manager_id": "b273facf-50e3-43b3-b1ce-28cad430ce12",
-        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
-        "updatedAt": "2022-02-04T03:57:19.681Z",
-        "createdAt": "2022-02-04T03:57:19.681Z",
-        "enabled": null,
-        "status": null,
-        "note": null,
-        "primary_settings": null,
-        "additional_settings": null,
-        "data": null,
-        "deletedAt": null,
-        "manager_id": null
+    "code":201,
+    "data":{
+      "learningTeam":{
+        "id":"719b93b8-ceed-4985-a6ae-95b1ea254003",
+        "name":"Team name",
+        "description":"Team description",
+        "parent_id":"f8bf7b58-7662-49a5-b234-3fa1680f2603",
+        "team_manager_id":"b273facf-50e3-43b3-b1ce-28cad430ce12",
+        "organization_id":"39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+        "updatedAt":"2022-02-04T03:57:19.681Z",
+        "createdAt":"2022-02-04T03:57:19.681Z",
+        "enabled":null,
+        "status":null,
+        "note":null,
+        "primary_settings":null,
+        "additional_settings":null,
+        "data":null,
+        "deletedAt":null,
+        "manager_id":null
       }
     },
-    "success": true
+    "success":true
   },
   "newBusinessMock": {
-    "code": 201,
-    "data": {
-      "businessTeam": {
-        "id": "fba584e8-ec66-4368-82d4-68b07988b16f",
-        "organization_id": "39f1305e-cfa8-4c85-b184-d3ab65bb751c",
-        "title": "Team name",
-        "description": "team description",
-        "updatedAt": "2022-02-08T21:31:43.605Z",
-        "createdAt": "2022-02-08T21:31:43.605Z",
-        "fiscal_year": null,
-        "outcomes": null,
-        "target_result": null,
-        "result_forecast": null,
-        "actual_result": null,
-        "target_completion": null,
-        "status": null,
-        "next_steps": null,
-        "data": null,
-        "deletedAt": null,
-        "results_forecast": null,
-        "owner": null
+    "code":201,
+    "data":{
+      "businessTeam":{
+        "id":"fba584e8-ec66-4368-82d4-68b07988b16f",
+        "organization_id":"39f1305e-cfa8-4c85-b184-d3ab65bb751c",
+        "title":"Team name",
+        "description":"team description",
+        "updatedAt":"2022-02-08T21:31:43.605Z",
+        "createdAt":"2022-02-08T21:31:43.605Z",
+        "fiscal_year":null,
+        "outcomes":null,
+        "target_result":null,
+        "result_forecast":null,
+        "actual_result":null,
+        "target_completion":null,
+        "status":null,
+        "next_steps":null,
+        "data":null,
+        "deletedAt":null,
+        "results_forecast":null,
+        "owner":null
       }
     },
-    "success": true
+    "success":true
   }
 }
