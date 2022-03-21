@@ -36,17 +36,17 @@ describe('Projects list board view', () => {
     // );
     cy.visit(routes.projectsList);
     // cy.wait('@teamProjectsList');
-    // cy.get(boardViewSwitchButton).should('be.visible').click();
-    // cy.get(boardView.teamBoard).should('be.visible');
+    cy.get(boardViewSwitchButton).should('be.visible').click();
+    cy.get(boardView.teamBoard).should('be.visible');
     // const stages =
     //   projectProcesses.data[projectProcesses.data.length - 1].projectStages;
     // cy.wrap(stages).each((stage) => {
     //   cy.get(boardView.stage.replace('$', stage.id)).should('be.visible');
     // });
-    // cy.get(boardView.myBoardTab).click();
-    // cy.get(boardView.myBoard).should('be.visible');
-    // cy.get(listViewSwitchButton).click();
-    // cy.get(projectsListTable.teamProjectsTable).should('be.visible');
+    cy.get(boardView.myBoardTab).click();
+    cy.get(boardView.myBoard).should('be.visible');
+    cy.get(listViewSwitchButton).click();
+    cy.get(projectsListTable.teamProjectsTable).should('be.visible');
   });
 
   it('Displays an empty board and message when no projects available', () => {
