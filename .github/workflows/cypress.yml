@@ -1,10 +1,10 @@
 name: Cypress e2e run
 
 on:
-  # push
-  pull_request:
-    branches:
-      - develop
+  push
+  # pull_request:
+  #   branches:
+  #     - develop
 
 jobs:
   cypress-run:
