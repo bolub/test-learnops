@@ -20,7 +20,7 @@ describe('Projects list board view', () => {
     cy.interceptApiRequests();
   });
 
-  it.only('Can switch to board view', () => {
+  it('Can switch to board view', () => {
     const { routes, api } = constants;
     const {
       stubbedResponses: { projectList, projectProcesses },

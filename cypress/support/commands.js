@@ -44,9 +44,7 @@ Cypress.Commands.add('signInLD', () => {
       cy.get(selectors.loginInputPassword).type(Cypress.env('USER_PASSWORD'));
 
       cy.get(selectors.loginSubmitButton).click();
-      cy.intercept(stubRoute, { times: 1, method: 'GET' }, ldUser).as(
-        'loginIntercept'
-      );
+      cy.intercept(stubRoute).as('loginIntercept');
       cy.wait('@loginIntercept');
     });
   });
