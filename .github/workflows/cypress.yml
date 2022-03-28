@@ -24,6 +24,10 @@ jobs:
           build: npm run build
           start: npx serve -s build -l 3005
           spec: 'cypress/integration/ProjectListPage/board-view-spec.js'
+        env:
+          # pass the Dashboard record key as an environment variable
+          CYPRESS_RECORD_KEY: 'j6c392'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/upload-artifact@v2
         if: failure()
