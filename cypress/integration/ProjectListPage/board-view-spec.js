@@ -4,6 +4,7 @@ describe('Projects list board view', () => {
   before(() => {
     cy.fixture('constants').then((content) => (constants = content));
     cy.fixture('projects').then((content) => (projects = content));
+    cy.initAmplifyConfiguration();
   });
 
   beforeEach(() => {
