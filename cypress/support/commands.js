@@ -37,7 +37,7 @@ Cypress.Commands.add('signInLD', () => {
   cy.fixture('auth').then((auth) => {
     cy.fixture('user').then((content) => {
       cy.visit('/login');
-      const { ldUser, stubRoute } = content;
+      const { stubRoute } = content;
       const { selectors } = auth;
 
       cy.get(selectors.loginInputEmail).type(Cypress.env('USER_EMAIL'));

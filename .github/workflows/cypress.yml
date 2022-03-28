@@ -21,7 +21,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           record: true
-          build: npm run build
+          # build: npm run build
           start: npx serve -s build -l 3005
           spec: 'cypress/integration/Projects/resume-project-on-hold-spec.js'
         env:
