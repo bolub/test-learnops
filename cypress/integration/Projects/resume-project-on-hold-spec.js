@@ -18,7 +18,7 @@ describe('Resume an on-hold status project', () => {
       'csrf-token',
       'jwtToken'
     );
-    cy.signIn();
+    cy.signInLD();
     cy.interceptApiRequests();
   });
 
