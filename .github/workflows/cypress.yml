@@ -26,6 +26,14 @@ jobs:
           record: true
         env:
           CYPRESS_RECORD_KEY: bb48e66f-0528-4777-a79f-0681517c0fa3
+          COGNITO_URL: https://cognito-idp.us-east-1.amazonaws.com/
+          USER_EMAIL: alex+test@getsynapse.com
+          USER_PASSWORD: EKtest1#
+          USER_NAME: Richard Tester
+          COGNITO_USER_POOL_ID: us-east-1_nl3w1caiU
+          COGNITO_USER_POOL_WEB_CLIENT: 1spbfikl1vtlfmrpevdqjds2f8
+          DOMAIN_NAME: localhost
+          secureCookie: false
 
       - uses: actions/upload-artifact@v2
         if: failure()
