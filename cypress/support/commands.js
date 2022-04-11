@@ -21,11 +21,10 @@ Cypress.Commands.add('signIn', () => {
       const { selectors } = content;
       const { businessUser, stubRoute } = userData;
 
-      cy.get(selectors.loginInputEmail).invoke(
-        'val',
-        'alex+test@getsynapse.com'
-      );
-      cy.get(selectors.loginInputPassword).invoke('val', 'EKtest1#');
+      cy.get(selectors.loginInputEmail)
+        .click()
+        .type('alex+test@getsynapse.com');
+      cy.get(selectors.loginInputPassword).click().type('EKtest1#');
 
       cy.get(selectors.loginSubmitButton).click();
 
@@ -43,11 +42,10 @@ Cypress.Commands.add('signInLD', () => {
       const { ldUser, stubRoute } = content;
       const { selectors } = auth;
 
-      cy.get(selectors.loginInputEmail).invoke(
-        'val',
-        'alex+test@getsynapse.com'
-      );
-      cy.get(selectors.loginInputPassword).invoke('val', 'EKtest1#');
+      cy.get(selectors.loginInputEmail)
+        .click()
+        .type('alex+test@getsynapse.com');
+      cy.get(selectors.loginInputPassword).click().type('EKtest1#');
 
       cy.get(selectors.loginSubmitButton).click();
       cy.intercept(stubRoute, { times: 1, method: 'GET' }, ldUser).as(
