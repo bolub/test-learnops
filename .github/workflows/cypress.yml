@@ -22,7 +22,7 @@ jobs:
         with:
           build: npm run build
           start: npx serve -s build -l 3005
-          spec: '**/ProjectListPage/*'
+          spec: 'cypress/integration/TestPhase/test-spec.js'
           record: true
         env:
           CYPRESS_RECORD_KEY: bb48e66f-0528-4777-a79f-0681517c0fa3
