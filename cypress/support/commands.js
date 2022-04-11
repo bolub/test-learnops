@@ -2,6 +2,13 @@ import Amplify from 'aws-amplify';
 import Auth from '@aws-amplify/auth';
 import { get } from 'lodash';
 
+// Amplify.configure({
+//   Auth: {
+//     identityPoolId: '1spbfikl1vtlfmrpevdqjds2f8', // Amazon Cognito Identity Pool ID
+//     region: 'us-east-1_nl3w1caiU', // Amazon Cognito Region
+//   },
+// });
+
 Cypress.Commands.add('initAmplifyConfiguration', () => {
   cy.fixture('amplifyConfig').then((config) => {
     return Amplify.configure({
@@ -81,6 +88,18 @@ Cypress.Commands.add('afterLogin', (cognitoUser) => {
     'jwtToken',
     get(cognitoUser, 'signInUserSession.idToken.jwtToken', '')
   );
+});
+
+Cypress.Commands.add('signInNew', () => {
+  cy.fixture('auth').then((auth) => {
+    cy.fixture('user').then((content) => {
+      const getUser = Auth.signIn('alex+test@getsynapse.com', 'EKtest1#');
+
+      cy.wrap(getUser).then((user) => {
+        cy.afterLogin(user);
+      });
+    });
+  });
 });
 
 Cypress.Commands.add('interceptApiRequests', () => {

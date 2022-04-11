@@ -6,6 +6,9 @@ describe('Project List View', () => {
   before(() => {
     cy.fixture('constants').then((content) => (constants = content));
     cy.fixture('projects').then((content) => (projects = content));
+
+    cy.initAmplifyConfiguration();
+    cy.signInNew();
   });
 
   beforeEach(() => {
@@ -17,14 +20,14 @@ describe('Project List View', () => {
       'csrf-token',
       'jwtToken'
     );
-    cy.signInLD();
-    cy.interceptApiRequests();
+    // cy.signInLD();
+    // cy.interceptApiRequests();
   });
 
   // const isVisible = (elem) =>
   //   !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
 
-  it('Checks if table does not show if no projects are available', () => {
+  it('test new signIN', () => {
     const { routes, api } = constants;
     const {
       selectors: {
