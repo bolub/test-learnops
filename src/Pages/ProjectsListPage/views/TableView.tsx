@@ -16,8 +16,14 @@ import {
   updatePagination,
   setFilters,
   exportCsv,
+  resetBoardView,
 } from 'state/Projects/projectsSlice';
-import { selectUserId } from 'state/User/userSlice';
+import {
+  selectBussinessTeams,
+  selectProjectCategories,
+} from 'state/Organization/organizationSlice';
+import { selectProjectProcesses } from 'state/Processes/processesSlice';
+import { selectUserId, selectIsUserLd } from 'state/User/userSlice';
 import { ProjectsTableTab, filter, Project } from 'utils/customTypes';
 import {
   generateCsvHeaders,
@@ -37,10 +43,15 @@ const TableView = () => {
   const teamProjectsList = useSelector(selectTeamProjects);
   const userProjectsList = useSelector(selectUserProjects);
   const currentUserId = useSelector(selectUserId);
+  const isLDUser = useSelector(selectIsUserLd);
+  const bussinessTeams = useSelector(selectBussinessTeams);
+  const projectProcesses = useSelector(selectProjectProcesses);
+  const projectCategories = useSelector(selectProjectCategories);
 
   const handleAddProject = () => history.push(PATHS.NEW_PROJECT_PAGE);
 
   useEffect(() => {
+    dispatch(resetBoardView());
     return () => {
       dispatch(setFilters([], PROJECTS_TABLE_TABS.TEAM_PROJECTS));
       dispatch(setFilters([], PROJECTS_TABLE_TABS.MY_PROJECTS));
@@ -76,6 +87,9 @@ const TableView = () => {
     const csvData = generateCsvData(
       tableColumns,
       filteredProjects,
+      bussinessTeams,
+      projectProcesses,
+      projectCategories,
       currentUserId
     );
     const csvFileName = getCsvFileName();
@@ -86,75 +100,83 @@ const TableView = () => {
     setSelectedProjects(projects);
   }, []);
 
+  const getMyProjects = () => (
+    <div className='mt-4'>
+      <TableHeaderFilters
+        headerColumns={USER_PROJECTS_TABLE_COLUMNS}
+        table={PROJECTS_TABLE_TABS.MY_PROJECTS}
+        onExport={handleExportProjectsToCsv}
+        exportEnabled={!isEmpty(selectedProjects)}
+        onUpdateFilters={(filters: filter[]) =>
+          handleUpdateFilters(filters, PROJECTS_TABLE_TABS.MY_PROJECTS)
+        }
+      />
+      <MyProjectsTable
+        onSelectProjects={handleSelectProjects}
+        projectsList={userProjectsList.data}
+        addNewProject={handleAddProject}
+      />
+      <Pagination
+        total={userProjectsList.total}
+        onChange={handleUpdatePagination}
+        className='z-10 max-w-full'
+      />
+    </div>
+  );
+
   return (
     <div className='relative w-full h-full'>
       <div className='py-4 px-6 max-h-table overflow-y-auto'>
-        <Tabs
-          index={currentTabIndex}
-          onChange={(index: number) => setCurrentTabIndex(index)}
-          tabListProps={{ className: 'w-58 mb-4' }}
-          type='tab'
-          data={[
-            {
-              label: intl.get('PROJECTS_LIST_PAGE.TEAM_PROJECTS'),
-              content: (
-                <div className='mt-4'>
-                  <TableHeaderFilters
-                    headerColumns={TEAM_PROJECTS_TABLE_COLUMNS}
-                    table={PROJECTS_TABLE_TABS.TEAM_PROJECTS}
-                    onExport={handleExportProjectsToCsv}
-                    exportEnabled={!isEmpty(selectedProjects)}
-                    onUpdateFilters={(filters: filter[]) =>
-                      handleUpdateFilters(
-                        filters,
-                        PROJECTS_TABLE_TABS.TEAM_PROJECTS
-                      )
-                    }
-                  />
-                  <TeamProjectsTable
-                    projectsList={teamProjectsList.data}
-                    addNewProject={handleAddProject}
-                    onSelectProjects={handleSelectProjects}
-                  />
-                  <Pagination
-                    total={teamProjectsList.total}
-                    onChange={handleUpdatePagination}
-                    className='z-10 z-10 max-w-full'
-                  />
-                </div>
-              ),
-            },
-            {
-              label: intl.get('PROJECTS_LIST_PAGE.MY_PROJECTS'),
-              content: (
-                <div className='mt-4'>
-                  <TableHeaderFilters
-                    headerColumns={USER_PROJECTS_TABLE_COLUMNS}
-                    table={PROJECTS_TABLE_TABS.MY_PROJECTS}
-                    onExport={handleExportProjectsToCsv}
-                    exportEnabled={!isEmpty(selectedProjects)}
-                    onUpdateFilters={(filters: filter[]) =>
-                      handleUpdateFilters(
-                        filters,
-                        PROJECTS_TABLE_TABS.MY_PROJECTS
-                      )
-                    }
-                  />
-                  <MyProjectsTable
-                    onSelectProjects={handleSelectProjects}
-                    projectsList={userProjectsList.data}
-                    addNewProject={handleAddProject}
-                  />
-                  <Pagination
-                    total={userProjectsList.total}
-                    onChange={handleUpdatePagination}
-                    className='z-10 max-w-full'
-                  />
-                </div>
-              ),
-            },
-          ]}
-        />
+        {isLDUser ? (
+          <Tabs
+            index={currentTabIndex}
+            onChange={(index: number) => setCurrentTabIndex(index)}
+            tabListProps={{ className: 'w-58 mb-4' }}
+            type='tab'
+            data={[
+              {
+                label: intl.get('PROJECTS_LIST_PAGE.TEAM_PROJECTS'),
+                content: (
+                  <div className='mt-4'>
+                    <TableHeaderFilters
+                      headerColumns={TEAM_PROJECTS_TABLE_COLUMNS}
+                      table={PROJECTS_TABLE_TABS.TEAM_PROJECTS}
+                      onExport={handleExportProjectsToCsv}
+                      exportEnabled={!isEmpty(selectedProjects)}
+                      onUpdateFilters={(filters: filter[]) =>
+                        handleUpdateFilters(
+                          filters,
+                          PROJECTS_TABLE_TABS.TEAM_PROJECTS
+                        )
+                      }
+                    />
+                    <TeamProjectsTable
+                      projectsList={teamProjectsList.data}
+                      addNewProject={handleAddProject}
+                      onSelectProjects={handleSelectProjects}
+                    />
+                    <Pagination
+                      total={teamProjectsList.total}
+                      onChange={handleUpdatePagination}
+                      className='z-10 z-10 max-w-full'
+                    />
+                  </div>
+                ),
+              },
+              {
+                label: intl.get('PROJECTS_LIST_PAGE.MY_PROJECTS'),
+                content: getMyProjects(),
+              },
+            ]}
+          />
+        ) : (
+          <div>
+            <span className='text-neutral-dark font-semibold text-base'>
+              {intl.get('PROJECTS_LIST_PAGE.MY_PROJECTS')}
+            </span>
+            {getMyProjects()}
+          </div>
+        )}
       </div>
     </div>
   );

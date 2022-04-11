@@ -31,6 +31,7 @@ describe('Put project on hold', () => {
       selectors: { putProjectOnHold, formBody },
     } = projectPage;
     cy.intercept(api.fetchProjects).as('fetchProjects');
+    cy.intercept(`${api.fetchProjects}/**`).as('fetchProjectDetail');
     cy.visit(routes.projectsList);
     cy.wait('@fetchProjects');
     cy.customRequest('POST', `${routes.backendURL}${api.createProject}`, {
@@ -39,21 +40,16 @@ describe('Put project on hold', () => {
     }).then((response) => {
       expect(response.status).to.eq(200);
       const newProject = response.body.data;
-      cy.intercept(`${api.fetchProjects}/${newProject.id}`).as(
-        'fetchProjectDetail'
-      );
       cy.visit(`${routes.projectPage}${newProject.id}`);
       cy.wait('@fetchProjectDetail');
       cy.get(formBody).scrollTo('center');
+      cy.wait(1000);
       cy.get(projectStatus).click();
-      cy.selectDropdownItem({ label: 'On Hold', value: 'on_hold' });
+      cy.selectDropdownItem('On Hold', 'on_hold');
       cy.get(putProjectOnHold.modalWindow).should('be.visible');
       cy.get(putProjectOnHold.confirmButton).should('be.disabled');
       cy.get(putProjectOnHold.holdReasonPicker).click();
-      cy.selectDropdownItem({
-        label: 'Timeline conflict',
-        value: 'Timeline conflict',
-      });
+      cy.selectDropdownItem('Timeline conflict', 'Timeline conflict');
       cy.get(putProjectOnHold.confirmButton).should('not.be.disabled').click();
       cy.get(putProjectOnHold.modalWindow).should('not.exist');
       cy.get(formBody).scrollTo('top');
@@ -98,11 +94,11 @@ describe('Put project on hold', () => {
       cy.wait('@fetchProjectDetail');
       cy.get(formBody).scrollTo('center');
       cy.get(projectStatus).click();
-      cy.selectDropdownItem({ label: 'On Hold', value: 'on_hold' });
+      cy.selectDropdownItem('On Hold', 'on_hold');
       cy.get(putProjectOnHold.modalWindow).should('be.visible');
       cy.get(putProjectOnHold.confirmButton).should('be.disabled');
       cy.get(putProjectOnHold.holdReasonPicker).click();
-      cy.selectDropdownItem({ label: 'Other', value: 'Other' });
+      cy.selectDropdownItem('Other', 'Other');
       cy.get(putProjectOnHold.confirmButton).should('be.disabled');
       cy.get(putProjectOnHold.specifyReasonInput).type(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
@@ -195,7 +191,7 @@ describe('Put project on hold', () => {
     cy.visit(`${routes.projectPage}${projectSearchResponses.data[0].id}`);
     cy.get(formBody).scrollTo('center');
     cy.get(projectStatus).click();
-    cy.selectDropdownItem({ label: 'On Hold', value: 'on_hold' });
+    cy.selectDropdownItem('On Hold', 'on_hold');
     cy.get(putProjectOnHold.modalWindow).should('be.visible');
     cy.get(putProjectOnHold.cancelButton).click();
     cy.get(projectStatus).should('have.attr', 'data-value', 'New');

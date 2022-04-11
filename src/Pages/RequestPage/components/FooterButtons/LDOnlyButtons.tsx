@@ -16,11 +16,14 @@ export const LDOnlyButton = ({
   onCancel: () => void;
   hasErrors: boolean;
 }) => {
-  const { areBasicAndRequestDisabled, isAdditionalDisabled, isLDDisabled } =
-    useContext(RequestContext);
+  const {
+    areBasicAndRequestDisabled,
+    isAdditionalDisabled,
+    isLDDisabled,
+    isSubmitUpdateDisabled,
+  } = useContext(RequestContext);
   const disableSaveButtons =
     areBasicAndRequestDisabled && isAdditionalDisabled && isLDDisabled;
-
   return (
     <Fragment>
       <NavigationButton
@@ -43,7 +46,7 @@ export const LDOnlyButton = ({
           variant='primary'
           hasErrors={hasErrors}
           testId='request_update-button'
-          disabled={disableSaveButtons}
+          disabled={disableSaveButtons || isSubmitUpdateDisabled}
         >
           {intl.get('REQUEST_PAGE.REQUEST_DETAILS.BUTTON.UPDATE_REQUEST')}
         </ActionButton>

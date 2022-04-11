@@ -13,6 +13,7 @@ import {
   objKeyAsString,
   ProcessStage,
   FormOption,
+  NewProject,
 } from 'utils/customTypes';
 import {
   TABLE_FILTERS_OPERATORS,
@@ -23,6 +24,8 @@ import {
   STAGE_COLORS,
   STAGE_ON_DRAG_COLORS,
   STAGE_ON_DRAG_BORDER_COLORS,
+  PROJECT_STATUS,
+  NEW_PROJECT_NONREQUIRED_ENUM_FIELDS,
 } from 'utils/constants';
 
 export const formatFilters = (filters: filter[]) =>
@@ -302,4 +305,24 @@ export const groupProjectsByStage: (
     }
   }
   return Object.values(stagesList);
+};
+
+export const filterOutInactiveProjects = (projects: Project[]) =>
+  projects.filter((project) => {
+    const inActiveStatus = [
+      PROJECT_STATUS.COMPLETED,
+      PROJECT_STATUS.CANCELED,
+      PROJECT_STATUS.CLOSED,
+    ];
+    return !inActiveStatus.includes(project.status);
+  });
+
+export const processNewProjectData = (project: NewProject) => {
+  delete project.health;
+  NEW_PROJECT_NONREQUIRED_ENUM_FIELDS.forEach((field) => {
+    if (!project[field]) {
+      delete project[field];
+    }
+  });
+  return project;
 };

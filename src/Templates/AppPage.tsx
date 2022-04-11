@@ -1,7 +1,7 @@
 import { useLink, InlineNotification } from '@getsynapse/design-system';
 import intl from 'react-intl-universal';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch, Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 import { PATHS } from 'utils/constants';
 import useAuthentication from 'Hooks/useAuthentication';
@@ -17,8 +17,13 @@ import {
   selectNotificationVariant,
 } from 'state/InlineNotification/inlineNotificationSlice';
 import { getOrganization } from 'state/Organization/organizationSlice';
-import { selectOrganizationId } from 'state/User/userSlice';
-import InsightsPage from 'Pages/InsightsPage';
+import {
+  selectOrganizationId,
+  selectUserEmail,
+  selectIsUserLd,
+} from 'state/User/userSlice';
+import { initPendo } from 'Services/pendo';
+import InsightsPage from 'Pages/InsightsPage/InsightsPage';
 import DesignPage from 'Pages/DesignPage';
 import TeamsPage from 'Pages/TeamsPage/TeamsPage';
 import ProjectsListPage from 'Pages/ProjectsListPage/ProjectsListPage';
@@ -31,8 +36,9 @@ import { useEffect } from 'react';
 import TaskPage from 'Pages/ProjectPage/tabs/Tasks/TaskPage';
 import UserPage from 'Pages/SettingsPage/AccountSettings/UsersListPage/UserPage/UserPage';
 import EditTeam from 'Pages/SettingsPage/AccountSettings/OrganizationSettings/components/EditTeam/EditTeam';
+import FormPage from 'Pages/SettingsPage/PlatformSettings/components/FormPage/FormPage';
+import NewForm from 'Pages/SettingsPage/PlatformSettings/components/FormPage/NewForm';
 import VendorPage from 'Pages/SettingsPage/AccountSettings/OrganizationSettings/Vendor/VendorPage';
-import FormPage from 'Pages/SettingsPage/PlatformSettings/components/Form/FormPage';
 
 const AppPage = () => {
   const dispatch = useDispatch();
@@ -42,13 +48,21 @@ const AppPage = () => {
   const notificationMessage = useSelector(selectNotificationText);
   const timeout = useSelector(selectNotificationTimeout);
   const notificationVariant = useSelector(selectNotificationVariant);
+  const currentUserEmail = useSelector(selectUserEmail);
   const organizationId = useSelector(selectOrganizationId);
+  const isCurrentUserLD = useSelector(selectIsUserLd);
 
   useEffect(() => {
     if (organizationId) {
       dispatch(getOrganization(organizationId));
     }
   }, [organizationId, dispatch]);
+
+  useEffect(() => {
+    if (currentUserEmail && organizationId) {
+      initPendo(currentUserEmail, organizationId);
+    }
+  }, [organizationId, currentUserEmail]);
 
   if (!isAuthenticated) {
     return (
@@ -72,7 +86,7 @@ const AppPage = () => {
               'absolute',
               'top-0',
               'left-0',
-              'z-10',
+              'z-40',
               'flex-grow',
               'w-full'
             )}
@@ -112,7 +126,11 @@ const AppPage = () => {
             </Route>
 
             <Route path={PATHS.NEW_PROJECT_PAGE}>
-              <NewProjectPage />
+              {isCurrentUserLD ? (
+                <NewProjectPage />
+              ) : (
+                <Redirect to={PATHS.PROJECTS_LIST_PAGE} />
+              )}
             </Route>
 
             <Route exact path={`${PATHS.PROJECT_PAGE}/:projectId`}>
@@ -154,11 +172,15 @@ const AppPage = () => {
               <UserPage />
             </Route>
 
+            <Route path={`${PATHS.SETTINGS}${PATHS.FORM_PAGE}`} exact>
+              <NewForm />
+            </Route>
+
             <Route path={`${PATHS.VENDOR_PAGE}/:vendorId`}>
               <VendorPage />
             </Route>
 
-            <Route path={`${PATHS.SETTINGS}${PATHS.FORMS_PAGE}/:formId`}>
+            <Route path={`${PATHS.SETTINGS}${PATHS.FORM_PAGE}/:formId`}>
               <FormPage />
             </Route>
           </Switch>

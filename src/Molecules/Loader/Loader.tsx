@@ -4,11 +4,11 @@ import classnames from 'classnames';
 import styles from './Loader.module.css';
 
 const dotDefaultClassName =
-  'animate-loader w-14 h-14 rounded-full border-2 border-neutral-white absolute';
+  'animate-loader w-8 h-8 rounded-full border-2 border-neutral-white absolute';
 
 const Loader = () => {
   return (
-    <div className='w-full h-full flex flex-col relative justify-center'>
+    <div className='w-64 mx-auto h-full flex flex-col relative justify-center'>
       <div className='w-full h-14'>
         <div
           className={classnames(dotDefaultClassName, 'bg-primary')}
@@ -43,7 +43,7 @@ const Loader = () => {
 
       <div className='w-full flex justify-center'>
         <Typography
-          variant='h1'
+          variant='h5'
           weight='medium'
           className={classnames('text-neutral-dark', styles.loadingText)}
         >

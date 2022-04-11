@@ -7,14 +7,16 @@ class AccountsAPI {
   instance: AxiosInstance;
 
   constructor() {
-    this.instance = initAxios(config.get('accountsURL'));
+    this.instance = initAxios(config.get('backendURL'));
   }
 
   getEnterpriseConnection: (accountId: string) => Promise<string> = async (
     accountId
   ) => {
-    const response = await this.instance.get(`/login/${accountId}`);
-    return get(response, 'data.connectionUrl');
+    const response = await this.instance.get(
+      `/enterpriseConnections/${accountId}`
+    );
+    return get(response, 'data.connectionId');
   };
 }
 

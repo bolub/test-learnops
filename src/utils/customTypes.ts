@@ -20,6 +20,8 @@ import {
   TASK_STATUS,
   TASKS_TABLE_TABS,
   UPDATE_PROJECT_TABS,
+  LICENSE_TIER,
+  REQUEST_PRIORITY,
 } from 'utils/constants';
 import { ReactNode } from 'react';
 
@@ -115,10 +117,12 @@ export type CurrentUser = {
   avatar_url?: string;
   firstName?: string;
   lastName?: string;
+  status?: typeof USER_STATUS[keyof typeof USER_STATUS];
 };
 
 export interface Request {
   updatedAt?: any;
+  createdAt?: any;
   requester?: any;
   requester_id?: string;
   owners?: LDUser[];
@@ -139,6 +143,7 @@ export interface Request {
       reason?: string;
       details?: string;
     };
+    published?: boolean;
   };
   request_type?: requestType;
   status?: string;
@@ -153,6 +158,9 @@ export interface Request {
   };
   decision_date?: string;
   type?: typeof QUESTIONNAIRE_TYPE[keyof typeof QUESTIONNAIRE_TYPE];
+  organization_id?: string;
+  executive_stakeholder?: string;
+  priority?: typeof REQUEST_PRIORITY[keyof typeof REQUEST_PRIORITY];
 }
 
 export interface RequestQuestion {
@@ -163,14 +171,34 @@ export interface RequestQuestion {
     isRequired?: boolean;
   };
   section: typeof REQUEST_SECTIONS[keyof typeof REQUEST_SECTIONS];
+  type: QuestionTypes;
 }
+
+export type QuestionTypes =
+  | 'radio'
+  | 'checkbox'
+  | 'range'
+  | 'date'
+  | 'dropdown'
+  | 'number'
+  | 'customTextArea'
+  | 'url'
+  | 'file'
+  | 'toggle';
 
 export interface intakeQuestionWrapper {
   question: RequestQuestion;
   className?: string;
   handler: (
     question: any,
-    value: string | boolean | number | Array<PickerFileMetadata>,
+    value:
+      | string
+      | boolean
+      | number
+      | Array<PickerFileMetadata>
+      | dropdownOption
+      | dropdownOption[]
+      | rangeDate,
     path: string
   ) => void | DebouncedFunc<
     (
@@ -185,7 +213,7 @@ export interface intakeQuestionWrapper {
 
 export type UpdateReqData = {
   requestAttributes: Request;
-  requestQuestions: { [key: string]: object };
+  requestQuestions: { [key: string]: RequestQuestion };
 };
 
 export type RequestPageTabs = 0 | 1 | 2 | 3;
@@ -233,7 +261,11 @@ export type BusinessTeam = {
   createdAt?: string;
 };
 
-export type FormOption = { label: string; value: string };
+export type FormOption = {
+  label: string;
+  value: string;
+  requestType?: string | null;
+};
 
 export type rangeDate = {
   startDate: Date | string;
@@ -337,9 +369,10 @@ export interface ProjectParticipant {
 }
 
 export type ProjectHealth = typeof PROJECT_HEALTH[keyof typeof PROJECT_HEALTH];
+
 export interface Project {
   id: string;
-  projectNumber?: string;
+  projectNumber?: number;
   title: string;
   status?: typeof PROJECT_STATUS[keyof typeof PROJECT_STATUS];
   createdAt: string;
@@ -351,6 +384,7 @@ export interface Project {
   targetCompletionDate: string;
   actualDate?: string;
   budget_source?: string;
+  resourcing_type?: string;
   health?: ProjectHealth;
   category_id: string;
   businessUnitId: string;
@@ -377,13 +411,13 @@ export interface NewProject extends objKeyAsString {
   status?: string;
   stage_id?: string;
   privacy: string;
-  priority: string;
+  priority?: string | null;
   owners: (String | undefined)[];
-  resourcing_type?: string;
+  resourcing_type?: string | null;
   estimatedEffort?: string;
-  budget_source?: string;
+  budget_source?: string | null;
   estimated_cost?: string;
-  allocated_budget?: string;
+  allocated_budget?: number;
   health?: string;
   hold_reason?: string;
   data?: object;
@@ -393,6 +427,8 @@ export interface NewProject extends objKeyAsString {
   finalComments?: string;
   closedDate?: string | null;
   tasksOrdering?: string[];
+  collaborators?: ProjectCollaborator[];
+  participants?: ProjectParticipant[];
 }
 
 export interface ModalProps {
@@ -414,6 +450,8 @@ export type MoreActionsOption = {
   iconSrc?: string;
   iconClassName?: string;
   selectOption?: () => void;
+  disabled?: boolean;
+  tooltipText?: string;
 };
 
 export interface NewTeamType {
@@ -652,7 +690,7 @@ export type ProcessStage = {
 export type AvatarSize = 'small' | 'medium' | 'large';
 
 export type ProjectStatus = typeof PROJECT_STATUS[keyof typeof PROJECT_STATUS];
-interface ProjectFileMetadata
+export interface ProjectFileMetadata
   extends Omit<
     PickerFileMetadata,
     'originalPath' | 'size' | 'source' | 'uploadId'
@@ -661,6 +699,7 @@ interface ProjectFileMetadata
   size?: number;
   source?: string;
   uploadId?: string;
+  cloudFrontURL?: string;
 }
 
 export type ProjectFile = {
@@ -707,6 +746,11 @@ export interface Form extends Request {
   form_description?: string;
   createdAt?: string;
   updatedAt?: string;
+  questions?: RequestQuestion[];
+}
+
+export interface NewFormType extends Form {
+  organizationId: string;
 }
 
 export type Pagination = {
@@ -735,14 +779,32 @@ export interface NewBusinessTeamData {
 
 export interface BudgetPlanType {
   estimated_cost: string | undefined;
-  budget_source: string | undefined;
-  allocated_budget: string | undefined;
+  budget_source: string | null | undefined;
+  allocated_budget: number | undefined;
 }
 
+export interface NewProjectParticipant {
+  userId: string;
+  startDate: string;
+  endDate: string;
+  job_role: string;
+  type: string;
+  hoursAssigned?: number;
+  estimatedHours?: number;
+}
+
+export interface NewProjectCollaborator
+  extends Omit<NewProjectParticipant, 'type' | 'hoursAssigned' | 'job_role'> {
+  jobRole: string;
+}
+
+export type ResourcingType = 'internal' | 'mixed' | 'vendor';
+
 export interface ResourcePlanType {
-  resourcing_type: string | undefined;
+  resourcing_type: string | undefined | null;
   vendors: ProjectVendor[];
 }
+
 export interface Budget {
   id: string;
   category_id?: string;
@@ -775,10 +837,312 @@ export interface NewBudget extends objKeyAsString {
   cost_to_date?: number;
   notes: string;
 }
-
 export interface BudgetCategory {
   id: string;
   name?: string;
   organization_id?: string;
   currency?: string;
+}
+
+export interface UserCapacity {
+  data: {
+    id: string;
+    role: string;
+    organization_id: string;
+    ldTeam_id?: string | null;
+    businessTeam_id?: string | null;
+    type: 'business' | 'ld' | 'external';
+    cost?: string | null;
+    public_holidays_in_capacity_enabled: boolean;
+    default_capacity: number;
+    status: typeof USER_STATUS[keyof typeof USER_STATUS];
+    country_iso_3166_1_alpha_2_code: string;
+    location?: string | null;
+    note?: string | null;
+    job_title?: string | null;
+    avatar_url?: string | null;
+    skills?: string | null;
+    data: {
+      role: string;
+      email: string;
+      jobTitle: string;
+      lastName: string;
+      firstName: string;
+      freeTrial: boolean;
+      resourceId: string;
+      companyName: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+    deletedAt?: string | null;
+    learning_team_members: {
+      createdAt: string;
+      updatedAt: string;
+      learningTeamId: string;
+      userId: string;
+    };
+  };
+  allocations: {
+    weekStart: string;
+    weekEnd: string;
+    capacity: number;
+    timeOff: {
+      weeklyTimeOffForUser: number;
+    };
+    holidays: {
+      date: string;
+      start: string;
+      end: string;
+      name: string;
+      type: string;
+    }[];
+  }[];
+  projects: {
+    id: string;
+    title: string;
+    description: string;
+    status: typeof PROJECT_STATUS[keyof typeof PROJECT_STATUS];
+    priority: typeof PROJECT_PRIORITY[keyof typeof PROJECT_PRIORITY];
+    health: ProjectHealth;
+    participants: {
+      id: string;
+      project_participants: ProjectParticipant['project_participants'];
+    }[];
+    currentParticipantRoles: {
+      role: string;
+      startDate: string;
+      endDate: string;
+    }[];
+    totalAllocationForAllRoles: number;
+    targetCompletionDate: string;
+  }[];
+}
+
+export interface CapacityEntry {
+  users: Record<string, UserCapacity>;
+  team: Omit<LearningTeam, 'ldTeamMembers'>;
+}
+
+export type dropdownOption = {
+  value: string;
+  display: string;
+};
+
+export type radioOption = {
+  id: string;
+  text: string;
+};
+
+export type checkboxOption = {
+  index: string;
+  item: string;
+};
+
+export interface ResourceSummaryItem {
+  projectRole: string;
+  numberOfResource: string;
+  totalHours: string;
+}
+
+export interface ResourceSummary {
+  items: ResourceSummaryItem[];
+  total: {
+    totalNumberOfResource: number;
+    totalHours: number;
+  };
+}
+
+export interface ProjectCollaboratorsAllocations {
+  start_date: string;
+  end_date: string;
+  estimated_hours: string;
+  job_role: string;
+  userId: string;
+  projectLearnOpId: string;
+  collaborator: Owner;
+  assignedProjectTasks: TaskDetailType[];
+}
+
+export interface ParticipanttAllocation {
+  weekStart: string;
+  weekEnd: string;
+  capacity: 0;
+  allocatedHours: 0;
+  allocationId: string;
+  role?: string;
+}
+
+export interface AllocationUpdateData {
+  allocatedHours: number;
+  allocationId: string;
+}
+
+export interface CollaboratorEstimation {
+  start_date: string;
+  end_date: string;
+  estimated_hours: string;
+  userId: string;
+  projectLearnOpId: string;
+}
+
+export interface ProjectParticipantRole {
+  role: string;
+  participationId?: string;
+  allocations?: ParticipanttAllocation[];
+  estimation?: CollaboratorEstimation;
+  endDate?: string;
+  startDate?: string;
+  hoursAssigned?: number;
+}
+
+export interface TimeOffHoliday {
+  date: string;
+  start: string;
+  end: string;
+  name: string;
+  type: string;
+}
+export interface WeekTimeOffAndHolidays {
+  holidaysWithinWeek: TimeOffHoliday[];
+  weekEnd: string;
+  weekStart: string;
+  weeklyTimeOffForUser: number;
+}
+
+export interface ProjectParticipantAllocation {
+  data: Owner;
+  roles: ProjectParticipantRole[];
+  assignedProjectTasks?: TaskDetailType[];
+  holidaysAndTimeOffs?: WeekTimeOffAndHolidays[];
+}
+
+export interface ProjectParticipantsAllocations {
+  [key: string]: ProjectParticipantAllocation;
+}
+
+export interface ResourceAllocationSections {
+  [key: string]: {
+    id: string;
+    users: ProjectParticipantsAllocations;
+  };
+}
+
+export interface UserIdWithName {
+  userId: string;
+  name: string;
+}
+
+export interface ParticipantAssignment {
+  userId: string;
+  startDate: string;
+  endDate: string;
+  job_role: string;
+  totalAllocation?: number;
+  participationId?: string;
+  allocations?: ParticipanttAllocation[];
+  estimatedHours?: number;
+  newlyAdded?: boolean;
+}
+
+export interface CollaboratorAssignment {
+  userId: string;
+  startDate: string;
+  endDate: string;
+  jobRole: string;
+  estimatedHours?: number;
+}
+
+export type License = {
+  license_tier: typeof LICENSE_TIER[keyof typeof LICENSE_TIER];
+  license_number: number;
+};
+
+export type TeamMemberProject = {
+  id: string;
+  title: string;
+  priority: typeof PROJECT_PRIORITY[keyof typeof PROJECT_PRIORITY];
+  health: ProjectHealth;
+  roles: Record<string, string>;
+  status: string;
+  hours: number;
+  targetCompletionDate: string;
+};
+
+export type TeamMemberAllocation = {
+  weekStart: Date;
+  weekEnd: Date;
+  capacity: number;
+  defaultCapacity: number;
+};
+
+export interface UserColumnType {
+  user: {
+    roles: string;
+    avatar_url?: string;
+    data: UserData;
+  };
+  projects: Array<TeamMemberProject>;
+}
+
+export interface SectionUserType extends UserColumnType {
+  id: string;
+  allocations: Array<TeamMemberAllocation>;
+  timeOffs: Array<{
+    weekStart: Date;
+    weekEnd: Date;
+    capacity: number;
+  }>;
+}
+export interface ResourceAllocationSectionsType {
+  id: string;
+  label: string;
+  users: SectionUserType[];
+}
+export type ActiveHeadType = {
+  orderBy: string;
+  order: 'desc' | 'asc';
+};
+
+export type NewAssignmentFormValues = {
+  startDate: string;
+  endDate: string;
+  job_role: string;
+  totalAllocation: number;
+};
+
+export type GetUserAvailabilityParams = {
+  timeFrameStartDate: string;
+  timeFrameEndDate: string;
+  userId: string;
+};
+
+export type BulkHandleAssignmentsChangesParams = {
+  isCollaborator: boolean;
+  updatedAssignments: ParticipantAssignment[];
+  deletedAssignments: ParticipantAssignment[];
+  addedParticipantAssignments: ParticipantAssignment[];
+  projectId: string;
+  userId: string;
+};
+
+export interface Organization {
+  organizationData: {
+    businessTeams: BusinessTeam[];
+    learningTeams: LearningTeam[];
+    projectCategories: ProjectCategory[];
+    projectVendors: ProjectVendor[];
+    users: User[];
+    license_tier: License['license_tier'];
+    license_number: number;
+    id: string;
+    settings: OrganizationSettings;
+    company_name: string;
+  };
+  status: Status;
+}
+
+export interface OrganizationSettings {
+  teamRequestsTab?: boolean;
+  platformCurrency?: string;
+  intakePortalName?: string;
 }

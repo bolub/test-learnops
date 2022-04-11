@@ -7,8 +7,9 @@ import {
   FormLabel,
   Typography,
 } from '@getsynapse/design-system';
+import isEmpty from 'lodash/isEmpty';
 import { PATHS, REQUEST_TYPE } from 'utils/constants';
-import { selectFormsOptions } from 'state/Forms/formSlice';
+import { selectFormsOptions, getForms } from 'state/Forms/formSlice';
 import { FormOption } from 'utils/customTypes';
 import ChangeFormModal from 'Pages/RequestPage/components/ChangeFormModal';
 import {
@@ -19,6 +20,7 @@ import {
   selectIsActiveRequestAForm,
 } from 'state/ActiveRequest/activeRequestSlice';
 import { useHistory } from 'react-router-dom';
+import { selectOrganizationId } from 'state/User/userSlice';
 
 type RequestTypeOption = { value: string; label: string };
 
@@ -36,6 +38,13 @@ const RequestPageSidebar = ({ requestId }: { requestId: string }) => {
   const currentRequestType = useSelector(selectActiveRequestType);
   const currentRequestId = useSelector(selectActiveRequestId);
   const isForm = useSelector(selectIsActiveRequestAForm);
+  const organizationId = useSelector(selectOrganizationId);
+
+  useEffect(() => {
+    if (organizationId) {
+      dispatch(getForms({ organizationId, published: true }));
+    }
+  }, [organizationId, dispatch]);
 
   useEffect(() => {
     if (
@@ -85,6 +94,12 @@ const RequestPageSidebar = ({ requestId }: { requestId: string }) => {
       label: intl.get(`REQUEST_PAGE.LEFT_PANEL.REQUEST_TYPE.${type}`),
     }));
   }, []);
+
+  const filteredFormOptions = useMemo(() => {
+    return formOptions.filter(
+      (form) => form.requestType === data.requestTypeId
+    );
+  }, [formOptions, data]);
 
   const selectedRequestType = useMemo(() => {
     const requestType = requestTypeOptions.find(
@@ -167,7 +182,8 @@ const RequestPageSidebar = ({ requestId }: { requestId: string }) => {
           </FormLabel>
 
           <Dropdown
-            options={formOptions}
+            disabled={isEmpty(data.requestTypeId) ? true : false}
+            options={filteredFormOptions}
             onChange={setForm}
             values={data.formId ? [selectedForm] : []}
             controlled

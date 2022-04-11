@@ -4,8 +4,15 @@
   "TRAINING_REQUEST_PORTAL": "Training Request Portal",
   "LOADING": "Loading",
   "SAVE": "Save",
+  "EDIT": "Edit",
   "UPDATE": "Update",
   "CANCEL": "Cancel",
+  "REMOVE": "Remove",
+  "DONE": "Done",
+  "ADD": "Add",
+  "DELETE": "Delete",
+  "DISPLAY": "Display",
+  "INTAKE": "Intake",
   "COLLAPSE_EXPAND_ICON_DESC": "expand/collapse sidebar",
   "DESCRIPTION": "{num, plural, =1 {Description} other {Descriptions}}",
   "MORE_ACTIONS": "More Actions",
@@ -79,6 +86,11 @@
     "BUTTON": "Login",
     "LOADING": "Loading"
   },
+  "DEACTIVATED_USER_PAGE": {
+    "TITLE": "Looks like your account was deactivated",
+    "CAPTION": "Please contact your admin.",
+    "CTA": "Back to Login"
+  },
   "ERROR_MESSAGE": {
     "INVALID_FORMAT": "Invalid format",
     "USER_NOT_REGISTERED": "User not registered."
@@ -93,6 +105,28 @@
     "PROMPT": "To reset your password, enter the email address to receieve the reset link. ",
     "SUCCESS_MESSAGE": "An email has been sent. Please click the link when you receive it.",
     "TITLE": "Recover Password"
+  },
+  "PASSWORD_SETUP_PAGE": {
+    "TITLE": "Password Set Up",
+    "PROMPT": "This set up is for the user account <strong>{email}.</strong> If this is not your account, please contact your admin.",
+    "INPUT": {
+      "PASSWORD": "Enter password"
+    },
+    "BUTTON": "Submit",
+    "SUCCESS_MESSAGE": {
+      "TITLE": "You’re almost there!",
+      "LINE_ONE": "Please check your email to confirm your account.",
+      "LINE_TWO": "Didn’t receive an email?",
+      "LINK": "Resend email"
+    }
+  },
+  "VERIFY_PAGE": {
+    "TITLE": "Your account has been verified!",
+    "BODY": {
+      "LINE_ONE": "You’ll be redirected to the login page in 5 seconds",
+      "LINE_TWO": "Didn’t get redirected?"
+    },
+    "LINK": "Login here"
   },
   "CHANGE_PASSWORD_PAGE": {
     "BUTTON": "Save Changes",
@@ -115,8 +149,8 @@
     "SUCCESS_MESSAGE": "An email has been sent. Please click the link when you receive it.",
     "TITLE": "Change Password",
     "INFO": {
-      "TITLE": "In order to protect your account make sure your password:",
-      "CONTENT": "<li>Has a special character</li><li>Is longer than 8 characters</li><li>Has at least 1 Capital and 1 Numerical value</li>"
+      "TITLE": "In order to protect your account make sure your password has:",
+      "CONTENT": "<li>One special character</li><li>8 characters or more</li><li>At least one uppercase letter and one numerical value</li>"
     }
   },
   "ORG_SETTINGS_PAGE": {
@@ -145,7 +179,13 @@
         "ENTER_DESCRIPTION": "Enter team description",
         "ADD_MANAGER": "Add a manager",
         "TEAM_ADDED": "Team was successfully added!"
-      }
+      },
+      "TEAMS_&_MEMBERS": "Teams & Team Members",
+      "ROLES": "{op, plural, =1 {Role} other {Roles}}",
+      "VIEW_PROJECTS": "View Projects",
+      "HIDE_PROJECTS": "Hide Projects",
+      "HOURS": "{hours}h",
+      "TIME_OFF_WEEK": "Time off/Holiday this week"
     },
     "BUSINESS_TEAMS": {
       "TITLE": "Business Teams",
@@ -177,7 +217,10 @@
     "USER_PAGE": {
       "TITLE": "Users",
       "HEADER": {
-        "ENABLE_ACCOUNT": "Enable user account"
+        "ENABLE_ACCOUNT": "Enable user account",
+        "MORE_ACTIONS": {
+          "NOTIFY_USER": "Notify user"
+        }
       },
       "ERRORS": {
         "MISSING_INFORMATION": "Missing information",
@@ -185,6 +228,7 @@
         "DISABLE_ACCOUNT":"This user has been disabled and can no longer access the platform."
       },
       "USER_UPDATED": "This user was successfully updated!",
+      "USER_NOTIFIED": "This user was successfully notified!",
       "FOOTER": {
         "CANCEL_BUTTON": "Cancel",
         "UPDATE_BUTTON": "Update"
@@ -246,6 +290,17 @@
       },
       "VIEW_HOLIDAYS_MODAL": {
         "TITLE": "Public Holidays"
+      },
+      "NOTIFY_USER_MODAL": {
+        "TITLE": "Notify User",
+        "BODY": {
+          "FIRST_LINE": "Do you wish to send the user a notification with their login details?",
+          "SECOND_LINE": "You can still notify them later."
+        },
+        "BUTTONS": {
+          "NOTIFY": "Yes, Notify",
+          "NOT_NOW": "Not Now"
+        }
       }
     },
     "PROJECTS_PAGE": {
@@ -296,6 +351,7 @@
       "UN_PUBLISHED": "Un-published",
       "CREATE_FORMS": "Create and manage forms!",
       "NO_FORMS": "No forms found",
+      "ADD_FORM": "Add Form",
       "DESIGN": {
         "TITLE": "Form Design",
         "SUBTITLE": "Create form by adding fields to gather information for learning requests",
@@ -312,7 +368,38 @@
         "ENTER_REQUESTER": "Enter requester name",
         "ENTER_SPONSOR": "Enter executive sponsor",
         "SELECT_URGENCY": "Select priority/urgency",
-        "SYSTEM_GENERATED_ID": "System Generated ID"
+        "SYSTEM_GENERATED_ID": "System Generated ID",
+        "CUSTOM_QUESTIONS": {
+          "REORDER": "Reorder",
+          "DRAG_HANDLE": "drag handle",
+          "TITLE": "Custom Questions",
+          "CAPTION1": "Add your own questions with a variety of formats. ",
+          "CAPTION2": "Questions without labels or values will not be displayed in the request.",
+          "ADD_QUESTION": "Add Question",
+          "REQUIRED": "Required",
+          "QUESTION_LABEL": "Type your label",
+          "PLACEHOLDER": "Type your placeholder",
+          "REMOVE_OPTION": "remove option",
+          "ADD_OPTION": "Add Option",
+          "OPTION_PLACEHOLDER": "Type your option",
+          "DROPDOWN": {
+            "MULTISELECT": "Multiselect dropdown"
+          },
+          "TOGGLE": {
+            "VALUE": "Type a value",
+            "HELP_TEXT": "Set toggle to its default state"
+          },
+          "RANGE": {
+            "MIN_VALUE_PLACEHOLDER": "Add min value",
+            "MAX_VALUE_PLACEHOLDER": "Add max value"
+          },
+          "DATE": {
+            "DATE_RANGE": "Date range"
+          },
+          "FILE": {
+            "PLACEHOLDER": "Add an upload instruction"
+          }
+        }
       },
       "SUMMARY": {
         "TITLE": "Form Summary",
@@ -324,8 +411,44 @@
         "REQUEST_OWNER": "Add Request Owner",
         "ENTER_DESCRIPTION": "Enter Description",
         "SELECT_REQUEST_TYPE": "Select a Request Type"
+      },
+      "FORM_CREATED_SUCCESS": "Request form was successfully created!",
+      "PUBLISH": "Publish",
+      "YES_UPDATE": "Yes, Update",
+      "UNPUBLISHED_MODAL": {
+        "TITLE": "Update unpublished form",
+        "DESCRIPTION": "If this form was previously published, changes made will only affect new requests.",
+        "QUESTION": "Are you sure you want to update the form?"
+      },
+      "PUBLISHED_MODAL": {
+        "TITLE": "Update published form",
+        "DESCRIPTION": "The form is already published. Changes made will only affect new requests."
+      },
+      "UPDATED_SUCCESS": "Request form was successfully updated.",
+      "NOT_UPDATED": "This request form is missing information and has not been updated.",
+      "UNPUBLISH_SUCCESS": "This form was succesfully unpublished! Requests submitted using this form have not been affected.",
+      "PUBLISH_SUCCESS": "This form was succesfully published!",
+      "TABLE_MENU": {
+        "DUPLICATE": "Duplicate",
+        "DELETE": "Delete"
+      },
+      "DUPLICATE": {
+        "DUPLICATE_FORM": "Duplicate Form",
+        "FILL_DETAILS": "Fill in the details to create new form",
+        "ORIGINAL_NAME": "Original Form Name",
+        "NEW_NAME": "New Form Name",
+        "COPY": "- Copy"
+      },
+      "DELETE": {
+        "TITLE": "Delete {status} form",
+        "PUBLISHED_DESCRIPTION": "This change is <b>irreversible</b>. Requests based on this form will not be deleted.",
+        "UNPUBLISHED_DESCRIPTION": "This change is <b>irreversible</b>. If the form was previously published, the change will not affect requests based on this form",
+        "QUESTION": "Are you sure you want to delete this form?",
+        "SUCCESS": "The form was successfully deleted!",
+        "DELETE_FORM": "Delete form"
       }
-    }
+    },
+    "GENERAL_PAGE_CAPTION": "Customize the application"
   },
   "SIDEBAR": {
     "INSIGHTS": "Insights",
@@ -376,7 +499,7 @@
     },
     "BASIC_DETAILS": {
       "TITLE": "Basic Information",
-      "CAPTION": "Fill in the requester details",
+      "CAPTION": "This section contains basic information about the request that helps the learning team organize and track requests.",
       "FIELDS": {
         "REQUEST_NUMBER": "Request Number",
         "BUSINESS_UNIT": "Business Unit",
@@ -406,7 +529,7 @@
     },
     "ADDITIONAL_DETAILS": {
       "TITLE": "Additional Information",
-      "CAPTION": "Fill in the requester details",
+      "CAPTION": "This section is used to provide additional information specific to this request, which is not included in the standard form.",
       "FLY_OUT_MENU": {
         "URL": "Url",
         "TEXT_FIELD": "Text Field",
@@ -420,8 +543,8 @@
       }
     },
     "REQUEST_DETAILS": {
-      "TITLE": "Request Information",
-      "CAPTION": "Fill in the requester details",
+      "TITLE": "Request Details",
+      "CAPTION": "This section describes what the request is about.  Please make sure to include details that will help the learning team to better understand the goals and requirements so they can assess the request in a timely manner.",
       "FIELDS": {
         "REQUEST_DESCRIPTION": "Request Description",
         "REQUEST_DESCRIPTION_CAPTION": "Explain about your request",
@@ -439,8 +562,8 @@
       }
     },
     "L_D_SECTION": {
-      "TITLE": "L&D Only",
-      "CAPTION": "Fill in the requester details ",
+      "TITLE": "Internal Information",
+      "CAPTION": "In this section the request owners can record the initial assessment results and will help the learning team make the decision on the request and plan for next steps if needed.",
       "FIELDS": {
         "EFFORT": "Estimated Effort",
         "COST": "Estimated Cost",
@@ -455,10 +578,10 @@
       }
     },
     "TABS": {
-      "BASIC": "Basic Details",
+      "BASIC": "Basic Information",
       "REQUEST": "Request Details",
-      "ADDITIONAL": "Additional Details",
-      "L_D": "L&D Only"
+      "ADDITIONAL": "Additional Information",
+      "L_D": "Internal Information"
     },
     "TOP_BAR": {
       "COMMENTS": "Comments",
@@ -475,7 +598,6 @@
         "SUCCESS_MESSAGE": "The project “{projectTitle}” was saved. "
       },
       "MORE": {
-        "MORE_ACTIONS": "More Actions",
         "CANCEL_REQUEST": "Cancel request",
         "DOWNLOAD_REQUEST": "Download Request",
         "CREATE_PROJECT": "Create Project",
@@ -532,13 +654,16 @@
     "TABLE": {
       "HEAD": {
         "REQUEST_NO": "Request Number",
-        "REQUESTER_NAME": "Requester",
+        "REQUESTER_NAME": "Requester Name",
         "REQUEST_TITLE": "Request Title",
+        "CREATION_DATE": "Creation Date",
         "SUBMISSION_DATE": "Submission Date",
-        "UPDATE_DATE": "Last Update Date",
+        "DECISION_DATE": "Decision Date",
+        "UPDATE_DATE": "Last Update",
         "STATUS": "Status",
         "OWNER_NAME": "Request Owner",
-        "BUSINESS_UNIT": "Business Unit"
+        "BUSINESS_UNIT": "Business Unit",
+        "PRIORITY": "Priority"
       },
       "SORT": {
         "ASC": "Sort in ascending order",
@@ -664,7 +789,8 @@
         "START_DATE": "Start Date",
         "TARGET_COMPLETION_DATE": "Target Completion Date",
         "ACTUAL_COMPLETION_DATE": "Actual Completion Date",
-        "PROCESS_STAGE": "Process Stage",
+        "PROCESS_STAGE": "Process",
+        "PROJECT_STAGE": "Stage",
         "RESOURCING_TYPE": "Resourcing Type",
         "STATUS": "Status",
         "HEALTH": "Health",
@@ -720,6 +846,13 @@
       "ADDITIONAL_DETAILS": "Additional Details",
       "LD_ONLY": "L&D Only"
     }
+  },
+  "INSIGHTS_PAGE": {
+    "TITLE": "Insights"
+  },
+  "INSIGHTS_PAGE_TABS": {
+    "INTAKE": "Intake",
+    "PROJECTS": "Projects"
   },
   "UPDATE_PROJECT_PAGE": {
     "NOT_UPDATED": "This project is missing information and has not been updated.",
@@ -928,7 +1061,8 @@
         },
         "NO_TASKS": "No task linked",
         "DELETE": "Delete",
-        "UNLINK": "Unlink"
+        "UNLINK": "Unlink",
+        "DOWNLOAD_TOOLTIP": "Click to open file"
       },
       "ATTACH_FILE": "Attach a file",
       "LINK_FILE": "Link a file",
@@ -984,7 +1118,9 @@
       "GET_STARTED": "Get started",
       "DUPLICATE": "Duplicate",
       "COPY_OF_PLACEHOLDER": "Copy of",
-      "NO_RECORDS": "No results found. Try another keyword."
+      "NO_RECORDS": "No results found. Try another keyword.",
+      "INACTIVE": "Inactive",
+      "NO_ASSIGNEE": "No participant assigned"
     },
     "TASK_DETAIL_PAGE": {
       "TASK_ON_HOLD_WARNING": "This task has been put on hold.",
@@ -1075,11 +1211,92 @@
     "UPDATE_SUCCESS": "Budget plan was successfully updated"
   },
   "PEOPLE": {
-    "RESOURCE_PLAN": "Resource Plan",
-    "RESOURCE_ALLOCATION": "Resource Allocation",
-    "RESOURCE_SUMMARY": "Resource Summary",
-    "UPDATE_RESOURCES_BUTTON": "Update Resources",
-    "UPDATE_SUCCESS": "Resource plan was successfully updated"
+    "TABS": {
+      "RESOURCE_PLAN": "Resource Plan",
+      "RESOURCE_ALLOCATION": "Resource Allocation",
+      "RESOURCE_SUMMARY": "Resource Summary"
+    },
+    "RESOURCE_PLAN": {
+      "UPDATE_RESOURCES_BUTTON": "Update Resources",
+      "UPDATE_SUCCESS": "Resource plan was successfully updated"
+    },
+    "RESOURCE_ALLOCATION": {
+      "ADD_PARTICIPANT_MODAL": {
+        "TITLE": "Add Participant",
+        "DESCRIPTION": " Fill in the details to add resource to project",
+        "PARTICIPANT_TYPE_FIELD_LABEL": "Participant Type",
+        "PARTICIPANT_TYPE_FIELD_PLACEHOLDER": "Select a project role",
+        "PARTICIPANT_TYPE_FIELD_OPTIONS": {
+          "MEMBER": "Project Member",
+          "COLLABORATOR": "Project Collaborator"
+        },
+        "PARTICIPANT_ROLE_FIELD_LABEL": "Project Role",
+        "PARTICIPANT_ROLE_FIELD_PLACEHOLDER": "Select a job role to add resource",
+        "PARTICIPANT_START_DATE_FIELD_LABEL": "Start Date",
+        "PARTICIPANT_END_DATE_FIELD_LABEL": "End Date",
+        "PARTICIPANT_END_DATE_FIELD_PLACEHOLDER": "Completion Date",
+        "PARTICIPANT_USER_FIELD_LABEL": "User",
+        "PARTICIPANT_USER_FIELD_PLACEHOLDER": "Select a user",
+        "PARTICIPANT_TOTAL_AVAILABILITY": "Total Availability",
+        "PARTICIPANT_TOTAL_ALLOCATED_HOURS": "Total Allocated Hours",
+        "PARTICIPANT_ESTIMATED_HOURS_NEEDED" :"Estimated hours needed",
+        "PARTICIPANT_ADDED_SUCCESS_MESSAGE": "New participant was succesfully added to the team!",
+        "AVAILABLE": "Available",
+        "HOURS_AVAILABLE": "{hours} h",
+        "TOTAL_ALLOCATION_PLACEHOLDER": "Allocation"
+      },
+      "TABLE": {
+        "OWNERS": "{num, plural, =0 {Owner} =1 {Owners}}",
+        "MEMBERS": "{num, plural, =0 {Member} =1 {Members}}",
+        "COLLABORATORS": "{num, plural, =0 {Collaborator} =1 {Collaborators}}",
+        "EMPTY_OWNERS": "No owner added yet.",
+        "EMPTY_MEMBERS": "No member added yet.",
+        "EMPTY_COLLABORATORS": "No collaborators added yet.",
+        "VIEW_TASKS": "View Tasks",
+        "HIDE_TASKS": "Hide Tasks",
+        "HEADERS": {
+          "PROJECT_TEAM": "Project Team",
+          "PROJECT_ROLE": "Project Role",
+          "ALLOCATION": "{isMember, plural, =0 {Est.} =1 {Total}} Allocation",
+          "TIME_LINE": "Timeline",
+          "PARTICIPANT_TYPE": "Participant Type"
+        },
+        "ALLOCATION_TIME": "{allocation}h",
+        "ALLOCATION_AVAILABILITY": "({availability} avail.)",
+        "ALLOCATION_HOURS": "{hours}hours",
+        "ASSIGNMENT_ESTIMATED_TIME": "Estimated time: {estimated}h",
+        "ASSIGNMENT_ACTUAL_TIME": "Actual time: {hours}h",
+        "COLLABORATOR_ESTIMATED_TIME": "Est. {hours}h total",
+        "ADJUST_ALLOCATION": "Adjust allocation",
+        "UPDATE_ASSIGNMENT": "Update { type } assignment",
+        "ASSIGNMENT_DETAILS": "Assignment details",
+        "ADD_ASSIGNMENT": "Add New Assignment",
+        "NEW_ASSIGNMENT": "New member assignment",
+        "ASSIGNMENT_UPDATED_SUCCESSFULLY": "Project {type} assignment was successfully updated!",
+        "REVIEW_ALLOCATION_WARNING": "You may need to review this user’s allocation.",
+        "REMOVE_USER_WARNING_TOOLTIP": " By removing this role, the user will be removed from the project.",
+        "REMOVE_USER_WARNING": "By removing this role, the user will be removed from the project. Cancel this action if this is not desired.",
+        "NO_ASSIGNMENT": "No assignment",
+        "REMOVE_STARTED_ROLE_WARNING": "Removing this project role will remove the worked hours from the project. To keep record of worked hours, adjust the timeline instead of removing the role.",
+        "REMOVE_STARTED_ROLE_WARNING_TOOLTIP": "Removing this project role will remove the worked hours from the project. To keep record of worked hours, adjust the timeline instead of removing the role.",
+        "TIME_OFF_TOOLTIP": "Time off/Holiday this week"
+      },
+      "UPDATE_WEEKLY_ALLOCATION_MODAL": {
+        "SUCCESS_BANNER": "Project member allocation hours were successfully updated!",
+        "HOUR_LABEL": "h",
+        "TIME_LINE": "Timeline",
+        "PROJECT_ROLE": "Project Role",
+        "HOURS_ALLOCATED": "Hours Allocated",
+        "HOURS_LEFT": "Hours Left"
+      }
+    },
+    "RESOURCE_SUMMARY": {
+      "PAGE_SUB_TITLE": "Total of resources and actual hours for this project. Hours for collaborators are not included.",
+      "PROJECT_ROLE_COLUMN": "Project Role",
+      "NO_OF_RESOURCE_COLUMN": "No. of Resources",
+      "TOTAL_HOURS_COLUMN": "Total Hours Allocated",
+      "TOTAL": "Total"
+    }
   },
   "EMPLOYMENT_TYPE": {
     "FULL_TIME": "Full Time",
@@ -1089,7 +1306,7 @@
   },
   "TEAMS": {
     "TEAM": "Team",
-    "ALLOCATION": "Allocation",
+    "CAPACITY": "Capacity",
     "TABLE": {
       "TEAM_MEMBERS": "Team Members",
       "JOB_TITLE": "Job Title",
@@ -1099,9 +1316,7 @@
     },
     "UPDATE_MENU": {
       "UPDATE_INFO": "Update Information",
-      "VIEW_ALL_PROJECTS": "View All Projects",
-      "MANAGE_TIME_OFF": "Manage Time Off",
-      "REMOVE_MEMBER": "Remove Member"
+      "MANAGE_TIME_OFF": "Manage Time Off"
     },
     "UPDATE_MODAL": {
       "EMAIL_ID": "Email ID",
@@ -1647,15 +1862,15 @@
         "ACCOUNT_STATUS": "Account Status"
       },
       "USER_TYPE": {
-        "LD": "Learning User",
+        "LD": "Learning Team User",
         "BUSINESS": "Business User",
         "EXTERNAL": "External User"
       },
       "USER_STATUS": {
         "REGISTERED": "Active",
         "INVITED": "Invited",
-        "REGISTERED_DISABLED": "Disabled",
-        "INVITED_DISABLED": "Disabled"
+        "DISABLED_REGISTERED": "Disabled",
+        "DISABLED_INVITED": "Disabled"
       },
       "USER_ROLE": {
         "ADMIN": "Admin"
@@ -1699,5 +1914,22 @@
     "ENABLED_NOTIFICATION": "Vendor was successfully enabled.",
     "NOT_UPDATED": "Vendor is missing information and has not been updated.",
     "ENABLE_VENDOR": "Enable vendor"
+  },
+  "QUSTOM_QUESTIONS": {
+    "TEXT": "Text Field",
+    "DROPDOWN": "Dropdown",
+    "RADIO_BUTTON": "Radio button",
+    "CHECKBOX": "Checkbox",
+    "TOGGLE": "Toggle",
+    "URL": "URL",
+    "NUMBER": "Numeric Field",
+    "DATE": "Date Field",
+    "FILE": "File Upload",
+    "RANGE": "Range"
+  },
+  "LICENSE":{
+    "LICENSE_INACTIVE":"You have 0 licenses left. If you create this user their account will be set as <b>disabled.</b>",
+    "LICENSE_REMAINING":"You purchased {purchasedLicense} account licenses - {licensesLeft} licenses left",
+    "LICENSE_ACTIVATION":"This user account cannot be activated without an available license."
   }
 }

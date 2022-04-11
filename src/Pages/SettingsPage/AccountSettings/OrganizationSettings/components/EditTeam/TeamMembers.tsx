@@ -15,10 +15,12 @@ const TeamMembers = ({
   const mapTagColor: objKeyAsString = {
     [USER_STATUS.REGISTERED]: { color: 'positive' },
     [USER_STATUS.REGISTERED_DISABLED]: {
-      className: 'bg-neutral-lighter text-neutral-dark',
+      className: 'bg-neutral-lighter',
+      textClassName: 'text-neutral-dark',
     },
     [USER_STATUS.INVITED_DISABLED]: {
-      className: 'bg-neutral-lighter text-neutral-dark',
+      className: 'bg-neutral-lighter',
+      textClassName: 'text-neutral-dark',
     },
   };
 

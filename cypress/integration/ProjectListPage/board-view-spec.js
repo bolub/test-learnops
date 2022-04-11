@@ -4,7 +4,6 @@ describe('Projects list board view', () => {
   before(() => {
     cy.fixture('constants').then((content) => (constants = content));
     cy.fixture('projects').then((content) => (projects = content));
-    cy.initAmplifyConfiguration();
   });
 
   beforeEach(() => {
@@ -31,14 +30,11 @@ describe('Projects list board view', () => {
         projectsListTable,
       },
     } = projects;
-
-    cy.visit(routes.projectsList);
-
     cy.intercept(api.fetchProjects, projectList).as('teamProjectsList');
     cy.intercept(api.fetchAllProjectProcesses, projectProcesses).as(
       'fetchOrganizationProcesses'
     );
-
+    cy.visit(routes.projectsList);
     cy.wait('@teamProjectsList');
     cy.get(boardViewSwitchButton).should('be.visible').click();
     cy.get(boardView.teamBoard).should('be.visible');
@@ -67,7 +63,7 @@ describe('Projects list board view', () => {
       'fetchOrganizationProcesses'
     );
     cy.visit(routes.projectsList);
-    // cy.wait('@teamProjectsList');
+    cy.wait('@teamProjectsList');
     cy.get(boardViewSwitchButton).should('be.visible').click();
     cy.get(boardView.emptyBoard)
       .should('be.visible')

@@ -46,10 +46,7 @@ const AdditionalDetails = ({
           {intl.get('REQUEST_PAGE.ADDITIONAL_DETAILS.TITLE')}
         </Typography>
 
-        <Typography
-          variant='caption'
-          className='block w-56 mb-4 text-neutral-light'
-        >
+        <Typography variant='caption' className='block mb-4 text-neutral-light'>
           {intl.get('REQUEST_PAGE.ADDITIONAL_DETAILS.CAPTION')}
         </Typography>
       </div>

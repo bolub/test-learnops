@@ -3,6 +3,7 @@ import { TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import { Tab, TabList } from '@getsynapse/design-system';
 import ProjectSettings from './ProjectSettings/ProjectSettings';
 import FormsPage from './components/Forms/FormsPage';
+import GeneralSettings from './GeneralSettings/GeneralSettings';
 
 const PlatformSettings = () => {
   return (
@@ -19,9 +20,11 @@ const PlatformSettings = () => {
         </Tab>
       </TabList>
       <TabPanels className='flex-grow flex flex-col pb-4'>
-        <TabPanel key={0}></TabPanel>
+        <TabPanel key={0} className='flex-grow bg-neutral-white rounded pt-6'>
+          <GeneralSettings />
+        </TabPanel>
 
-        <TabPanel key={1}>
+        <TabPanel key={1} className='mb-12'>
           <FormsPage />
         </TabPanel>
 

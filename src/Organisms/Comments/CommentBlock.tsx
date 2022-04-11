@@ -10,7 +10,7 @@ import moment from 'moment';
 import intl from 'react-intl-universal';
 import { Fragment, useMemo, useState, useEffect } from 'react';
 import { selectUserId } from 'state/User/userSlice';
-import { useAppSelector } from 'state/hooks';
+import { useSelector } from 'react-redux';
 import { QuestionCommentType, ProjectComment } from 'utils/customTypes';
 
 const CommentBlock = ({
@@ -30,7 +30,7 @@ const CommentBlock = ({
 }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [commentContent, setCommentContent] = useState<string>(comment.content);
-  const userId = useAppSelector(selectUserId);
+  const userId = useSelector(selectUserId);
   const isOwner = useMemo(
     () => (comment.author ? comment.author.userId === userId : false),
     [comment?.author, userId]

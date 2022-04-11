@@ -31,4 +31,4 @@ local.log
 /results
 
 #cypress
-# /cypress/screenshots
+/cypress/screenshots

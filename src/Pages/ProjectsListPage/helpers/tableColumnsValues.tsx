@@ -1,8 +1,7 @@
 import intl from 'react-intl-universal';
 import get from 'lodash/get';
-import { PROJECT_STATUS, PROJECT_HEALTH } from 'utils/constants';
+import { PROJECT_STATUS, PROJECT_NUMBER_FORMAT } from 'utils/constants';
 import {
-  ProjectHealth,
   Owner,
   Project,
   ProjectOwner,
@@ -10,7 +9,6 @@ import {
   ProjectParticipant,
   AvatarSize,
 } from 'utils/customTypes';
-import classnames from 'classnames';
 import { Tag, AvatarGroup } from '@getsynapse/design-system';
 import { isEmpty } from 'lodash';
 import UserAvatar from 'Atoms/UserAvatar';
@@ -18,14 +16,38 @@ import UserAvatar from 'Atoms/UserAvatar';
 type keys = keyof typeof PROJECT_STATUS;
 export type ProjectStatus = typeof PROJECT_STATUS[keys];
 
-export const statusStyle: Record<ProjectStatus, string> = {
-  new: 'bg-success-lighter text-success-dark',
-  in_planning: 'bg-warning-lighter text-secondary-darker',
-  in_progress: 'bg-teal-lighter text-teal-dark',
-  completed: 'bg-purple-lighter text-purple-dark',
-  on_hold: 'bg-neutral-lighter text-neutral-darker',
-  canceled: 'bg-error-lighter text-error-dark',
-  closed: 'bg-primary-lighter text-primary-darker',
+export const statusStyle: Record<
+  ProjectStatus,
+  { className: string; textClassName: string }
+> = {
+  new: {
+    className: 'bg-success-lighter',
+    textClassName: 'text-success-dark',
+  },
+  in_planning: {
+    className: 'bg-warning-lighter',
+    textClassName: 'text-secondary-darker',
+  },
+  in_progress: {
+    className: 'bg-teal-lighter',
+    textClassName: 'text-teal-dark',
+  },
+  completed: {
+    className: 'bg-purple-lighter',
+    textClassName: 'text-purple-dark',
+  },
+  on_hold: {
+    className: 'bg-neutral-lighter',
+    textClassName: 'text-neutral-darker',
+  },
+  canceled: {
+    className: 'bg-error-lighter',
+    textClassName: 'text-error-dark',
+  },
+  closed: {
+    className: 'bg-primary-lighter',
+    textClassName: 'text-primary-darker',
+  },
 };
 
 export const getStatusLabel: (status: ProjectStatus) => string = (status) => {
@@ -36,17 +58,35 @@ export const getStatusLabel: (status: ProjectStatus) => string = (status) => {
 export const getStatusColumn = (status: ProjectStatus) => {
   const tagStyle = statusStyle[status];
   const tagLabel = getStatusLabel(status);
-  return <Tag className={`${tagStyle} text-xs`} label={tagLabel} />;
+  return (
+    <Tag
+      className={`${tagStyle.className} text-xs`}
+      textClassName={tagStyle.textClassName}
+      label={tagLabel}
+    />
+  );
+};
+
+export const getResourcingTypeLabel = (type: string | undefined) => {
+  return type
+    ? intl.get(`PROJECT_DETAIL.RESOURCING_TYPE_OPTIONS.${type.toUpperCase()}`)
+    : '';
+};
+
+export const getBudgetSourceLabel = (type: string | undefined) => {
+  return type
+    ? intl.get(`PROJECT_DETAIL.BUDGET_SOURCE_OPTIONS.${type.toUpperCase()}`)
+    : '';
 };
 
 export const getOwnerColumn = (
   owners: Owner[],
-  size: AvatarSize = 'medium',
+  size: AvatarSize = 'small',
   hideName: boolean = false
 ) => {
   if (owners.length === 1) {
     return (
-      <div className='flex items-center justify-items-start'>
+      <div className='flex items-center'>
         <UserAvatar
           size={size}
           user={{
@@ -77,53 +117,6 @@ export const getOwnerColumn = (
         }))}
       />
     );
-  }
-};
-
-export const getHealthColumn = (
-  health: ProjectHealth,
-  className?: string,
-  indicatorClassName?: string
-) => {
-  switch (health) {
-    case PROJECT_HEALTH.OFF_TRACK:
-      return (
-        <div className={classnames('flex items-center', className)}>
-          <div
-            className={classnames(
-              'w-2 h-2 rounded-full bg-error mr-3',
-              indicatorClassName
-            )}
-          />
-          {intl.get('PROJECT_DETAIL.HEALTH_OPTIONS.OFF_TRACK')}
-        </div>
-      );
-    case PROJECT_HEALTH.ON_TRACK:
-      return (
-        <div className={classnames('flex items-center', className)}>
-          <div
-            className={classnames(
-              'w-2 h-2 rounded-full bg-success mr-3',
-              indicatorClassName
-            )}
-          />
-          {intl.get('PROJECT_DETAIL.HEALTH_OPTIONS.ON_TRACK')}
-        </div>
-      );
-    case PROJECT_HEALTH.AT_RISK:
-      return (
-        <div className={classnames('flex items-center', className)}>
-          <div
-            className={classnames(
-              'w-2 h-2 rounded-full bg-warning mr-3',
-              indicatorClassName
-            )}
-          />
-          {intl.get('PROJECT_DETAIL.HEALTH_OPTIONS.AT_RISK')}
-        </div>
-      );
-    default:
-      return '';
   }
 };
 
@@ -177,5 +170,22 @@ export const getValueById = (list: any, name: string, id: string) => {
     return selectedValue[name];
   } else {
     return '';
+  }
+};
+
+export const getProjectNumberColumn = (projectNumber: number | undefined) => {
+  if (!projectNumber) {
+    return '';
+  }
+  const numberLength = projectNumber.toString().length;
+  if (numberLength < 7) {
+    return (
+      PROJECT_NUMBER_FORMAT.FULL.slice(
+        0,
+        PROJECT_NUMBER_FORMAT.FULL.length - numberLength
+      ) + projectNumber
+    );
+  } else {
+    return PROJECT_NUMBER_FORMAT.BASE + projectNumber;
   }
 };

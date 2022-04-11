@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import intl from 'react-intl-universal';
 import moment from 'moment';
+import classnames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Table, Typography, Button } from '@getsynapse/design-system';
+import { Table, Typography, Button, Tooltip } from '@getsynapse/design-system';
 import {
   selectLDUsers,
   getLDUsers,
@@ -20,7 +21,8 @@ const ProjectFilesTable: React.FC<{
   files: ProjectFile[];
   onRemoveFile: (files: ProjectFile[], successMessage: string) => void;
   projectId: string;
-}> = ({ files, onRemoveFile, projectId }) => {
+  isUserProjectParticipant?: boolean;
+}> = ({ files, onRemoveFile, projectId, isUserProjectParticipant = true }) => {
   const dispatch = useDispatch();
   const ldUsers = useSelector(selectLDUsers);
   const projectTasks = useSelector(selectAllTasks);
@@ -81,6 +83,40 @@ const ProjectFilesTable: React.FC<{
       }
     }
     return taskNamesList;
+  };
+
+  const generateDownloadFileLink = (file: ProjectFile) => {
+    return (
+      <Tooltip
+        trigger={
+          <a
+            href={file.metadata.cloudFrontURL || file.metadata.url}
+            target='_blank'
+            className='text-primary'
+            rel='noreferrer'
+            download={file.metadata.filename}
+          >
+            {file.metadata.filename}
+          </a>
+        }
+        openMode='hover2'
+        timeout={0}
+        ariaId='budget-notes-info'
+        position='topCenter'
+        contentProps={{
+          className: classnames(
+            'bg-neutral-darker shadow-tooltip',
+            'rounded-lg px-4 py-2',
+            'w-max absolute',
+            'text-body'
+          ),
+        }}
+      >
+        <span>
+          {intl.get('PROJECT_DETAIL.FILES_TAB.TABLE.DOWNLOAD_TOOLTIP')}
+        </span>
+      </Tooltip>
+    );
   };
 
   return (
@@ -158,7 +194,7 @@ const ProjectFilesTable: React.FC<{
                       {file.metadata.filename}
                     </a>
                   ) : (
-                    file.metadata.filename
+                    generateDownloadFileLink(file)
                   ),
               },
               {
@@ -174,7 +210,7 @@ const ProjectFilesTable: React.FC<{
                 content: getLinkedTasksList(file.linkedTasks),
               },
               {
-                content: (
+                content: isUserProjectParticipant ? (
                   <Button
                     variant='tertiary'
                     size='small'
@@ -190,7 +226,7 @@ const ProjectFilesTable: React.FC<{
                       ? intl.get('PROJECT_DETAIL.FILES_TAB.TABLE.UNLINK')
                       : intl.get('PROJECT_DETAIL.FILES_TAB.TABLE.DELETE')}
                   </Button>
-                ),
+                ) : null,
                 className: 'w-20',
               },
             ],

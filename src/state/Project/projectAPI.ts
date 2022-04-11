@@ -1,7 +1,11 @@
 import { AxiosInstance } from 'axios';
 import config from 'config/Config';
 import { initAxios } from 'utils/axios';
-import { ProjectStatus } from 'utils/customTypes';
+import {
+  ProjectStatus,
+  NewProjectParticipant,
+  NewProjectCollaborator,
+} from 'utils/customTypes';
 
 class ProjectAPI {
   instance: AxiosInstance;
@@ -11,6 +15,13 @@ class ProjectAPI {
 
   fetchProject = async (projectId: string) => {
     const { data } = await this.instance.get(`project/${projectId}`);
+    return data;
+  };
+
+  fetchAllocationSummary = async (projectId: string) => {
+    const { data } = await this.instance.get(
+      `project/${projectId}/allocationSummary`
+    );
     return data;
   };
 
@@ -52,6 +63,43 @@ class ProjectAPI {
       status: data.status,
       hold_reason: data.hold_reason,
     });
+    return response.data.data;
+  };
+
+  addProjectParticipant: (
+    projectId: string,
+    newParticipantData: NewProjectParticipant
+  ) => Promise<any> = async (projectId, newParticipantData) => {
+    const response = await this.instance.post(
+      `project/${projectId}/participants`,
+      { newParticipantData }
+    );
+    return response.data.data;
+  };
+
+  addProjectCollaborator: (
+    projectId: string,
+    newCollaboratorData: NewProjectCollaborator
+  ) => Promise<any> = async (projectId, newCollaboratorData) => {
+    const response = await this.instance.post(
+      `project/${projectId}/collaborators`,
+      newCollaboratorData
+    );
+    return response.data.data;
+  };
+
+  fetchParticipantAvailability: (
+    userId: string,
+    timeFrameStartDate: string,
+    timeFrameEndDate: string
+  ) => Promise<any> = async (userId, timeFrameStartDate, timeFrameEndDate) => {
+    const response = await this.instance.post(
+      `project/participants/userAvailability/${userId}`,
+      {
+        timeFrameStartDate,
+        timeFrameEndDate,
+      }
+    );
     return response.data.data;
   };
 }

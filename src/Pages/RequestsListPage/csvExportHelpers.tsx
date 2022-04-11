@@ -3,6 +3,7 @@ import { get } from 'lodash';
 import moment from 'moment';
 import { DATE } from 'utils/constants';
 import { isNotEmptyArray } from '../helpers';
+import { formatRequestIdentifier } from 'Pages/helpers';
 
 const generateCsvHeaders = (isLdUser: boolean) => {
   let csvHeaders = [
@@ -23,6 +24,11 @@ const generateCsvHeaders = (isLdUser: boolean) => {
       0,
       intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.BUSINESS_UNIT')
     );
+    csvHeaders.splice(
+      csvHeaders.length,
+      0,
+      intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.PRIORITY')
+    );
   }
   if (!isLdUser) {
     csvHeaders.splice(
@@ -37,11 +43,8 @@ const generateCsvHeaders = (isLdUser: boolean) => {
 const generateCsvData = (requests: any[], isLdUser: boolean) => {
   const csvArray = requests.map((request) => {
     const reqIdentifierObj = {
-      [intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.REQUEST_NO')]: get(
-        request,
-        'requestIdentifier',
-        ''
-      ),
+      [intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.REQUEST_NO')]:
+        formatRequestIdentifier(get(request, 'requestIdentifier')!),
     };
     const businessUserObj = {
       [intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.REQUESTER_NAME')]:
@@ -74,6 +77,15 @@ const generateCsvData = (requests: any[], isLdUser: boolean) => {
         ''
       ),
     };
+    const priorityObj = {
+      [intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.PRIORITY')]: intl.get(
+        `REQUEST_PAGE.L_D_SECTION.PRIORITY_OPTIONS.${get(
+          request,
+          'ldPriority',
+          'unassigned'
+        )}`
+      ),
+    };
     const businessUnitObj = {
       [intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.BUSINESS_UNIT')]: get(
         request,
@@ -90,10 +102,10 @@ const generateCsvData = (requests: any[], isLdUser: boolean) => {
           owner: { data: { firstName: any; lastName: any } },
           currentIndex: number
         ) => {
-          let result = `${owner.data.firstName} ${owner.data.lastName} `;
+          let result = `${owner.data.firstName} ${owner.data.lastName}`;
           res =
             reqOwners.length - 1 !== currentIndex
-              ? res.concat(result).concat(' ,')
+              ? res.concat(result).concat(', ')
               : res.concat(result);
           return res;
         },
@@ -110,6 +122,7 @@ const generateCsvData = (requests: any[], isLdUser: boolean) => {
           ...businessUserObj,
           ...businessUnitObj,
           ...statusObj,
+          ...priorityObj,
         }
       : {
           ...reqIdentifierObj,

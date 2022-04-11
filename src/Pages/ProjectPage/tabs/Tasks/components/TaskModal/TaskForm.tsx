@@ -1,13 +1,10 @@
 import intl from 'react-intl-universal';
-import { ChangeEvent, useMemo, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  getLDUsers,
-  selectLDUsers,
-} from 'state/UsersManagement/usersManagementSlice';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Option, UserOption, Task } from 'utils/customTypes';
 import { TASK_FIELDS, TASK_TYPES } from 'utils/constants';
 import isEmpty from 'lodash/isEmpty';
+import { getAvailableUsersForTaskAssignees } from 'state/SingleTask/singleTaskSlice';
 import {
   Datepicker,
   Dropdown,
@@ -34,29 +31,7 @@ const TaskForm: React.FC<{
   setCanCreateTask,
   setTaskFields = () => {},
 }) => {
-  const dispatch = useDispatch();
-  const ldUsersSelector = useSelector(selectLDUsers);
-
-  useEffect(() => {
-    dispatch(getLDUsers());
-  }, [dispatch]);
-
-  const ldUsers = useMemo(
-    () =>
-      ldUsersSelector.map((user) => {
-        return {
-          label: `${user.data.firstName} ${user.data.lastName}`,
-          avatar: {
-            imageSrc: user.avatar_url,
-            initial: `${user.data.firstName.charAt(
-              0
-            )}${user.data.lastName.charAt(0)}`,
-          },
-          value: user.id,
-        };
-      }),
-    [ldUsersSelector]
-  );
+  const availableUsers = useSelector(getAvailableUsersForTaskAssignees);
 
   const getInitialValueForDropDown = (
     options: Option[],
@@ -119,7 +94,8 @@ const TaskForm: React.FC<{
   };
 
   useEffect(() => {
-    const { description, estimate_hours, ...toCheck } = fieldsValues;
+    const { description, estimate_hours, assignedUserIds, ...toCheck } =
+      fieldsValues;
     if (!Object.values(toCheck).some((value) => checkEmpty(value))) {
       !canCreateTask && setCanCreateTask(true);
     } else {
@@ -138,7 +114,7 @@ const TaskForm: React.FC<{
       <div className='mt-4 flex w-full gap-x-10 px-px'>
         <div className='grid gap-y-4 w-2/4'>
           <FormItem
-            labelPurops={{ required: true }}
+            labelProps={{ required: true }}
             label={intl.get('TASKS.ADD_TASK_MODAL.TASK_TITLE')}
           >
             <TextField
@@ -243,13 +219,12 @@ const TaskForm: React.FC<{
           <FormItem
             label={intl.get('TASKS.ADD_TASK_MODAL.TASK_ASSIGNEE')}
             className='text-primary-light font-medium mt-4'
-            labelProps={{ required: true }}
           >
             <UsersPicker
               triggerText={intl.get(
                 'TASKS.ADD_TASK_MODAL.TASK_ASSIGNEE_PLACEHOLDER'
               )}
-              usersList={ldUsers}
+              usersList={availableUsers}
               triggerProps={{
                 'data-cy': 'user_picker',
               }}

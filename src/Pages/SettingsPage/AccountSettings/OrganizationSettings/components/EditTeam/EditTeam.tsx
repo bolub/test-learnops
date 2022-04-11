@@ -34,13 +34,16 @@ import {
   setNotificationTimeout,
 } from 'state/InlineNotification/inlineNotificationSlice';
 import { getLDUsers } from 'state/UsersManagement/usersManagementSlice';
+import Divider from 'Atoms/Divider';
 
 const EditTeam = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { teamType, teamId } =
-    useParams<{ teamType: string; teamId: string }>();
+  const { teamType, teamId } = useParams<{
+    teamType: string;
+    teamId: string;
+  }>();
 
   const [disableSave, setDisableSave] = useState<boolean>(true);
   const [teamUpdatedFields, setTeamUpdatedFields] = useState<
@@ -170,7 +173,7 @@ const EditTeam = () => {
               handleChangeField={handleChangeField}
               hasError={hasError}
             />
-            <hr className='mt-10 text-neutral-lighter' />
+            <Divider />
             <TeamMembers data={teamMembers} isBusinessTeam={isBusinessTeam} />
           </div>
           <EditTeamFooter disableSave={disableSave} onUpdate={onUpdate} />

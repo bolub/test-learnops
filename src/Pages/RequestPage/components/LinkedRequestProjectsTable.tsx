@@ -10,13 +10,34 @@ const LinkedRequestProjectsTable: React.FC<{
 }> = ({ projectsList, unLinkProject }) => {
   type keys = keyof typeof PROJECT_STATUS;
   type ProjectStatus = typeof PROJECT_STATUS[keys];
-  const statusStyle: Record<ProjectStatus, string> = {
-    new: 'bg-success-lighter text-success-dark',
-    in_planning: 'bg-warning-lighter text-secondary-darker',
-    in_progress: 'bg-teal-lighter text-teal-dark',
-    completed: 'bg-purple-lighter text-purple-dark',
-    on_hold: 'bg-neutral-lighter text-neutral-darker',
-    canceled: 'bg-error-lighter text-error-dark',
+  const statusStyle: Record<
+    ProjectStatus,
+    { className: string; textClassName: string }
+  > = {
+    new: {
+      className: 'bg-success-lighter',
+      textClassName: 'text-success-dark',
+    },
+    in_planning: {
+      className: 'bg-warning-lighter',
+      textClassName: 'text-secondary-darker',
+    },
+    in_progress: {
+      className: 'bg-teal-lighter',
+      textClassName: 'text-teal-dark',
+    },
+    completed: {
+      className: 'bg-purple-lighter',
+      textClassName: 'text-purple-dark',
+    },
+    on_hold: {
+      className: 'bg-neutral-lighter',
+      textClassName: 'text-neutral-darker',
+    },
+    canceled: {
+      className: 'bg-error-lighter',
+      textClassName: 'text-error-dark',
+    },
   };
 
   const getStatusLabel: (status: ProjectStatus) => string = (status) => {
@@ -72,7 +93,8 @@ const LinkedRequestProjectsTable: React.FC<{
                 </td>
                 <td className='py-1 px-2 shadow-column'>
                   <Tag
-                    className={`${tagStyle} text-xs`}
+                    className={`${tagStyle.className} text-xs`}
+                    textClassName={tagStyle.textClassName}
                     label={tagLabel}
                     data-cy={`project-${project.id}-status`}
                   />

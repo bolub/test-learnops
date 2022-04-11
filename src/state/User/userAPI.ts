@@ -22,6 +22,16 @@ class UserAPI {
     });
     return data;
   };
+
+  getUserBasicInfo = async (userId: string) => {
+    const { data } = await this.instance.get(`user/basicInfo/${userId}`);
+    return data;
+  };
+
+  setRegistered = async (userId: string) => {
+    const { data } = await this.instance.put(`user/setRegistered/${userId}`);
+    return data;
+  };
 }
 
 export default new UserAPI();

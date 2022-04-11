@@ -1,5 +1,5 @@
 import { useElevation } from '@getsynapse/design-system';
-import MoreActionsDropdown from './MoreActionsDropdown';
+import TeamActions from './TeamActions';
 import { BusinessTeam, LearningTeam } from 'utils/customTypes';
 
 const EditTeamHeader = ({
@@ -16,7 +16,7 @@ const EditTeamHeader = ({
       <div
         className={`${elevationClass} h-12 flex items-center justify-end p-2`}
       >
-        <MoreActionsDropdown isBusinessTeam={isBusinessTeam} team={team} />
+        <TeamActions isBusinessTeam={isBusinessTeam} team={team} />
       </div>
     </div>
   );

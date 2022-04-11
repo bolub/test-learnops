@@ -11,6 +11,7 @@ import {
   setLDTeamsFilters,
 } from 'state/Teams/teamsSlice';
 import TeamsTable from './components/TeamsTable';
+import CapacityPage from './components/CapacityPage/CapacityPage';
 
 const TeamsPage = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,10 @@ const TeamsPage = () => {
           type='tab'
           data={[
             {
+              label: intl.get('TEAMS.CAPACITY'),
+              content: <CapacityPage />,
+            },
+            {
               label: intl.get('TEAMS.TEAM'),
               content: (
                 <Fragment>
@@ -49,10 +54,6 @@ const TeamsPage = () => {
                   />
                 </Fragment>
               ),
-            },
-            {
-              label: intl.get('TEAMS.ALLOCATION'),
-              content: <div />,
             },
           ]}
         />

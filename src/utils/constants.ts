@@ -18,8 +18,11 @@ export const PATHS = {
   SETTINGS: '/settings',
   EDIT_TEAM: '/settings/team',
   USER_PAGE: '/settings/user',
+  FORM_PAGE: '/form',
   VENDOR_PAGE: '/settings/vendor',
-  FORMS_PAGE: '/forms',
+  DEACTIVATED_ACCOUNT: '/deactivated',
+  PASSWORD_SETUP: '/password-setup',
+  VERIFY_USER: '/verify',
 };
 
 export const FOOTER = {
@@ -58,12 +61,6 @@ export const USER_TYPES = {
   EXTERNAL: 'external',
   L_D: 'ld',
   ALL: 'bus_ld',
-};
-
-export const USER_TYPE_TEXT: objKeyAsString = {
-  BUSINESS: 'Business User',
-  LD: 'Learning User',
-  EXTERNAL: 'External User',
 };
 
 export const USER_ROLES = {
@@ -164,6 +161,8 @@ export const REQUEST_PROPERTIES = {
   REQUEST_OWNER: 'requestOwner',
   REQUEST_DESC: 'requestDescription',
   COMPLIANCE: 'compliance',
+  EXECUTIVE_SPONSORS: 'executive_stakeholder',
+  PRIORITY: 'priority',
 };
 
 export const REQUEST_STATUS = {
@@ -175,10 +174,14 @@ export const REQUEST_STATUS = {
   CANCELED: 'canceled',
 };
 
-export const REQUEST_LD_PRIORITY = {
+export const REQUEST_PRIORITY = {
   HIGH: 'high',
   MEDIUM: 'medium',
   LOW: 'low',
+} as const;
+
+export const REQUEST_LD_PRIORITY = {
+  ...REQUEST_PRIORITY,
   UNASSIGNED: 'unassigned',
 } as const;
 
@@ -312,25 +315,33 @@ export const PROJECTS_TABLE_COLUMNS = {
   RESOURCING_TYPE: 'RESOURCING_TYPE',
   BUGGET_SOURCE: 'BUGGET_SOURCE',
   PROCESS_STAGE: 'PROCESS_STAGE',
+  PROJECT_STAGE: 'PROJECT_STAGE',
   HEALTH: 'HEALTH',
   PROJECT_ROLE: 'PROJECT_ROLE',
 };
+
+export const NEW_PROJECT_NONREQUIRED_ENUM_FIELDS = [
+  'priority',
+  'resourcing_type',
+  'budget_source',
+];
 
 export const TEAM_PROJECTS_TABLE_COLUMNS = [
   PROJECTS_TABLE_COLUMNS.PROJECT_NUMBER,
   PROJECTS_TABLE_COLUMNS.PROJECT_NAME,
   PROJECTS_TABLE_COLUMNS.STATUS,
-  PROJECTS_TABLE_COLUMNS.BUSINESS_UNIT,
-  PROJECTS_TABLE_COLUMNS.PROJECT_CATEGORY,
   PROJECTS_TABLE_COLUMNS.PRIORITY,
   PROJECTS_TABLE_COLUMNS.PROJECT_OWNER,
+  PROJECTS_TABLE_COLUMNS.HEALTH,
+  PROJECTS_TABLE_COLUMNS.BUSINESS_UNIT,
+  PROJECTS_TABLE_COLUMNS.PROJECT_CATEGORY,
   PROJECTS_TABLE_COLUMNS.START_DATE,
   PROJECTS_TABLE_COLUMNS.TARGET_COMPLETION_DATE,
   PROJECTS_TABLE_COLUMNS.ACTUAL_COMPLETION_DATE,
   PROJECTS_TABLE_COLUMNS.RESOURCING_TYPE,
   PROJECTS_TABLE_COLUMNS.BUGGET_SOURCE,
   PROJECTS_TABLE_COLUMNS.PROCESS_STAGE,
-  PROJECTS_TABLE_COLUMNS.HEALTH,
+  PROJECTS_TABLE_COLUMNS.PROJECT_STAGE,
 ];
 
 export const USER_PROJECTS_TABLE_COLUMNS = [
@@ -400,6 +411,11 @@ export const PROJECTS_TABLE_FILTER_OPTIONS = {
   },
   PROCESS_STAGE: {
     value: 'process',
+    operators: STRING_COMPARATOR,
+    type: COLUMN_OPTION_TYPES.TEXT,
+  },
+  PROJECT_STAGE: {
+    value: 'stage',
     operators: STRING_COMPARATOR,
     type: COLUMN_OPTION_TYPES.TEXT,
   },
@@ -539,6 +555,7 @@ export const PROJECT_USER_ROLE = {
 export const SLICE_STATUS = {
   IDLE: 'idle',
   LOADING: 'loading',
+  UPDATING: 'updating',
   FAILED: 'failed',
 } as const;
 
@@ -569,9 +586,7 @@ export const FILE_SIZE_UNITS = [
 
 export const UPDATE_MEMBER_OPTIONS = [
   'UPDATE_INFO',
-  'VIEW_ALL_PROJECTS',
   'MANAGE_TIME_OFF',
-  'REMOVE_MEMBER',
 ] as const;
 
 export const EMPLOYMENT_TYPE = [
@@ -865,8 +880,8 @@ export const LANGUAGES = [
 export const USER_STATUS = {
   REGISTERED: 'registered',
   INVITED: 'invited',
-  REGISTERED_DISABLED: 'registered_disabled',
-  INVITED_DISABLED: 'invited_disabled',
+  REGISTERED_DISABLED: 'disabled_registered',
+  INVITED_DISABLED: 'disabled_invited',
 };
 
 export const COUNTRIES = [
@@ -1259,6 +1274,14 @@ export const TASKS_MORE_ACTIONS = {
   DELETE: 'DELETE',
 };
 
+export const TEAM_ACTIONS = {
+  DELETE: 'DELETE',
+};
+
+export const USER_ACTIONS = {
+  NOTIFY: 'NOTIFY',
+};
+
 export const PROJECT_PROCESS_FIELDS = {
   PROCESS_NAME: 'processName',
   DESCRIPTION: 'description',
@@ -1288,8 +1311,66 @@ export const FORMS_FILTER_OPTIONS = {
 
 export const CREATE_TEAM_FORM = 'create_team_form';
 
+export const FORMS_TABLE_OPTIONS = ['DUPLICATE', 'DELETE'] as const;
+
+export const PROJECT_PEOPLE_TABS: objKeyAsString = {
+  RESOURCE_PLAN: 'resourcePlan',
+  RESOURCE_ALLOCATION: 'resourceAllocation',
+  RESOURCE_SUMMARY: 'resourceSummary',
+};
+
+export const PROJECT_PARTICIPANT_TYPE: objKeyAsString = {
+  NOT_PARTICIPANT: 'not participant',
+  OWNER: 'owner',
+  MEMBER: 'member',
+  COLLABORATOR: 'collaborators',
+};
+
+export const NEW_PROJECT_PARTICIPANT_FIELDS: objKeyAsString = {
+  USER_ID: 'userId',
+  PROJECT_ID: 'projectLearnOpId',
+  START_DATE: 'startDate',
+  END_DATE: 'endDate',
+  JOB_ROLE: 'job_role',
+  TYPE: 'type',
+  HOURS_ASSIGNED: 'hoursAssigned',
+  ESTIMATED_HOURS: 'estimatedHours',
+};
+
+export const PROJECT_PARTICIPANT_ROLE = [
+  'Instructional designer',
+  'Learning Developer',
+  'Content Writer',
+  'Trainer',
+  'Project Manager',
+  'Reporting Analyst',
+  'Training Coordinator',
+  'LMS Admin/Support',
+  'Program Manager',
+  'SME',
+  'Reviewer',
+];
+
 export const BUDGET_DETAILS_FIELDS = {
   ALLOCATED_BUDGET: 'allocated_budget',
   NOTES: 'notes',
   COST_TO_DATE: 'cost_to_date',
+};
+
+export const RESOURCE_ALLOCATION_TABLE_SECTIONS = {
+  OWNERS: 'OWNERS',
+  MEMBERS: 'MEMBERS',
+  COLLABORATORS: 'COLLABORATORS',
+};
+
+export const PROJECT_OWNER = 'Project Owner';
+
+export const LICENSE_TIER = {
+  TRIAL: 'trial',
+  REGULAR: 'regular',
+} as const;
+
+export const PROJECT_NUMBER_FORMAT = {
+  BASE: 'P',
+  FULL: 'P000000',
 };

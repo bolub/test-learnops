@@ -1,9 +1,9 @@
-import { AllUsersType, LDTeam, objKeyAsString } from 'utils/customTypes';
+import { AllUsersType, objKeyAsString } from 'utils/customTypes';
 import { Table, Tag } from '@getsynapse/design-system';
 import UsersTableHead from './UsersTableHead';
 import intl from 'react-intl-universal';
 import get from 'lodash/get';
-import { USER_STATUS, USER_ROLES, PATHS, USER_TYPES } from 'utils/constants';
+import { USER_STATUS, USER_ROLES, PATHS } from 'utils/constants';
 import { useHistory, Link } from 'react-router-dom';
 import { Fragment } from 'react';
 import UserAvatar from 'Atoms/UserAvatar';
@@ -21,17 +21,13 @@ const UsersTable = ({ data, handleSort }: UsersTableProps) => {
       color: 'warning',
     },
     [USER_STATUS.REGISTERED_DISABLED]: {
-      className: 'bg-neutral-lighter text-neutral-dark',
+      className: 'bg-neutral-lighter',
+      textClassName: 'text-neutral-dark',
     },
     [USER_STATUS.INVITED_DISABLED]: {
-      className: 'bg-neutral-lighter text-neutral-dark',
+      className: 'bg-neutral-lighter',
+      textClassName: 'text-neutral-dark',
     },
-  };
-
-  const getLDTeams = (user: AllUsersType) => {
-    const registeredTeams = get(user, 'registeredLearningTeams');
-    const teamsArray = registeredTeams.map((team: LDTeam) => team.name);
-    return teamsArray.join(', ');
   };
 
   return (
@@ -70,7 +66,8 @@ const UsersTable = ({ data, handleSort }: UsersTableProps) => {
                         label={intl.get(
                           `USERS_PAGE.TABLE.USER_ROLE.${user.role.toUpperCase()}`
                         )}
-                        className='bg-secondary-lighter text-secondary-darker absolute right-0'
+                        className='bg-secondary-lighter absolute right-0'
+                        textClassName='text-secondary-darker'
                       />
                     )}
                   </Link>
@@ -84,12 +81,7 @@ const UsersTable = ({ data, handleSort }: UsersTableProps) => {
                 className: 'leading-4',
               },
               {
-                content:
-                  user.type === USER_TYPES.BUSINESS
-                    ? get(user, 'businessTeams.title')
-                    : user.type === USER_TYPES.L_D
-                    ? getLDTeams(user)
-                    : '-',
+                content: get(user, 'team'),
                 className: 'leading-4',
               },
               {

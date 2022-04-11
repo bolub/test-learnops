@@ -13,7 +13,6 @@ import {
   selectPropertiesComments,
 } from 'state/RequestComments/requestCommentsSlice';
 import { selectUserId, selectUserType } from 'state/User/userSlice';
-import { useAppSelector } from 'state/hooks';
 import { REQUEST_STATUS, USER_TYPES } from 'utils/constants';
 import {
   Request,
@@ -24,6 +23,7 @@ import {
 } from 'utils/customTypes';
 import PendingCancellationBanner from './components/PendingCancellationBanner';
 import { RequestContext } from './RequestPage';
+import classnames from 'classnames';
 
 type Props = {
   activeTabIndex: RequestPageTabs;
@@ -36,6 +36,7 @@ type Props = {
   setOwners?: React.Dispatch<React.SetStateAction<string[]>>;
   questionIdParam?: string;
   propertyNameParam?: string;
+  requestDataStatus?: string;
 };
 
 const DetailsPage = ({
@@ -49,13 +50,14 @@ const DetailsPage = ({
   setOwners = () => {},
   questionIdParam = '',
   propertyNameParam = '',
+  requestDataStatus = '',
 }: Props) => {
   const dispatch = useDispatch();
   const [showComment, setShowComment] = useState(false);
   const propertiesComments = useSelector(selectPropertiesComments);
   const requestId = requestData.id!;
-  const userId = useAppSelector(selectUserId);
-  const userType = useAppSelector(selectUserType);
+  const userId = useSelector(selectUserId);
+  const userType = useSelector(selectUserType);
   const [questionId, setQuestionId] = useState(questionIdParam);
   const [propertyName, setPropertyName] = useState(propertyNameParam);
 
@@ -209,13 +211,19 @@ const DetailsPage = ({
   };
 
   return (
-    <div>
-      <TopBar
-        toggleComment={toggleComment}
-        showComment={showComment}
-        requestData={requestData}
-        isOwner={isOwner}
-      />
+    <div
+      className={classnames({
+        'py-12': requestDataStatus === REQUEST_STATUS.DRAFT,
+      })}
+    >
+      {requestDataStatus !== REQUEST_STATUS.DRAFT && (
+        <TopBar
+          toggleComment={toggleComment}
+          showComment={showComment}
+          requestData={requestData}
+          isOwner={isOwner}
+        />
+      )}
       <div className='mt-4 mb-3.5 px-4' data-cy='details-tabs'>
         <Tabs
           tabListProps={{ className: 'sticky top-20 bg-neutral-white z-5' }}

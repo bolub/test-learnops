@@ -1,7 +1,8 @@
 {
   "selectors": {
     "tabs": {
-      "allocationTab": "[data-testid=tab-1]"
+      "allocationTab": "[data-testid=tab-1]",
+      "summaryTab": "[data-testid=tab-2]"
     },
     "addParticipantButton": "[data-cy=add-participant-button]",
     "participantModal": {
@@ -17,6 +18,11 @@
         "saveButton": "[data-cy=confirm-button]",
         "cancelButton": "[data-cy=cancel-button]"
       }
+    },
+    "resourceSummaryTab": {
+      "summaryTable": "[data-cy=resource-summary-table]",
+      "totalHours": "[data-cy=resource-summary-total-hours]",
+      "totalReource": "[data-cy=resource-summary-total-resource]"
     }
   },
   "constantTexts": {

@@ -20,6 +20,7 @@ import {
   REQUEST_PROPERTIES,
   REQUEST_STATUS,
   REQUEST_SECTIONS,
+  REQUEST_PRIORITY,
 } from 'utils/constants';
 import {
   newPropertyCommentType,
@@ -36,11 +37,13 @@ import {
   getLDUsers,
   selectLDUsers,
 } from 'state/UsersManagement/usersManagementSlice';
+import { getOrganization } from 'state/Teams/teamsSlice';
 import {
-  getOrganization,
-  selectFormattedBusinessTeams,
-} from 'state/Teams/teamsSlice';
+  selectBusinessTeamsForDropdown,
+  getBusinessTeams,
+} from 'state/BusinessTeams/businessTeamsSlice';
 import { selectUserId } from 'state/User/userSlice';
+import { formatRequestIdentifier } from 'Pages/helpers';
 
 type UserOption = {
   label: string;
@@ -90,7 +93,7 @@ const BasicDetails = ({
   const userId = useSelector(selectUserId);
   const isRequestOwner = requestData.owners?.some((user) => user.id === userId);
   const ldUsersSelector = useSelector(selectLDUsers);
-  const businessTeams = useSelector(selectFormattedBusinessTeams);
+  const businessTeams = useSelector(selectBusinessTeamsForDropdown);
 
   const ldUsers = useMemo(
     () =>
@@ -121,17 +124,21 @@ const BasicDetails = ({
     dispatch(getOrganization());
   }, [dispatch, isRequestOwner]);
 
-  const onTitleChange = debounce((value: string) => {
-    setUpdatedReqData((prevState: UpdateReqData) => {
-      return {
+  useEffect(() => {
+    dispatch(getBusinessTeams());
+  }, [dispatch]);
+
+  const onChange = debounce(
+    (path: string, value: string | boolean) =>
+      setUpdatedReqData((prevState: UpdateReqData) => ({
         ...prevState,
         requestAttributes: {
           ...prevState.requestAttributes,
-          title: value,
+          [path]: value,
         },
-      };
-    });
-  }, 500);
+      })),
+    500
+  );
 
   const onDeleteComment = (commentId: string, propertykey: string) => {
     dispatch(deletePropertiesComment({ commentId, propertykey }));
@@ -163,27 +170,12 @@ const BasicDetails = ({
     setOwners(ownersIds);
   };
 
-  const changeBusinessUnit = (option: any) => {
-    setUpdatedReqData((prevState: UpdateReqData) => {
-      return {
-        ...prevState,
-        requestAttributes: {
-          ...prevState.requestAttributes,
-          business_team_id: option.value,
-        },
-      };
-    });
-  };
-
   return (
     <div data-cy='basic-details'>
       <Typography variant='h5' className='mt-8'>
         {intl.get('REQUEST_PAGE.BASIC_DETAILS.TITLE')}
       </Typography>
-      <Typography
-        variant='caption'
-        className='block w-56 mb-4 text-neutral-light'
-      >
+      <Typography variant='caption' className='block mb-4 text-neutral-light'>
         {intl.get('REQUEST_PAGE.BASIC_DETAILS.CAPTION')}
       </Typography>
 
@@ -271,10 +263,13 @@ const BasicDetails = ({
               disabled
               variant='text'
               length='medium'
-              defaultValue={requestData.requestIdentifier}
+              defaultValue={formatRequestIdentifier(
+                requestData.requestIdentifier!
+              )}
               data-cy='field__request-number'
             />
           </div>
+
           <div>
             <div className='relative'>
               {showComment && (
@@ -313,11 +308,14 @@ const BasicDetails = ({
                   ]}
                   triggerProps={{ 'data-cy': 'field__business-unit' }}
                   disabled={disableFields}
-                  onChange={changeBusinessUnit}
+                  onChange={(option) =>
+                    onChange('business_team_id', option.value)
+                  }
                 />
               </FormItem>
             </div>
           </div>
+
           <div>
             <div className='relative'>
               {showComment && (
@@ -345,7 +343,10 @@ const BasicDetails = ({
                   'REQUEST_PAGE.BASIC_DETAILS.FIELDS.REQUEST_TITLE'
                 )}
                 data-cy='label__request-title'
-                labelProps={{ state: hasError ? 'error' : 'default' }}
+                labelProps={{
+                  required: true,
+                  state: hasError ? 'error' : 'default',
+                }}
               >
                 <TextField
                   variant='text'
@@ -354,7 +355,7 @@ const BasicDetails = ({
                     if (e.target.value !== '') {
                       setErrors(false);
                     }
-                    onTitleChange(e.target.value);
+                    onChange('title', e.target.value);
                   }}
                   defaultValue={requestData.title}
                   data-cy='field__request-title'
@@ -366,6 +367,177 @@ const BasicDetails = ({
                           'REQUEST_PAGE.BASIC_DETAILS.ERRORS.MISSING_INPUT'
                         )
                       : ''
+                  }
+                />
+              </FormItem>
+            </div>
+          </div>
+
+          <div>
+            <div className='relative'>
+              {showComment && (
+                <Comments
+                  comments={getPropertyComments(
+                    propertiesComments,
+                    REQUEST_PROPERTIES.EXECUTIVE_SPONSORS
+                  )}
+                  className={classnames('absolute', 'right-0')}
+                  onEdit={onEditComment}
+                  onDelete={(commentId) =>
+                    onDeleteComment(
+                      commentId,
+                      REQUEST_PROPERTIES.EXECUTIVE_SPONSORS
+                    )
+                  }
+                  onCreate={(content) =>
+                    onCreateComment(
+                      content,
+                      REQUEST_PROPERTIES.EXECUTIVE_SPONSORS
+                    )
+                  }
+                  testId='request-sponsors'
+                  isPopupOpen={
+                    propertyNameParam === REQUEST_PROPERTIES.EXECUTIVE_SPONSORS
+                  }
+                />
+              )}
+              <FormItem
+                label={intl.get(
+                  'REQUEST_PAGE.BASIC_DETAILS.FIELDS.EXECUTIVE_SPONSOR'
+                )}
+                data-cy='label__request-sponsors'
+              >
+                <TextField
+                  variant='text'
+                  length='medium'
+                  onChange={(e: { target: { value: string } }) => {
+                    onChange(
+                      REQUEST_PROPERTIES.EXECUTIVE_SPONSORS,
+                      e.target.value
+                    );
+                  }}
+                  defaultValue={requestData.executive_stakeholder}
+                  placeholder={intl.get(
+                    'SETTINGS_PAGE.FORMS.DESIGN.ENTER_SPONSOR'
+                  )}
+                  data-cy='field__request-sponsors'
+                  disabled={disableFields}
+                />
+              </FormItem>
+            </div>
+          </div>
+
+          <div>
+            <div className='relative'>
+              {showComment && (
+                <Comments
+                  comments={getPropertyComments(
+                    propertiesComments,
+                    REQUEST_PROPERTIES.COMPLIANCE
+                  )}
+                  className={classnames('absolute', 'right-0')}
+                  onEdit={onEditComment}
+                  onDelete={(commentId: string) =>
+                    onDeleteComment(commentId, REQUEST_PROPERTIES.COMPLIANCE)
+                  }
+                  onCreate={(content) =>
+                    onCreateComment(content, REQUEST_PROPERTIES.COMPLIANCE)
+                  }
+                  testId='compliance'
+                  isPopupOpen={
+                    propertyNameParam === REQUEST_PROPERTIES.COMPLIANCE
+                  }
+                />
+              )}
+              <FormItem
+                label={intl.get(
+                  'REQUEST_PAGE.BASIC_DETAILS.FIELDS.COMPLIANCE_REQUIREMENT'
+                )}
+                data-cy='label__compliance'
+              >
+                <Dropdown
+                  options={[
+                    { label: intl.get('YES'), value: true },
+                    { label: intl.get('NO'), value: false },
+                  ]}
+                  values={[
+                    {
+                      label: requestData.compliance
+                        ? intl.get('YES')
+                        : intl.get('NO'),
+                      value: requestData.compliance,
+                    },
+                  ]}
+                  triggerProps={{ 'data-cy': 'field__compliance' }}
+                  disabled={disableFields}
+                  onChange={(option: { label: string; value: boolean }) =>
+                    onChange(REQUEST_PROPERTIES.COMPLIANCE, option.value)
+                  }
+                />
+              </FormItem>
+            </div>
+          </div>
+
+          <div>
+            <div className='relative'>
+              {showComment && (
+                <Comments
+                  comments={getPropertyComments(
+                    propertiesComments,
+                    REQUEST_PROPERTIES.PRIORITY
+                  )}
+                  className={classnames('absolute', 'right-0')}
+                  onEdit={onEditComment}
+                  onDelete={(commentId: string) =>
+                    onDeleteComment(commentId, REQUEST_PROPERTIES.PRIORITY)
+                  }
+                  onCreate={(content) =>
+                    onCreateComment(content, REQUEST_PROPERTIES.PRIORITY)
+                  }
+                  testId='priority'
+                  isPopupOpen={
+                    propertyNameParam === REQUEST_PROPERTIES.PRIORITY
+                  }
+                />
+              )}
+              <FormItem
+                label={intl.get('REQUEST_PAGE.BASIC_DETAILS.FIELDS.PRIORITY')}
+                data-cy='label__priority'
+                labelProps={{ required: true }}
+              >
+                <Dropdown
+                  options={[
+                    {
+                      label: intl.get(
+                        `REQUEST_PAGE.L_D_SECTION.PRIORITY_OPTIONS.${REQUEST_PRIORITY.HIGH}`
+                      ),
+                      value: REQUEST_PRIORITY.HIGH,
+                    },
+                    {
+                      label: intl.get(
+                        `REQUEST_PAGE.L_D_SECTION.PRIORITY_OPTIONS.${REQUEST_PRIORITY.MEDIUM}`
+                      ),
+                      value: REQUEST_PRIORITY.MEDIUM,
+                    },
+                    {
+                      label: intl.get(
+                        `REQUEST_PAGE.L_D_SECTION.PRIORITY_OPTIONS.${REQUEST_PRIORITY.LOW}`
+                      ),
+                      value: REQUEST_PRIORITY.LOW,
+                    },
+                  ]}
+                  values={[
+                    {
+                      label: intl.get(
+                        `REQUEST_PAGE.L_D_SECTION.PRIORITY_OPTIONS.${requestData.ldPriority}`
+                      ),
+                      value: requestData.ldPriority,
+                    },
+                  ]}
+                  triggerProps={{ 'data-cy': 'field__priority' }}
+                  disabled={disableFields}
+                  onChange={(option: { label: string; value: boolean }) =>
+                    onChange('priority', option.value)
                   }
                 />
               </FormItem>

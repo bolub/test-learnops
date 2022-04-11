@@ -13,7 +13,7 @@ const Budget = () => {
         index={currentTabIndex}
         onChange={(index: number) => setCurrentTabIndex(index)}
         tabListProps={{
-          className: 'mb-4 w-58',
+          className: 'w-58',
         }}
         type='tab'
         data={[

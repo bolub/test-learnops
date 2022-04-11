@@ -50,15 +50,7 @@ describe('Cancel project', () => {
     cy.get(cancelProject.modalWindow).should('be.visible');
     cy.get(cancelProject.confirmButton).should('be.disabled');
     cy.get(cancelProject.reasonPicker).click();
-
-    const data = {
-      label: 'Priority change',
-      value: 'Priority change',
-    };
-    cy.get(`[data-value='${JSON.stringify(data)}']`)
-      .should('be.visible')
-      .click();
-
+    cy.selectDropdownItem('Priority change', 'Priority change');
     cy.get(cancelProject.confirmButton).should('not.be.disabled').click();
     cy.get(cancelProject.modalWindow).should('not.exist');
     cy.get(projectSuccessModal).should('be.visible');
@@ -94,15 +86,7 @@ describe('Cancel project', () => {
     cy.get(cancelProject.modalWindow).should('be.visible');
     cy.get(cancelProject.confirmButton).should('be.disabled');
     cy.get(cancelProject.reasonPicker).click();
-
-    const data = {
-      label: 'Other',
-      value: 'Other',
-    };
-    cy.get(`[data-value='${JSON.stringify(data)}']`)
-      .should('be.visible')
-      .click();
-
+    cy.selectDropdownItem('Other', 'Other');
     cy.get(cancelProject.specifyReason).should('be.visible');
     cy.get(cancelProject.confirmButton).should('be.disabled');
     cy.get(cancelProject.specifyReason).type(

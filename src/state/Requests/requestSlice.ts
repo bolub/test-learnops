@@ -322,6 +322,8 @@ const containEvaluation = (
           );
         case 'declined':
           return compare(columnData.includes('rejected'), isGood, filter.logic);
+        case 'approved':
+          return compare(columnData.includes('approved'), isGood, filter.logic);
         default:
           return compare(
             columnData.includes(filter.value),
@@ -378,6 +380,12 @@ const noContainEvaluation = (
         case 'declined':
           return compare(
             !columnData.includes('rejected'),
+            isGood,
+            filter.logic
+          );
+        case 'approved':
+          return compare(
+            !columnData.includes('approved'),
             isGood,
             filter.logic
           );

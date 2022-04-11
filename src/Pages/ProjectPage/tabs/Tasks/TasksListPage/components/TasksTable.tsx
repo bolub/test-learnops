@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useMemo } from 'react';
 import {
   Table,
   OverflowMenu,
@@ -12,8 +12,12 @@ import { Task, TasksTableTab, AvatarUser } from 'utils/customTypes';
 import AddTaskModal from '../../AddTaskModal';
 import classnames from 'classnames';
 import moment from 'moment';
-import { DATE, TASKS_TABLE_TABS } from 'utils/constants';
-import { Toggle } from '@getsynapse/design-system';
+import { Icon, Tooltip } from '@getsynapse/design-system';
+import {
+  DATE,
+  TASKS_TABLE_TABS,
+  PROJECT_PARTICIPANT_TYPE,
+} from 'utils/constants';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { getStatusColumn } from 'Pages/ProjectsListPage/helpers/tableColumnsValues';
@@ -29,9 +33,11 @@ import {
 } from 'state/Tasks/taskSlice';
 import searchNoReturns from 'assets/icons/search-no-returns.svg';
 import noFilterResults from 'assets/images/no-filter-results.svg';
+import disabledTask from 'assets/icons/disabled.svg';
 import {
   getCurrentProjectData,
   updateProject,
+  getCurrentUserParticipantType,
 } from 'state/Project/projectSlice';
 import ReorderIconArrow from './ReorderIcon';
 import TaskModal from '../../components/TaskModal/TaskModal';
@@ -46,10 +52,25 @@ const TaskTable: React.FC<{
 }> = ({ tasksList, projectId, onSelectTasks, taskTable }) => {
   const getStartedText = intl.get('TASKS.TABLE.GET_STARTED');
   const history = useHistory();
+  const participantType = useSelector(getCurrentUserParticipantType);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [taskData, setTaskData] = useState<Task>(taskModalDefaultValues);
+  const isUserProjectParticipant =
+    participantType !== PROJECT_PARTICIPANT_TYPE.NOT_PARTICIPANT;
+
+  const hasDisabledTask = useMemo(
+    () => tasksList.some((task) => task.disabled),
+    [tasksList]
+  );
 
   const getAssignedUsers = (assignedUser: AvatarUser[] = []) => {
+    if (isEmpty(assignedUser)) {
+      return (
+        <span className='text-neutral-dark'>
+          {intl.get('TASKS.TABLE.NO_ASSIGNEE')}
+        </span>
+      );
+    }
     if (assignedUser.length === 1) {
       return (
         <div className='flex items-center'>
@@ -172,14 +193,8 @@ const TaskTable: React.FC<{
                     className: classnames('w-20', !appliedReorder && 'hidden'),
                   },
                   {
-                    content: (
-                      <HeadCell testId='header__task-enabled'>
-                        <React.Fragment>
-                          {intl.get('TASKS.TABLE.HEAD.ENABLED')}
-                        </React.Fragment>
-                      </HeadCell>
-                    ),
-                    className: classnames('w-20'),
+                    content: '',
+                    className: classnames('w-10', !hasDisabledTask && 'w-2'),
                   },
                   {
                     content: (
@@ -189,7 +204,7 @@ const TaskTable: React.FC<{
                         </React.Fragment>
                       </HeadCell>
                     ),
-                    className: classnames('w-full'),
+                    className: classnames('w-1/4'),
                   },
                   {
                     content: (
@@ -199,7 +214,7 @@ const TaskTable: React.FC<{
                         </React.Fragment>
                       </HeadCell>
                     ),
-                    className: classnames('w-60'),
+                    className: classnames('w-1/6'),
                   },
                   {
                     content: (
@@ -209,7 +224,7 @@ const TaskTable: React.FC<{
                         </React.Fragment>
                       </HeadCell>
                     ),
-                    className: classnames('w-56'),
+                    className: classnames('w-1/6'),
                   },
                   {
                     content: (
@@ -219,7 +234,7 @@ const TaskTable: React.FC<{
                         </React.Fragment>
                       </HeadCell>
                     ),
-                    className: classnames('w-56'),
+                    className: classnames('w-1/6'),
                   },
                   {
                     content: (
@@ -229,7 +244,7 @@ const TaskTable: React.FC<{
                         </React.Fragment>
                       </HeadCell>
                     ),
-                    className: classnames('w-56'),
+                    className: classnames('w-1/6'),
                   },
                   {
                     content: (
@@ -239,7 +254,7 @@ const TaskTable: React.FC<{
                         </React.Fragment>
                       </HeadCell>
                     ),
-                    className: classnames('w-56'),
+                    className: classnames('w-28'),
                   },
                   {
                     content: <div></div>,
@@ -287,7 +302,29 @@ const TaskTable: React.FC<{
                       className: !appliedReorder && 'hidden',
                     },
                     {
-                      content: <Toggle checked={true} />,
+                      content: task.disabled && (
+                        <Tooltip
+                          data-cy={`task-disabled-tooltip-${task.id}`}
+                          trigger={
+                            <Icon src={disabledTask} className='h-5 w-5' />
+                          }
+                          openMode='hover2'
+                          ariaId='task-disabled'
+                          position='topCenter'
+                          timeout={100}
+                          contentProps={{
+                            className: classnames(
+                              'bg-neutral-dark',
+                              'text-neutral-white',
+                              'rounded',
+                              'font-body px-3.5 py-2'
+                            ),
+                          }}
+                        >
+                          <span>{intl.get('TASKS.TABLE.INACTIVE')}</span>
+                        </Tooltip>
+                      ),
+                      className: 'align-bottom',
                     },
 
                     {
@@ -325,20 +362,22 @@ const TaskTable: React.FC<{
                             event: React.MouseEvent<HTMLInputElement>
                           ) => event.stopPropagation()}
                         >
-                          <OverflowMenu
-                            menuButtonProps={{
-                              className:
-                                'text-lg text-neutral focus:outline-none active:outline-none focus-visible:outline-none',
-                              'data-cy': 'menu-button',
-                            }}
-                          >
-                            <OverflowMenuItem
-                              data-cy={`task-${task.id}-duplicate-option`}
-                              onSelect={() => handleDuplicateModal(task)}
+                          {isUserProjectParticipant && (
+                            <OverflowMenu
+                              menuButtonProps={{
+                                className:
+                                  'text-lg text-neutral focus:outline-none active:outline-none focus-visible:outline-none',
+                                'data-cy': 'menu-button',
+                              }}
                             >
-                              {intl.get('TASKS.TABLE.DUPLICATE')}
-                            </OverflowMenuItem>
-                          </OverflowMenu>
+                              <OverflowMenuItem
+                                data-cy={`task-${task.id}-duplicate-option`}
+                                onSelect={() => handleDuplicateModal(task)}
+                              >
+                                {intl.get('TASKS.TABLE.DUPLICATE')}
+                              </OverflowMenuItem>
+                            </OverflowMenu>
+                          )}
                         </div>
                       ),
                       className: 'justify-center w-20',

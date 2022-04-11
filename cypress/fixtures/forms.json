@@ -25,7 +25,20 @@
     "publishedFormWarning": "[data-cy=published-modal-warning]",
     "unpublishedFormWarning": "[data-cy=unpublished-modal-warning]",
     "unpublishedFormSave": "[data-cy=unpublished-modal_save]",
-    "publishedFormSave": "[data-cy=published-modal_save]"
+    "publishedFormSave": "[data-cy=published-modal_save]",
+    "formSwitch": "[data-cy=form_publish-unpublish]",
+    "formListActions": "[data-cy=more-actions-button]",
+    "duplicateOption": "[data-cy=DUPLICATE]",
+    "duplicateModal": "[data-cy=duplicate-form_modal]",
+    "originalName": "[data-cy=form-original_name]",
+    "newName": "[data-cy=form-new_name]",
+    "saveOpen": "[data-cy=duplicate_save-open]",
+    "save": "[data-cy=duplicate_save]",
+    "cancel": "[data-cy=duplicate_cancel]",
+    "deleteOption": "[data-cy=DELETE]",
+    "deleteModal": "[data-cy=delete-form_modal]",
+    "deleteFormButton": "[data-cy=delete-form_button]",
+    "deleteFormCancel": "[data-cy=delete_cancel]"
   },
   "forms": {
     "code": 200,

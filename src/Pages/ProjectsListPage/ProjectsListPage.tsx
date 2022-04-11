@@ -12,6 +12,7 @@ import {
 import { PATHS, PROJECTS_LIST_VIEW_MODE } from 'utils/constants';
 import { ProjectsListViewMode } from 'utils/customTypes';
 import PageTitle from 'Molecules/PageTitle/PageTitle';
+import { selectIsUserLd } from 'state/User/userSlice';
 import ToggleButtonGroup from 'Molecules/ToggleButtonGroup/ToggleButtonGroup';
 import TableView from './views/TableView';
 import BoardView from './views/BoardView';
@@ -22,6 +23,7 @@ const ProjectsListPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const viewMode = useSelector(projectsListViewMode);
+  const isLDUser = useSelector(selectIsUserLd);
   const handleAddProject = () => history.push(PATHS.NEW_PROJECT_PAGE);
 
   useEffect(() => {
@@ -56,9 +58,11 @@ const ProjectsListPage = () => {
       <PageTitle
         titleComponent={intl.get('PROJECTS_LIST_PAGE.TITLE')}
         headerChildren={
-          <Button onClick={handleAddProject} data-cy='add-project-button'>
-            {intl.get('PROJECTS_LIST_PAGE.ADD_PROJECT_BUTTON')}
-          </Button>
+          isLDUser && (
+            <Button onClick={handleAddProject} data-cy='add-project-button'>
+              {intl.get('PROJECTS_LIST_PAGE.ADD_PROJECT_BUTTON')}
+            </Button>
+          )
         }
       />
       <div className='relative w-full h-full'>

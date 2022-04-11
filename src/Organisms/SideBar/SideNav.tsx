@@ -31,7 +31,7 @@ const SideNav = ({ isExpanded }: { isExpanded: boolean }) => {
         linkPath: PATHS.PROJECTS_LIST_PAGE,
         iconSrc: projects,
         linkText: intl.get('SIDEBAR.PROJECTS'),
-        userType: [USER_TYPES.L_D],
+        userType: [USER_TYPES.L_D, USER_TYPES.BUSINESS, USER_TYPES.EXTERNAL],
         ariaLabel: intl.get('SIDEBAR.PROJECTS'),
       },
       {

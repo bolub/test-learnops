@@ -21,8 +21,6 @@ import config from 'config/Config';
 import { State } from 'country-state-city';
 import { PickerFileMetadata } from 'filestack-js';
 import UserAvatar from 'Atoms/UserAvatar';
-import { useSelector } from 'react-redux';
-import { selectUserId } from 'state/User/userSlice';
 
 const BasicInformation = ({
   user,
@@ -40,7 +38,6 @@ const BasicInformation = ({
   errors: objKeyAsString;
 }) => {
   const [displayEditPicture, setEditPictureButton] = useState(true);
-  const currentUserId = useSelector(selectUserId);
   const countryOptions = useMemo(
     () =>
       COUNTRIES.map((country) => ({
@@ -294,7 +291,7 @@ const BasicInformation = ({
           placeholder={intl.get(
             'SETTINGS_PAGE.USER_PAGE.BASIC_INFORMATION.EMAIL_PLACEHOLDER'
           )}
-          disabled={user?.id && user.id !== currentUserId}
+          disabled={user?.id}
         />
       </FormItem>
       <FormItem

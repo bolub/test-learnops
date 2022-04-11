@@ -8,7 +8,6 @@ import {
 } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import intl from 'react-intl-universal';
-import classnames from 'classnames';
 import Auth from '@aws-amplify/auth';
 import {
   Button,
@@ -104,38 +103,32 @@ const ChangePassword = () => {
     <Fragment>
       <Typography
         variant='h4'
-        className='mb-4 flex items-center text-neutral-black'
+        className='mb-6 flex items-center justify-center'
       >
         {intl.get('CHANGE_PASSWORD_PAGE.TITLE')}
         <Tooltip
           className='pl-2'
           contentProps={{
-            className: classnames(
-              'bg-warning-lighter',
-              'text-warning-dark text-xs',
-              'rounded px-4 py-3.5 w-56',
-              'absolute',
-              'z-40'
-            ),
+            className:
+              'bg-warning-lighter text-warning-dark text-xs rounded px-4 py-2 w-56 absolute z-40',
           }}
           trigger={
             <IconButton
               description='trigger'
               name='information-circle'
-              color='warning'
-              iconClassname='text-base'
+              iconClassname='text-xl text-warning-dark'
             />
           }
-          position='topRight'
+          position='bottomRight'
         >
           {intl.get('CHANGE_PASSWORD_PAGE.INFO.TITLE')}
-          <ul className='list-disc pl-2'>
+          <ul className='list-disc pl-5'>
             {intl.getHTML('CHANGE_PASSWORD_PAGE.INFO.CONTENT')}
           </ul>
         </Tooltip>
       </Typography>
 
-      <Typography variant='body' className='mb-5'>
+      <Typography className='mb-6'>
         {intl.get('CHANGE_PASSWORD_PAGE.PROMPT')}
       </Typography>
 
@@ -167,7 +160,7 @@ const ChangePassword = () => {
           name='passwordConfirm'
           label={intl.get('CHANGE_PASSWORD_PAGE.INPUT.CONFIRM')}
           placeholder={intl.get('CHANGE_PASSWORD_PAGE.INPUT.PLACEHOLDER')}
-          className='mb-16.5'
+          className='mb-10'
           onChange={handleChange}
           variant='password'
           value={data.passwordConfirm}

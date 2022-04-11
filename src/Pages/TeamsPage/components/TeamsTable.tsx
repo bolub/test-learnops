@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import intl from 'react-intl-universal';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-import classnames from 'classnames';
 import {
   Table,
   TableOperationHeader,
@@ -11,6 +10,7 @@ import {
   OverflowMenu,
   OverflowMenuItem,
   TableFilter,
+  tailwindOverride,
 } from '@getsynapse/design-system';
 import {
   updateUser,
@@ -95,7 +95,7 @@ const TeamsTable = ({ learningTeamsRows }: TeamsTableProps) => {
       case UPDATE_MEMBER_OPTIONS[0]:
         setEditMemberData((prevData) => ({ ...prevData, user, isOpen: true }));
         break;
-      case UPDATE_MEMBER_OPTIONS[2]:
+      case UPDATE_MEMBER_OPTIONS[1]:
         setTimeOffData((prevData) => ({
           ...prevData,
           username: `${get(user, 'data.firstName')} ${get(
@@ -212,7 +212,7 @@ const TeamsTable = ({ learningTeamsRows }: TeamsTableProps) => {
                   {
                     content: (
                       <TableCell
-                        className={classnames(
+                        className={tailwindOverride(
                           'py-1 flex-1 flex',
                           'text-neutral-black text-sm font-semibold',
                           'items-start justify-between'
@@ -228,24 +228,6 @@ const TeamsTable = ({ learningTeamsRows }: TeamsTableProps) => {
                             },
                           }}
                         />
-                        <OverflowMenu
-                          menuButtonProps={{
-                            children: null,
-                            'data-testid': 'my-menu-button',
-                          }}
-                          menuListProps={{
-                            className: 'shadow-raised',
-                          }}
-                        >
-                          {UPDATE_MEMBER_OPTIONS.map((option) => (
-                            <OverflowMenuItem
-                              key={option}
-                              onSelect={() => handleMenuSelect(option, element)}
-                            >
-                              {intl.get(`TEAMS.UPDATE_MENU.${option}`)}
-                            </OverflowMenuItem>
-                          ))}
-                        </OverflowMenu>
                       </TableCell>
                     ),
                   },
@@ -290,6 +272,32 @@ const TeamsTable = ({ learningTeamsRows }: TeamsTableProps) => {
                             'TEAMS.CURRENCY'
                           )}`}
                       </Typography>
+                    ),
+                  },
+                  {
+                    content: (
+                      <OverflowMenu
+                        menuButtonProps={{
+                          children: null,
+                          'data-testid': 'my-menu-button',
+                          className: tailwindOverride(
+                            'py-1',
+                            'text-neutral-black text-sm font-semibold'
+                          ),
+                        }}
+                        menuListProps={{
+                          className: 'shadow-raised',
+                        }}
+                      >
+                        {UPDATE_MEMBER_OPTIONS.map((option) => (
+                          <OverflowMenuItem
+                            key={option}
+                            onSelect={() => handleMenuSelect(option, element)}
+                          >
+                            {intl.get(`TEAMS.UPDATE_MENU.${option}`)}
+                          </OverflowMenuItem>
+                        ))}
+                      </OverflowMenu>
                     ),
                   },
                 ],

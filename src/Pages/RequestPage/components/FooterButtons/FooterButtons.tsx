@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { PATHS, USER_TYPES } from 'utils/constants';
 import { RequestPageTabs } from 'utils/customTypes';
 import { selectUserType } from 'state/User/userSlice';
-import { useAppSelector } from 'state/hooks';
+import { useSelector } from 'react-redux';
 import BasicDetailsButtons from './BasicDetailsButtons';
 import RequestDetailsButtons from './RequestDetailsButtons';
 import AditionalDetailsButtons from './AditionalDetailsButtons';
@@ -25,7 +25,7 @@ export const FooterButtons = ({
   hasErrors: boolean;
 }) => {
   const history = useHistory();
-  const userType = useAppSelector(selectUserType);
+  const userType = useSelector(selectUserType);
   const isLDUser = useMemo(() => userType === USER_TYPES.L_D, [userType]);
 
   const onClickHandler = (value?: RequestPageTabs) => {

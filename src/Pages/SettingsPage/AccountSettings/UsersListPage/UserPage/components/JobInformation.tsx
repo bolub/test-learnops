@@ -27,7 +27,6 @@ import {
   FormOption,
   AllUsersType,
   objKeyAsString,
-  LearningTeam,
 } from 'utils/customTypes';
 import get from 'lodash/get';
 import MultiSelectDropdown from 'Organisms/MultiSelectDropdow/MultiSelectDropdown';
@@ -54,12 +53,20 @@ const JobInformation = ({
   }, [dispatch]);
 
   const learningTeams = useSelector(selectLearningTeams);
-  const learningTeamOptions = useMemo(() => {
-    return learningTeams.map((team: LearningTeam) => ({
-      value: team.id,
-      label: team.name,
-    }));
-  }, [learningTeams]);
+  const learningTeamOptions: FormOption[] = useMemo(
+    () =>
+      learningTeams.reduce((newTeams: FormOption[], team) => {
+        if (team.team_manager_id !== user?.id) {
+          return newTeams.concat({
+            value: team.id,
+            label: team.name,
+          });
+        }
+
+        return newTeams;
+      }, []),
+    [learningTeams, user?.id]
+  );
 
   const userLearningTeam = get(user, 'registeredLearningTeams');
 

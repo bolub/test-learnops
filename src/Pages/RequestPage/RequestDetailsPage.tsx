@@ -1,10 +1,5 @@
 import intl from 'react-intl-universal';
-import {
-  Dropdown,
-  FormLabel,
-  TextArea,
-  Typography,
-} from '@getsynapse/design-system';
+import { TextArea, Typography } from '@getsynapse/design-system';
 import debounce from 'lodash/debounce';
 import { useDispatch } from 'react-redux';
 import {
@@ -68,16 +63,6 @@ const RequestDetails = ({
       };
     });
   }, 500);
-
-  const onChangeCompliance = (value: boolean) => {
-    setUpdatedReqData((prevState: UpdateReqData) => ({
-      ...prevState,
-      requestAttributes: {
-        ...prevState.requestAttributes,
-        compliance: value,
-      },
-    }));
-  };
 
   const onDeleteComment = (commentId: string, propertykey: string) => {
     dispatch(deletePropertiesComment({ commentId, propertykey }));
@@ -156,52 +141,6 @@ const RequestDetails = ({
               }}
               onChange={(e) => onChangeDescription(e.target.value)}
               disabled={disableFields}
-            />
-          </div>
-
-          <div>
-            <div className='flex justify-between'>
-              <FormLabel>
-                {intl.get('REQUEST_PAGE.L_D_SECTION.FIELDS.PRIORITY')}
-              </FormLabel>
-
-              {showComment && (
-                <Comments
-                  comments={getPropertyComments(
-                    propertiesComments,
-                    REQUEST_PROPERTIES.COMPLIANCE
-                  )}
-                  onEdit={onEditComment}
-                  onDelete={(commentId: string) =>
-                    onDeleteComment(commentId, REQUEST_PROPERTIES.COMPLIANCE)
-                  }
-                  onCreate={(content) =>
-                    onCreateComment(content, REQUEST_PROPERTIES.COMPLIANCE)
-                  }
-                  isPopupOpen={
-                    propertyNameParam === REQUEST_PROPERTIES.COMPLIANCE
-                  }
-                />
-              )}
-            </div>
-
-            <Dropdown
-              options={[
-                { label: intl.get('YES'), value: true },
-                { label: intl.get('NO'), value: false },
-              ]}
-              disabled={disableFields}
-              onChange={(option: { label: string; value: boolean }) =>
-                onChangeCompliance(option.value)
-              }
-              values={[
-                {
-                  label: requestData.compliance
-                    ? intl.get('YES')
-                    : intl.get('NO'),
-                  value: requestData.compliance,
-                },
-              ]}
             />
           </div>
         </div>

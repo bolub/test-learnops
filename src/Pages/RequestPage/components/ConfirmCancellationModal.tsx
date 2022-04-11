@@ -19,6 +19,7 @@ import {
   setNotificationTimeout,
 } from 'state/InlineNotification/inlineNotificationSlice';
 import { useHistory } from 'react-router-dom';
+import { formatRequestIdentifier } from 'Pages/helpers';
 
 type ConfirmCancellationModalProps = {
   isOpen: boolean;
@@ -62,7 +63,7 @@ const ConfirmCancellationModal = ({
         intl.get(
           'REQUEST_PAGE.NOTIFICATIONS.REQUEST_CANCELLATION_CONFIRMATION',
           {
-            requestNo: requestData.requestIdentifier,
+            requestNo: formatRequestIdentifier(requestData.requestIdentifier!),
           }
         )
       )

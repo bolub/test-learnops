@@ -21,8 +21,12 @@ const RequestDetailsButtons = ({
   onUpdate: () => Promise<void>;
   hasErrors: boolean;
 }) => {
-  const { areBasicAndRequestDisabled, isAdditionalDisabled, isLDDisabled } =
-    useContext(RequestContext);
+  const {
+    areBasicAndRequestDisabled,
+    isAdditionalDisabled,
+    isLDDisabled,
+    isSubmitUpdateDisabled,
+  } = useContext(RequestContext);
   const disableSaveButtons =
     areBasicAndRequestDisabled && isAdditionalDisabled && isLDDisabled;
 
@@ -59,7 +63,7 @@ const RequestDetailsButtons = ({
               action={onSubmit}
               variant='primary'
               hasErrors={hasErrors}
-              disabled={disableSaveButtons}
+              disabled={disableSaveButtons || isSubmitUpdateDisabled}
             >
               {intl.get('REQUEST_PAGE.REQUEST_DETAILS.BUTTON.SUBMIT')}
             </ActionButton>

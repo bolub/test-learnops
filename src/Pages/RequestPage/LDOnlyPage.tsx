@@ -60,7 +60,7 @@ const LDOnlyPage = ({
   const questions = useMemo(
     () =>
       requestQuestionsData.filter(
-        (question) => question.section === REQUEST_SECTIONS.LD_DETAILS
+        (question) => question?.section === REQUEST_SECTIONS.LD_DETAILS
       ),
     [requestQuestionsData]
   );

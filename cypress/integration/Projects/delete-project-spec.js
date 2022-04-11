@@ -70,9 +70,9 @@ describe('Delete an existing project', () => {
     cy.wait('@deleteProject');
     cy.url().should('eq', `${Cypress.config().baseUrl}${routes.projectsList}`);
     cy.wait('@fetchUpdatedProjectsList');
-
-    cy.checkSuccessMessage();
-
+    cy.get(globalSelectors.appInlineNotification)
+      .should('be.visible')
+      .contains('The project “QA Project Data 1” was succesfully deleted');
     cy.get(
       selectors.projectsListTable.tableRow.replace(
         '*',

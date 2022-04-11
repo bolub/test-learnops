@@ -6,6 +6,7 @@ import { Button, Tag, AvatarGroup, Table } from '@getsynapse/design-system';
 import { Request, AvatarUser } from 'utils/customTypes';
 import { DATE } from 'utils/constants';
 import UserAvatar from 'Atoms/UserAvatar';
+import { formatRequestIdentifier } from 'Pages/helpers';
 
 const LinkedProjectRequestsTable: React.FC<{
   requestsList: Request[];
@@ -97,7 +98,7 @@ const LinkedProjectRequestsTable: React.FC<{
           rows: requestsList.map((request) => ({
             cells: [
               {
-                content: request?.requestIdentifier,
+                content: formatRequestIdentifier(request?.requestIdentifier!),
               },
               {
                 content: getRequestOwners(request?.owners),
@@ -120,7 +121,8 @@ const LinkedProjectRequestsTable: React.FC<{
               {
                 content: (
                   <Tag
-                    className={`text-xs bg-purple-lighter text-purple-dark`}
+                    className='text-xs bg-purple-lighter'
+                    textClassName='text-purple-dark'
                     label={intl.get(
                       'REQUESTS_LIST_PAGE.TABLE.STATUS_LABEL.APPROVED'
                     )}

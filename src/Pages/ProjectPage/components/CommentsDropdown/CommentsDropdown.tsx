@@ -21,7 +21,10 @@ import {
 import NewComment from 'Organisms/Comments/NewComment/NewComment';
 import CommentsList from 'Organisms/Comments/CommentsList';
 
-const CommentsDropdown: React.FC<{ projectId: string }> = ({ projectId }) => {
+const CommentsDropdown: React.FC<{
+  projectId: string;
+  canAddComments?: boolean;
+}> = ({ projectId, canAddComments = true }) => {
   const dispatch = useDispatch();
   const commentsList = useSelector(formattedComments);
   const [showPopper, setShowPopper] = useState<boolean>(false);
@@ -159,13 +162,15 @@ const CommentsDropdown: React.FC<{ projectId: string }> = ({ projectId }) => {
           emptyListMessage={intl.get('PROJECT_DETAIL.NO_COMMENTS')}
           testId='project-comments-list'
         />
-        <NewComment
-          setOpen={setShowPopper}
-          isOpen={showPopper}
-          onCreate={addCommentHandle}
-          placeholder={intl.get('PROJECT_DETAIL.ADD_COMMENT')}
-          submitButtonLabel={intl.get('PROJECT_DETAIL.SUBMIT_COMMENT')}
-        />
+        {canAddComments && (
+          <NewComment
+            setOpen={setShowPopper}
+            isOpen={showPopper}
+            onCreate={addCommentHandle}
+            placeholder={intl.get('PROJECT_DETAIL.ADD_COMMENT')}
+            submitButtonLabel={intl.get('PROJECT_DETAIL.SUBMIT_COMMENT')}
+          />
+        )}
       </div>
     </div>
   );

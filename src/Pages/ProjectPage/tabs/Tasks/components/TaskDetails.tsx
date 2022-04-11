@@ -10,12 +10,12 @@ import {
   NumericInput,
 } from '@getsynapse/design-system';
 import classNames from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
-  getLDUsers,
-  selectLDUsers,
-} from 'state/UsersManagement/usersManagementSlice';
-import { useEffect, useMemo } from 'react';
+  getAvailableUsersForTaskAssignees,
+  getFormattedTaskAssignees,
+} from 'state/SingleTask/singleTaskSlice';
+import { useMemo } from 'react';
 import { TASK_FIELDS, TASK_STATUS, TASK_TYPES } from 'utils/constants';
 import {
   objKeyAsString,
@@ -30,6 +30,7 @@ type TaskDetailsProps = {
   setData: (item: string, value: string | string[]) => void;
   data: TaskDetailType;
   isViewOnly?: boolean;
+  canUpdateTask?: boolean;
 };
 
 const TaskDetails = ({
@@ -37,36 +38,10 @@ const TaskDetails = ({
   setData,
   data,
   isViewOnly = false,
+  canUpdateTask = false,
 }: TaskDetailsProps) => {
-  const dispatch = useDispatch();
-  const ldUsersSelector = useSelector(selectLDUsers);
-
-  useEffect(() => {
-    dispatch(getLDUsers());
-  }, [dispatch]);
-
-  const ldUsers = useMemo(
-    () =>
-      ldUsersSelector.map((user) => {
-        return {
-          label: `${user.data.firstName} ${user.data.lastName}`,
-          avatar: {
-            imageSrc: user.avatar_url,
-            initial: `${user.data.firstName.charAt(
-              0
-            )}${user.data.lastName.charAt(0)}`,
-          },
-          value: user.id,
-        };
-      }),
-    [ldUsersSelector]
-  );
-
-  const ownersList = useMemo(() => {
-    return ldUsers.filter((ldUser: Option) =>
-      data.assignedUsers?.includes(ldUser.value)
-    );
-  }, [data.assignedUsers, ldUsers]);
+  const availableUsers = useSelector(getAvailableUsersForTaskAssignees);
+  const selectedUsers = useSelector(getFormattedTaskAssignees);
 
   const statusOptions = useMemo(
     () =>
@@ -254,10 +229,6 @@ const TaskDetails = ({
           <FormItem
             label={intl.get('TASKS.TASK_DETAIL_PAGE.TASK_ASSIGNEE')}
             disabled={isViewOnly}
-            labelProps={{
-              required: true,
-              state: requiredFieldsErrors?.assignedUsers ? 'error' : 'default',
-            }}
             helpText={
               requiredFieldsErrors?.assignedUsers &&
               intl.get('TASKS.TASK_DETAIL_PAGE.MISSING_INFO_ERROR')
@@ -271,10 +242,9 @@ const TaskDetails = ({
               triggerText={intl.get(
                 'TASKS.ADD_TASK_MODAL.TASK_ASSIGNEE_PLACEHOLDER'
               )}
-              usersList={ldUsers}
-              selectedUsersList={ownersList}
+              usersList={availableUsers}
+              selectedUsersList={selectedUsers}
               onChange={updateOwners}
-              required
               triggerProps={{
                 'data-cy': 'task-users-picker',
               }}
@@ -300,8 +270,9 @@ const TaskDetails = ({
                 )}
                 options={statusOptions}
                 disabled={
-                  (isViewOnly && data.status !== TASK_STATUS.ON_HOLD) ||
-                  data.disabled
+                  data.status === TASK_STATUS.ON_HOLD
+                    ? !canUpdateTask
+                    : isViewOnly
                 }
                 values={getInitialValueForDropDown(
                   statusOptions,

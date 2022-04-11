@@ -20,16 +20,9 @@ jobs:
       - name: Cypress run chrome
         uses: cypress-io/github-action@v2
         with:
-          record: true
           build: npm run build
           start: npx serve -s build -l 3005
-          spec: 'cypress/integration/Projects/resume-project-on-hold-spec.js'
-        env:
-          # pass the Dashboard record key as an environment variable
-          CYPRESS_RECORD_KEY: 'a5e10590-a67f-4a03-8f68-9346e8c0ff7a'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }},
-          USER_EMAIL: 'alex+test@getsynapse.com'
-          USER_PASSWORD: 'EKtest1#'
+          spec: '**/ProjectListPage/*'
 
       - uses: actions/upload-artifact@v2
         if: failure()
@@ -43,7 +36,7 @@ jobs:
           name: cypress-videos
           path: cypress/videos
 
-      # - name: Cypress run edge
-      #   uses: cypress-io/github-action@v2
-      #   with:
-      #     spec: "**/Auth/*"
+      - name: Cypress run edge
+        uses: cypress-io/github-action@v2
+        with:
+          spec: '**/Auth/*'

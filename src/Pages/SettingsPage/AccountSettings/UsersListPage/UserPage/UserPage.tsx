@@ -10,9 +10,19 @@ import {
   updateUser,
   assignUserToLearningTeam,
   addUser,
+  selectAvailableLicenses,
+  inviteUser,
+  getAllUsers,
+  allUsers,
 } from 'state/UsersManagement/usersManagementSlice';
 import UserDetailsSection from './components/UserDetailsSection';
-import { PATHS, SLICE_STATUS, USER_STATUS, USER_TYPES } from 'utils/constants';
+import {
+  PATHS,
+  SLICE_STATUS,
+  USER_STATUS,
+  USER_TYPES,
+  LICENSE_TIER,
+} from 'utils/constants';
 import Loader from 'Molecules/Loader/Loader';
 import PageTitle from 'Molecules/PageTitle/PageTitle';
 import intl from 'react-intl-universal';
@@ -28,6 +38,9 @@ import {
   setNotificationTimeout,
 } from 'state/InlineNotification/inlineNotificationSlice';
 import { selectOrganizationId } from 'state/User/userSlice';
+import { selectOrganizationLicense } from 'state/Organization/organizationSlice';
+import { License } from 'utils/customTypes';
+import NotifyUserModal from './components/NotifyUserModal';
 
 const UserPage = () => {
   const history = useHistory();
@@ -39,13 +52,18 @@ const UserPage = () => {
   const userSelector = useSelector(selectSelectedUser);
   const userStatus = useSelector(selectUserStatus);
   const organizationId = useSelector(selectOrganizationId);
+  const orgUsers = useSelector(allUsers);
   const [disableSave, setDisableSave] = useState<boolean>(true);
   const [userUpdatedFields, setUserUpdatedFields] = useState<
     Partial<AllUsersType>
   >({});
   const [erros, setErrors] = useState<objKeyAsString>({});
+  const [isNotifyModalOpen, setIsNotifyModalOpen] = useState(false);
+  const [newUserId, setNewUserId] = useState('');
   const userRole: 'user' | 'admin' | undefined = 'user';
   const newUser = userType ? true : false;
+  const LicenseData: License = useSelector(selectOrganizationLicense);
+  const availableLicenses = useSelector(selectAvailableLicenses);
   const user = useMemo(
     () =>
       !newUser
@@ -57,12 +75,25 @@ const UserPage = () => {
               email: userId,
             },
             type: userType,
-            status: USER_STATUS.INVITED,
+            status:
+              userType === USER_TYPES.L_D &&
+              LicenseData.license_tier !== LICENSE_TIER.TRIAL &&
+              availableLicenses < 1
+                ? USER_STATUS.INVITED_DISABLED
+                : USER_STATUS.INVITED,
             role: userRole,
             organization_id: organizationId,
             public_holidays_in_capacity_enabled: false,
           },
-    [userId, newUser, userSelector, organizationId, userType]
+    [
+      userId,
+      newUser,
+      userSelector,
+      organizationId,
+      userType,
+      LicenseData,
+      availableLicenses,
+    ]
   );
 
   const userCuurentData = useMemo(
@@ -77,6 +108,14 @@ const UserPage = () => {
     [user, userUpdatedFields]
   );
 
+  const isEmailRepeated = useMemo<boolean>(
+    () =>
+      orgUsers.some(
+        (orgUser) => orgUser.data.email === userCuurentData.data.email
+      ),
+    [orgUsers, userCuurentData.data.email]
+  );
+
   const pageTitle = newUser
     ? intl.get('ADD_USER.ADD_USER_MODAL.TITLE', {
         op: userType !== USER_TYPES.EXTERNAL ? 1 : 2,
@@ -86,6 +125,10 @@ const UserPage = () => {
       })
     : `${intl.get('SETTINGS_PAGE.USER_PAGE.TITLE')}
   /${get(user, 'data.firstName')} ${get(user, 'data.lastName')}`;
+
+  useEffect(() => {
+    dispatch(getAllUsers());
+  }, [dispatch]);
 
   useEffect(() => {
     if (userId) {
@@ -105,6 +148,19 @@ const UserPage = () => {
       }
     }
   }, [user, userCuurentData, disableSave, newUser]);
+
+  const showSuccessBanner = useCallback(() => {
+    history.push(PATHS.SETTINGS);
+    dispatch(setNotificationVariant('success'));
+    dispatch(
+      setNotificationText(
+        !newUser
+          ? intl.get('SETTINGS_PAGE.USER_PAGE.USER_UPDATED')
+          : intl.get('ADD_USER.USER_ADDED')
+      )
+    );
+    dispatch(displayNotification());
+  }, [dispatch, history, newUser]);
 
   const handleChangeField = (
     inputValue: string | string[] | boolean | number,
@@ -157,6 +213,7 @@ const UserPage = () => {
       return;
     }
     let teamId = '';
+    let updatedUser;
     if (get(userUpdatedFields, 'registeredLearningTeams[0]')) {
       teamId = get(userUpdatedFields, 'registeredLearningTeams[0].id');
       delete (userUpdatedFields as Partial<LDUser>).registeredLearningTeams;
@@ -169,43 +226,60 @@ const UserPage = () => {
           await Auth.updateUserAttributes(authUser, { email });
         }
       }
-      const updatedUser = await dispatch(
+      updatedUser = await dispatch(
         newUser
           ? addUser(userUpdatedFields)
           : updateUser({ userId, updateFields: userUpdatedFields })
       );
-      if (teamId) {
-        await dispatch(
-          assignUserToLearningTeam({
-            userId: get(updatedUser, 'payload.id'),
-            teamId,
-          })
-        );
-      }
+      setNewUserId(get(updatedUser, 'payload.id'));
     }
-    history.push(PATHS.SETTINGS);
-    dispatch(setNotificationVariant('success'));
-    dispatch(
-      setNotificationText(
-        !newUser
-          ? intl.get('SETTINGS_PAGE.USER_PAGE.USER_UPDATED')
-          : intl.get('ADD_USER.USER_ADDED')
-      )
-    );
-    dispatch(displayNotification());
+    if (teamId) {
+      dispatch(
+        assignUserToLearningTeam({
+          userId: newUser ? get(updatedUser, 'payload.id') : userId,
+          teamId,
+        })
+      );
+    }
+    if (newUser && userUpdatedFields.status === USER_STATUS.INVITED) {
+      setIsNotifyModalOpen(true);
+    } else {
+      showSuccessBanner();
+    }
   }, [
     dispatch,
     erros,
-    history,
     user.data.email,
     userCuurentData,
     userId,
     userUpdatedFields,
     newUser,
+    showSuccessBanner,
   ]);
+
+  const sendUserInvitation = () => {
+    dispatch(
+      inviteUser({
+        userId: newUserId,
+        email: userUpdatedFields.data?.email!,
+        firstName: userUpdatedFields.data?.firstName!,
+      })
+    );
+    showSuccessBanner();
+  };
+
+  const closeNotifyModal = () => {
+    setIsNotifyModalOpen(false);
+    showSuccessBanner();
+  };
 
   return (
     <div className='h-full flex flex-col'>
+      <NotifyUserModal
+        isOpen={isNotifyModalOpen}
+        closeModal={closeNotifyModal}
+        inviteUser={sendUserInvitation}
+      />
       <PageTitle
         titleComponent={pageTitle}
         className='sticky top-0 left-0 right-0'
@@ -219,7 +293,7 @@ const UserPage = () => {
             errors={erros}
           />
           <UserPageFooter
-            disableSave={disableSave}
+            disableSave={disableSave || isEmailRepeated}
             onUpdate={onUpdate}
             newUser={newUser}
           />

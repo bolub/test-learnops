@@ -3,7 +3,7 @@ import { BudgetPlanType, ResourcePlanType } from 'utils/customTypes';
 export const budgetPlanFields: BudgetPlanType = {
   estimated_cost: '',
   budget_source: '',
-  allocated_budget: '',
+  allocated_budget: 0,
 };
 
 export const ResourcePlanFields: ResourcePlanType = {

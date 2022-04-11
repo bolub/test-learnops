@@ -1,0 +1,12 @@
+#yellowfin-wrapper * {
+  overflow: hidden;
+}
+
+#yellowfin-wrapper .container {
+  max-width: 100% !important;
+}
+
+app-dashboard {
+  background: none !important;
+}
+

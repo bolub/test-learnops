@@ -5,8 +5,6 @@ import {
   Typography,
   Button,
   Toggle,
-  Dropdown,
-  Icon,
   tailwindOverride,
 } from '@getsynapse/design-system';
 import intl from 'react-intl-universal';
@@ -133,26 +131,6 @@ const VendorPage = () => {
               onChange={handleEnable}
               inputProps={{
                 'data-cy': 'vendor_enable-disable',
-              }}
-            />
-
-            <Dropdown
-              options={[]}
-              onChange={() => {}}
-              renderTrigger={({ onToggleDropdown, isDropdownExpanded }) => {
-                return (
-                  <Button
-                    variant='tertiary'
-                    onClick={onToggleDropdown}
-                    className={tailwindOverride('h-full', {
-                      'text-primary-darker bg-neutral-lightest':
-                        isDropdownExpanded,
-                    })}
-                  >
-                    {intl.get('REQUEST_PAGE.TOP_BAR.MORE.MORE_ACTIONS')}
-                    <Icon name='caret-down' className='text-xs pl-2' />
-                  </Button>
-                );
               }}
             />
           </div>

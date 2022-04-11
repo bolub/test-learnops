@@ -1,8 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import intl from 'react-intl-universal';
 import { Typography, Button } from '@getsynapse/design-system';
 import { PATHS } from 'utils/constants';
+import { selectIsUserLd } from 'state/User/userSlice';
 import emptyBoard from 'assets/images/empty-board.svg';
 import noSearchResults from 'assets/images/no-search-results.svg';
 import noFilterResults from 'assets/images/no-filter-results.svg';
@@ -12,6 +14,7 @@ const EmptyBoard: React.FC<{
   isFiltersEmpty: boolean;
 }> = ({ isSearchEmpty, isFiltersEmpty }) => {
   const history = useHistory();
+  const isLDUser = useSelector(selectIsUserLd);
   let imageSrc = emptyBoard;
   let message = intl.get('PROJECTS_LIST_PAGE.TABLE.EMPTY');
   if (!isSearchEmpty) {
@@ -31,7 +34,7 @@ const EmptyBoard: React.FC<{
       <Typography variant='body' className='mt-4 text-neutral-black'>
         {message}
       </Typography>
-      {isSearchEmpty && isFiltersEmpty && (
+      {isSearchEmpty && isFiltersEmpty && isLDUser && (
         <Button
           className='mt-2 mx-auto'
           size='small'

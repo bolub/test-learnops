@@ -12,7 +12,8 @@ import RangeQuestion from './Questions/RangeQuestion';
 import DateQuestion from './Questions/DateQuestion';
 import DropdownQuestion from './Questions/DropdownQuestion';
 import NumberQuestion from './Questions/NumberQuestion';
-import TextAreaQuestion from './Questions/TextAreaQuestion';
+import TextFieldQuestion from './Questions/TextFieldQuestion';
+import ToggleQuestion from './Questions/ToggleQuestion';
 import UrlQuestion from './Questions/UrlQuestion';
 import Comments from 'Organisms/Comments/Comments';
 import {
@@ -32,7 +33,11 @@ import {
   Button,
 } from '@getsynapse/design-system';
 import FileUploadQuestion from './Questions/FileUploadQuestion';
-import { intakeQuestionWrapper } from 'utils/customTypes';
+import {
+  dropdownOption,
+  intakeQuestionWrapper,
+  rangeDate,
+} from 'utils/customTypes';
 
 type qnsComponentMap = {
   [key: string]: (props: intakeQuestionWrapper) => JSX.Element;
@@ -68,7 +73,14 @@ export const IntakeQuestions = ({
   const submitChangeHandler = debounce(
     (
       question: any,
-      value: string | boolean | number | Array<PickerFileMetadata>,
+      value:
+        | string
+        | boolean
+        | number
+        | Array<PickerFileMetadata>
+        | dropdownOption
+        | dropdownOption[]
+        | rangeDate,
       path: string
     ) => {
       setUpdatedReqData((prevState: any) => {
@@ -100,9 +112,10 @@ export const IntakeQuestions = ({
     date: DateQuestion,
     dropdown: DropdownQuestion,
     number: NumberQuestion,
-    customTextArea: TextAreaQuestion,
+    customTextArea: TextFieldQuestion,
     url: UrlQuestion,
     file: FileUploadQuestion,
+    toggle: ToggleQuestion,
   };
 
   const getComment = (questionId: string) => {
@@ -217,25 +230,25 @@ export const IntakeQuestions = ({
         ) : (
           isEditing && (
             <div className='flex h-7'>
-              <div
-                contentEditable
+              <input
                 id='editable-question'
-                suppressContentEditableWarning
-                className={classnames('focus:outline-none w-64')}
-                style={{ backgroundColor: '#D0E3FF' }}
-                onInput={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  onTitleChange(event.target.innerHTML)
+                className={classnames(
+                  'focus:outline-none w-64 bg-primary-lighter'
+                )}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  onTitleChange(event.target.value)
                 }
-              >
-                {question.data.label}
-              </div>
+                defaultValue={question.data.label}
+              />
+
               <Button
                 variant='tertiary'
                 className='ml-auto'
                 data-testid={`${question.id}-save-option`}
                 onClick={() => saveQuestionTitle(qnsInEdit)}
+                disabled={newTitle?.trim() === ''}
               >
-                Save
+                {intl.get('SAVE')}
               </Button>
             </div>
           )

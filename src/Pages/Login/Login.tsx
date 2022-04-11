@@ -8,14 +8,14 @@ import {
   Button,
 } from '@getsynapse/design-system';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { PATHS } from 'utils/constants';
+import { PATHS, USER_STATUS } from 'utils/constants';
 import classnames from 'classnames';
 import { state } from '@getsynapse/design-system/dist/Molecules/Input/Input';
 import Auth from '@aws-amplify/auth';
 import accountsAPI from 'Services/accountsAPI';
 import * as Cookies from 'js-cookie';
 import isEmpty from 'lodash/isEmpty';
-import { useAppDispatch, useAppSelector } from 'state/hooks';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getUser,
   resetUser,
@@ -29,9 +29,9 @@ interface InputType {
 }
 
 const Login = () => {
-  const dispatch = useAppDispatch();
-  const userSliceStatus = useAppSelector(selectUserSliceStatus);
-  const user = useAppSelector(selectUser);
+  const dispatch = useDispatch();
+  const userSliceStatus = useSelector(selectUserSliceStatus);
+  const user = useSelector(selectUser);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const rememberChkRef = useRef<HTMLInputElement>(null);
@@ -177,6 +177,11 @@ const Login = () => {
     if (userSliceStatus === 'idle' && !isEmpty(user)) {
       if (password.state === 'error') {
         validateEnterpriseConnection(user.organization_id, redirectUrl);
+      } else if (
+        user.status === USER_STATUS.INVITED_DISABLED ||
+        user.status === USER_STATUS.REGISTERED_DISABLED
+      ) {
+        history.push(PATHS.DEACTIVATED_ACCOUNT);
       } else {
         history.push(redirectUrl);
       }

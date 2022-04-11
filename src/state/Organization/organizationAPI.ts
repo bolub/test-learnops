@@ -12,5 +12,13 @@ class OrganizationAPI {
     const { data } = await this.instance.get(`organization/${organizationId}`);
     return data.data;
   };
+
+  updateOrganization = async (organizationId: string, updateFields: any) => {
+    const { data } = await this.instance.put(`organization/${organizationId}`, {
+      updateFields,
+    });
+
+    return data.data;
+  };
 }
 export default new OrganizationAPI();

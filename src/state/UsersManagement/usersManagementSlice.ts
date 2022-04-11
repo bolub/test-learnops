@@ -13,9 +13,15 @@ import {
   SortingType,
   Status,
   UserAvatars,
+  LDTeam,
 } from 'utils/customTypes';
 import orderBy from 'lodash/orderBy';
-import { SLICE_STATUS } from 'utils/constants';
+import isEmpty from 'lodash/isEmpty';
+import { SLICE_STATUS, USER_STATUS, USER_TYPES } from 'utils/constants';
+import { selectOrganizationLicense } from 'state/Organization/organizationSlice';
+import { selectCurrentLearningTeam } from 'state/LearningTeams/learningTeamsSlice';
+import { SelectComapnyName } from 'state/Organization/organizationSlice';
+import { selectUserId } from 'state/User/userSlice';
 
 interface Users {
   ldUsers: LDUser[];
@@ -80,6 +86,7 @@ export const getLDUsers = createAsyncThunk(
         },
         id: get(user, 'id'),
         ldTeam_id: get(user, 'ldTeam_id'),
+        status: get(user, 'status'),
       };
     });
     return data;
@@ -132,6 +139,32 @@ export const addUser = createAsyncThunk(
   async (userData: Partial<AllUsersType>) => {
     const { data } = await usersManagementAPI.createUser(userData);
     return data.user;
+  }
+);
+
+export const inviteUser = createAsyncThunk(
+  'usersManagement/INVITE_USER',
+  async (
+    {
+      userId,
+      email,
+      firstName,
+    }: {
+      userId: string;
+      email: string;
+      firstName: string;
+    },
+    { getState }
+  ) => {
+    const state = getState() as RootState;
+    const companyName = SelectComapnyName(state);
+    const { data } = await usersManagementAPI.inviteUser(
+      userId,
+      email,
+      firstName,
+      companyName
+    );
+    return data;
   }
 );
 
@@ -198,7 +231,7 @@ const usersManagementSlice = createSlice({
 /* =============================== SELECTORS ================================ */
 export const selectLDUsers = (state: RootState) => state.users.ldUsers;
 
-const allUsers = (state: RootState) => state.users.allUsers;
+export const allUsers = (state: RootState) => state.users.allUsers;
 
 const usersSorting = (state: RootState) => state.users.usersSorting;
 
@@ -207,13 +240,28 @@ const allUsersPagination = (state: RootState) => state.users.allUsersPagination;
 export const selectAllUsers = createSelector(
   [allUsers, usersSorting, allUsersPagination],
   (users, sorting, pagination) => {
+    let formattedUsers: AllUsersType[] = users.slice(
+      pagination.offset,
+      pagination.limit
+    );
+    formattedUsers = formattedUsers.map((user: AllUsersType) => {
+      if (user.type === USER_TYPES.BUSINESS) {
+        return { ...user, team: get(user, 'businessTeams.title') };
+      } else if (user.type === USER_TYPES.L_D) {
+        const registeredTeams = get(user, 'registeredLearningTeams');
+        const teamsArray = registeredTeams.map((team: LDTeam) => team.name);
+        return { ...user, team: teamsArray.join(', ') };
+      } else {
+        return { ...user, team: '-' };
+      }
+    });
+
     const total = users.length;
     return {
-      data: orderBy(
-        users.slice(pagination.offset, pagination.limit),
-        sorting.orderBy,
-        [sorting.order, sorting.order]
-      ),
+      data: orderBy(formattedUsers, sorting.orderBy, [
+        sorting.order,
+        sorting.order,
+      ]),
       total,
     };
   }
@@ -226,24 +274,67 @@ export const selectUserStatus = (state: RootState) =>
   state.users.selectedUserStatus;
 
 export const selectLDUsersForDropdown = createSelector(
-  [selectLDUsers],
-  (users) => {
-    return users.map((user) => {
-      return {
-        label: `${user.data.firstName} ${user.data.lastName}`,
-        avatar: {
-          imageSrc: user.avatar_url,
-          initial: `${user.data.firstName.charAt(0)}${user.data.lastName.charAt(
-            0
-          )}`,
-        },
-        value: user.id,
-      };
-    }) as UserAvatars[];
+  [selectLDUsers, selectCurrentLearningTeam],
+  (users, team) => {
+    if (!isEmpty(team)) {
+      return users.reduce<UserAvatars[]>((ldUsers, user) => {
+        if (!team.ldTeamMembers?.find((member) => member.id === user.id)) {
+          return ldUsers.concat({
+            label: `${user.data.firstName} ${user.data.lastName}`,
+            avatar: {
+              imageSrc: user.avatar_url,
+              initial: `${user.data.firstName.charAt(
+                0
+              )}${user.data.lastName.charAt(0)}`,
+            },
+            value: user.id,
+          });
+        }
+        return ldUsers;
+      }, []);
+    } else {
+      return users.map((user) => {
+        return {
+          label: `${user.data.firstName} ${user.data.lastName}`,
+          avatar: {
+            imageSrc: user.avatar_url,
+            initial: `${user.data.firstName.charAt(
+              0
+            )}${user.data.lastName.charAt(0)}`,
+          },
+          value: user.id,
+        };
+      }) as UserAvatars[];
+    }
   }
 );
 
 export const selectDisabledDate = (state: RootState) =>
-  state.users.selectedUser.disabled_at;
+  state.users?.selectedUser?.disabled_at;
+
+export const selectActiveLDUsers = (state: RootState) =>
+  state.users.ldUsers.filter(
+    (user) =>
+      user.status === USER_STATUS.INVITED ||
+      user.status === USER_STATUS.REGISTERED
+  );
+
+export const selectAvailableLicenses = createSelector(
+  [selectActiveLDUsers, selectOrganizationLicense],
+  (users, licenses) => {
+    const licencesLeft = licenses.license_number - users.length;
+    return licencesLeft > 0 ? licencesLeft : 0;
+  }
+);
+
+export const selectUserById = createSelector(
+  [allUsers, selectUserId],
+  (users: AllUsersType[], userId: string | undefined) => {
+    if (userId) {
+      return users.find((user: AllUsersType) => user.id === userId);
+    }
+    return undefined;
+  }
+);
 
 export default usersManagementSlice.reducer;

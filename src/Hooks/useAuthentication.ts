@@ -6,15 +6,15 @@ import {
   selectUser,
   selectUserSliceStatus,
 } from 'state/User/userSlice';
-import { useAppDispatch, useAppSelector } from 'state/hooks';
-import { PATHS } from 'utils/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { PATHS, USER_STATUS } from 'utils/constants';
 import { useHistory } from 'react-router-dom';
 
 const useAuthentication = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
-  const userSliceStatus = useAppSelector(selectUserSliceStatus);
-  const user = useAppSelector(selectUser);
+  const dispatch = useDispatch();
+  const userSliceStatus = useSelector(selectUserSliceStatus);
+  const user = useSelector(selectUser);
   const history = useHistory();
 
   useEffect(() => {
@@ -32,7 +32,14 @@ const useAuthentication = () => {
 
   useEffect(() => {
     if (userSliceStatus === 'idle' && !isEmpty(user)) {
-      setIsAuthenticated(true);
+      if (
+        user.status === USER_STATUS.INVITED_DISABLED ||
+        user.status === USER_STATUS.REGISTERED_DISABLED
+      ) {
+        history.push(PATHS.DEACTIVATED_ACCOUNT);
+      } else {
+        setIsAuthenticated(true);
+      }
     } else if (userSliceStatus === 'failed') {
       history.push(`${PATHS.LOGIN}?redirect=${window.location.pathname}`);
     }

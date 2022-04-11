@@ -1,15 +1,24 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useParams, useLocation, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
 import {
   fetchProject,
   resetProject,
   getCurrentProjectData,
+  getCurrentUserParticipantType,
 } from 'state/Project/projectSlice';
+import {
+  getAllUsers,
+  getLDUsers,
+} from 'state/UsersManagement/usersManagementSlice';
 import { ProjectTab } from 'utils/customTypes';
-import { UPDATE_PROJECT_TABS } from 'utils/constants';
+import {
+  UPDATE_PROJECT_TABS,
+  PROJECT_PARTICIPANT_TYPE,
+  PATHS,
+} from 'utils/constants';
+import useHasUserAccess from './hooks/useHasUserAccess';
 import PageTitle from 'Molecules/PageTitle/PageTitle';
 import TabLink from './components/TabLink/TabLink';
 import Overview from './tabs/Overview/Overview';
@@ -20,8 +29,12 @@ import People from './tabs/People/People';
 
 const ProjectPage = () => {
   const dispatch = useDispatch();
+  const hasUserAccess = useHasUserAccess();
   const { projectId } = useParams<{ projectId: string }>();
   const projectData = useSelector(getCurrentProjectData);
+  const participantType = useSelector(getCurrentUserParticipantType);
+  const isUserCollaborator =
+    participantType === PROJECT_PARTICIPANT_TYPE.COLLABORATOR;
   const [currentTab, setCurrentTab] = useState<ProjectTab>(
     UPDATE_PROJECT_TABS.OVERVIEW
   );
@@ -30,35 +43,63 @@ const ProjectPage = () => {
 
   const defaultTabString = queryParams.get('tab');
 
+  const init = useCallback(async () => {
+    await Promise.all([
+      dispatch(fetchProject(projectId)),
+      dispatch(getAllUsers()),
+      dispatch(getLDUsers()),
+    ]);
+  }, [dispatch, projectId]);
+
   useEffect(() => {
-    dispatch(fetchProject(projectId));
+    if (projectId) {
+      init();
+    }
     return () => {
       dispatch(resetProject());
     };
-  }, [dispatch, projectId]);
+  }, [projectId, init, dispatch]);
 
-  const availableTabs = Object.values(UPDATE_PROJECT_TABS);
+  const notAvailableTabsForCollaborators = useMemo(
+    () => [UPDATE_PROJECT_TABS.PEOPLE, UPDATE_PROJECT_TABS.BUDGET],
+    []
+  );
+  const availableTabs = useMemo(() => {
+    let tabs: string[] = [];
+    for (let value of Object.values(UPDATE_PROJECT_TABS)) {
+      if (
+        isUserCollaborator &&
+        notAvailableTabsForCollaborators.includes(value)
+      ) {
+        continue;
+      }
+      tabs.push(value);
+    }
+    return tabs;
+  }, [notAvailableTabsForCollaborators, isUserCollaborator]);
 
   useEffect(() => {
-    if (availableTabs.includes(defaultTabString)) {
+    if (defaultTabString && availableTabs.includes(defaultTabString)) {
       setCurrentTab(defaultTabString);
     }
   }, [defaultTabString, availableTabs]);
 
-  return (
+  return hasUserAccess ? (
     <div className='h-full flex flex-col'>
       <PageTitle
         titleComponent={get(projectData, 'title', '')}
         headerChildren={
           <div className='flex'>
-            {Object.keys(UPDATE_PROJECT_TABS).map((key) => (
-              <TabLink
-                key={key}
-                tabKey={UPDATE_PROJECT_TABS[key]}
-                isActive={currentTab === UPDATE_PROJECT_TABS[key]}
-                setCurrentTab={setCurrentTab}
-              />
-            ))}
+            {availableTabs.map((tab) => {
+              return (
+                <TabLink
+                  key={tab}
+                  tabKey={tab}
+                  isActive={currentTab === tab}
+                  setCurrentTab={setCurrentTab}
+                />
+              );
+            })}
           </div>
         }
       />
@@ -67,11 +108,15 @@ const ProjectPage = () => {
       )}
       {currentTab === UPDATE_PROJECT_TABS.TASKS && <Tasks />}
       {currentTab === UPDATE_PROJECT_TABS.BUDGET && <Budget />}
-      {currentTab === UPDATE_PROJECT_TABS.PEOPLE && <People />}
+      {currentTab === UPDATE_PROJECT_TABS.PEOPLE && (
+        <People projectId={projectId} />
+      )}
       {currentTab === UPDATE_PROJECT_TABS.FILES && (
         <Files projectId={projectId} />
       )}
     </div>
+  ) : (
+    <Redirect to={PATHS.PROJECTS_LIST_PAGE} />
   );
 };
 

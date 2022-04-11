@@ -53,28 +53,28 @@ describe('Projects Page', () => {
     cy.get(selectors.projectTargetDate).click();
     cy.get(`[data-value=${21}]`).click();
     cy.get(selectors.projectStatus).should('be.visible').click();
-    cy.selectDropdownItem({ label: 'New', value: 'new' });
+    cy.selectDropdownItem('New', 'new');
     cy.get('[data-cy=project-form-body]').scrollTo('bottom');
     cy.get(selectors.projectPrivacy).should('be.visible').click();
-    cy.selectDropdownItem({ label: 'Private', value: 'private' });
+    cy.selectDropdownItem('Private', 'private');
     cy.get('[data-cy=project-form-body]').scrollTo('top');
     cy.get(selectors.projectBusiness).should('be.visible').click();
-    cy.selectDropdownItem({
-      label: 'Test Company 1 - Business Team 1',
-      value: '2e7449fe-1787-42cf-a7e8-cf478c11bd9f',
-    });
+    cy.selectDropdownItem(
+      'Test Company 1 - Business Team 1',
+      '2e7449fe-1787-42cf-a7e8-cf478c11bd9f'
+    );
     cy.get(selectors.projectProcessInput).click({ force: true });
-    cy.selectDropdownItem({
-      label: 'ADDIE',
-      value: '73009fc1-19d2-405d-9ea8-7576177d747f',
-    });
+    cy.selectDropdownItem(
+      'test process 1',
+      '73009fc1-19d2-405d-9ea8-7576177d747f'
+    );
     cy.get(selectors.projectStageInput).should('be.visible').click();
-    cy.selectDropdownItem({
-      label: 'Analysis',
-      value: '575eebd2-c629-4550-88c7-bf668067f559',
-    });
+    cy.selectDropdownItem(
+      'test stages 1',
+      '575eebd2-c629-4550-88c7-bf668067f559'
+    );
     cy.get(selectors.projectPriorityInput).click({ force: true });
-    cy.selectDropdownItem({ label: 'High', value: 'high' });
+    cy.selectDropdownItem('High', 'high');
     cy.get(selectors.nextButton).should('be.visible').click();
   });
 
@@ -94,10 +94,7 @@ describe('Projects Page', () => {
     cy.get(selectors.addProjectButton).should('be.visible').click();
     cy.get(selectors.budgetDetailsTab).should('be.visible').click();
     cy.get(selectors.projectBudgetSource).click();
-    cy.selectDropdownItem({
-      label: 'Business budget',
-      value: 'business_budget',
-    });
+    cy.selectDropdownItem('Business budget', 'business-budget');
     cy.get(selectors.projectAllocationBudget).type(
       selectors.projectEstimateInputValue
     );
@@ -106,7 +103,7 @@ describe('Projects Page', () => {
     );
   });
 
-  it.only('checks if project is created successfully', () => {
+  it('checks if project is created successfully', () => {
     const { routes, api } = constants;
     const { selectors, constantTexts } = projects;
     cy.intercept('POST', api.createProject).as('createProject');
@@ -123,49 +120,38 @@ describe('Projects Page', () => {
     cy.get(selectors.projectTargetDate).click();
     cy.get(`[data-value=${21}]`).click();
     cy.get(selectors.projectStatus).should('be.visible').click();
-    cy.selectDropdownItem({ label: 'New', value: 'new' });
+    cy.selectDropdownItem('New', 'new');
     cy.get('[data-cy=project-form-body]').scrollTo('bottom');
     cy.get(selectors.projectPrivacy).should('be.visible').click();
-    cy.selectDropdownItem({ label: 'Private', value: 'private' });
+    cy.selectDropdownItem('Private', 'private');
     cy.get('[data-cy=project-form-body]').scrollTo('top');
     cy.get(selectors.projectBusiness).should('be.visible').click();
-    cy.selectDropdownItem({
-      label: 'Test Company 1 - Business Team 1',
-      value: '2e7449fe-1787-42cf-a7e8-cf478c11bd9f',
-    });
+    cy.selectDropdownItem(
+      'Test Company 1 - Business Team 1',
+      '2e7449fe-1787-42cf-a7e8-cf478c11bd9f'
+    );
     cy.get('[data-cy=project-form-body]').scrollTo('bottom');
     cy.get(selectors.projectDescriptionInput).type(
       constantTexts.projectDescription
     );
     cy.get(selectors.projectProcessInput).click({ force: true });
-    cy.selectDropdownItem({
-      label: 'ADDIE',
-      value: '73009fc1-19d2-405d-9ea8-7576177d747f',
-    });
+    cy.selectDropdownItem(
+      'test process 1',
+      '73009fc1-19d2-405d-9ea8-7576177d747f'
+    );
     cy.get(selectors.projectStageInput).should('be.visible').click();
-    cy.selectDropdownItem({
-      label: 'Analysis',
-      value: '575eebd2-c629-4550-88c7-bf668067f559',
-    });
+    cy.selectDropdownItem(
+      'test stages 1',
+      '575eebd2-c629-4550-88c7-bf668067f559'
+    );
     cy.get(selectors.projectPriorityInput).click({ force: true });
-    cy.selectDropdownItem({ label: 'High', value: 'high' });
+    cy.selectDropdownItem('High', 'high');
     cy.get(selectors.nextButton).should('be.visible').click();
     cy.get(selectors.resourceDetailsTab).should('be.visible').click();
-
-    cy.get(selectors.projectResourceType).should('be.visible').click();
-
-    cy.selectDropdownItem({
-      label: 'Internal',
-      value: 'internal',
-    });
-
     cy.get(selectors.nextButton).should('be.visible').click();
     cy.get(selectors.budgetDetailsTab).should('be.visible').click();
     cy.get(selectors.projectBudgetSource).click();
-    cy.selectDropdownItem({
-      label: 'Business budget',
-      value: 'business_budget',
-    });
+    cy.selectDropdownItem('Business budget', 'business-budget');
     cy.get(selectors.projectAllocationBudget).type(
       selectors.projectEstimateInputValue
     );

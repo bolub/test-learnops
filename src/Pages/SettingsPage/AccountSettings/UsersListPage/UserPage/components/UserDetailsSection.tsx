@@ -7,7 +7,7 @@ import get from 'lodash/get';
 import { useState, useEffect, useCallback } from 'react';
 import { USER_TYPES } from 'utils/constants';
 import Holidays from 'date-holidays';
-import { AccountDeactivationBanner } from '../Banner';
+import AccountDeactivationBanner from '../AccountDeactivationBanner';
 import {
   selectDisabledDate,
   selectSelectedUser,
@@ -81,7 +81,7 @@ const UserDetailsSection = ({
         country={country}
         errors={errors}
       />
-      <Divider />
+      <Divider className='mx-4' />
       <JobInformation
         user={userObj}
         userType={userType}
@@ -91,7 +91,7 @@ const UserDetailsSection = ({
 
       {userType === USER_TYPES.L_D ? (
         <>
-          <Divider />
+          <Divider className='mx-4' />
           <CapacityManagement
             user={userObj}
             handleChangeField={handleChangeField}

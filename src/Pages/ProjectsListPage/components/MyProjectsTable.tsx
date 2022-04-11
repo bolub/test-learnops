@@ -11,19 +11,20 @@ import {
 } from '@getsynapse/design-system';
 import { Project } from 'utils/customTypes';
 import { setSortingOrders, mySorting } from 'state/Projects/projectsSlice';
-import { selectUserId } from 'state/User/userSlice';
+import { selectUserId, selectIsUserLd } from 'state/User/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   PATHS,
   PROJECTS_TABLE_FILTER_OPTIONS,
   PROJECTS_TABLE_TABS,
+  PROJECT_STATUS,
 } from 'utils/constants';
 import { SortingType } from 'utils/customTypes';
 import {
-  getHealthColumn,
   getStatusColumn,
   getProjectRoleColumn,
   getValueById,
+  getProjectNumberColumn,
 } from '../helpers/tableColumnsValues';
 import SortingArrows from 'Molecules/SortingArrows';
 import HeadCell from './HeadCell';
@@ -32,6 +33,7 @@ import {
   selectProjectCategories,
 } from 'state/Organization/organizationSlice';
 import emptyProjectsTable from 'assets/icons/empty-projects.svg';
+import HealthLabel from 'Molecules/HealthLabel';
 
 const MyProjectsTable: React.FC<{
   projectsList: Project[];
@@ -43,6 +45,7 @@ const MyProjectsTable: React.FC<{
 
   const bussinessTeams = useSelector(selectBussinessTeams);
   const projectCategories = useSelector(selectProjectCategories);
+  const isLDUser = useSelector(selectIsUserLd);
 
   const handleSort = (orderByParam: string, order: SortingType) => {
     dispatch(
@@ -218,6 +221,10 @@ const MyProjectsTable: React.FC<{
           ],
         },
         rows: projectsList.map((project: Project) => {
+          const isInProgressOrCompleted =
+            project.status === PROJECT_STATUS.IN_PROGRESS ||
+            project.status === PROJECT_STATUS.COMPLETED;
+
           return {
             'data-cy': `project-${project.id}`,
             id: project.id,
@@ -225,7 +232,7 @@ const MyProjectsTable: React.FC<{
             onClick: () => history.push(`${PATHS.PROJECT_PAGE}/${project.id}`),
             cells: [
               {
-                content: project.projectNumber,
+                content: getProjectNumberColumn(project.projectNumber),
               },
               {
                 content: (
@@ -256,9 +263,11 @@ const MyProjectsTable: React.FC<{
                 className: 'min-w-28',
               },
               {
-                content: intl.get(
-                  `PROJECT_DETAIL.PRIORITY_OPTIONS.${project.priority.toUpperCase()}`
-                ),
+                content:
+                  project.priority &&
+                  intl.get(
+                    `PROJECT_DETAIL.PRIORITY_OPTIONS.${project.priority.toUpperCase()}`
+                  ),
                 className: 'min-w-28',
               },
               {
@@ -266,7 +275,9 @@ const MyProjectsTable: React.FC<{
                 className: 'min-w-28',
               },
               {
-                content: getHealthColumn(project?.health),
+                content: isInProgressOrCompleted && (
+                  <HealthLabel health={project?.health} />
+                ),
                 className: 'min-w-28',
               },
               {
@@ -306,13 +317,15 @@ const MyProjectsTable: React.FC<{
             <Typography variant='body' className='mt-4 neutral-black'>
               {intl.get('PROJECTS_LIST_PAGE.TABLE.EMPTY')}
             </Typography>
-            <Button
-              className='mt-2 mx-auto'
-              size='small'
-              onClick={addNewProject}
-            >
-              {intl.get('PROJECTS_LIST_PAGE.TABLE.GET_STARTED')}
-            </Button>
+            {isLDUser && (
+              <Button
+                className='mt-2 mx-auto'
+                size='small'
+                onClick={addNewProject}
+              >
+                {intl.get('PROJECTS_LIST_PAGE.TABLE.GET_STARTED')}
+              </Button>
+            )}
           </div>
         </div>
       }

@@ -37,14 +37,16 @@ Cypress.Commands.add('signInLD', () => {
   cy.fixture('auth').then((auth) => {
     cy.fixture('user').then((content) => {
       cy.visit('/login');
-      const { stubRoute } = content;
+      const { ldUser, stubRoute } = content;
       const { selectors } = auth;
 
       cy.get(selectors.loginInputEmail).type(Cypress.env('USER_EMAIL'));
       cy.get(selectors.loginInputPassword).type(Cypress.env('USER_PASSWORD'));
 
       cy.get(selectors.loginSubmitButton).click();
-      cy.intercept(stubRoute).as('loginIntercept');
+      cy.intercept(stubRoute, { times: 1, method: 'GET' }, ldUser).as(
+        'loginIntercept'
+      );
       cy.wait('@loginIntercept');
     });
   });
@@ -92,7 +94,12 @@ Cypress.Commands.add('checkDropdownItemVisibility', (label, value) => {
   cy.get(`[data-value='${JSON.stringify(data)}']`).should('be.visible');
 });
 
-Cypress.Commands.add('selectDropdownItem', (data) => {
+Cypress.Commands.add('selectDropdownItem', (label, value) => {
+  const data = {
+    value,
+    label,
+  };
+
   cy.get(`[data-value='${JSON.stringify(data)}']`)
     .should('be.visible')
     .click();

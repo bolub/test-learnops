@@ -91,4 +91,87 @@ describe('Edit Form', () => {
     cy.wait('@editedForm');
     cy.location('pathname').should('eq', routes.settings);
   });
+
+  it('Checks if user can publish a form', () => {
+    const { routes, api } = constants;
+    const { selectors: formSelector } = forms;
+
+    cy.intercept(
+      'GET',
+      api.updateForm.replace('$', formSelector.formId),
+      forms.newForm
+    ).as('form');
+    cy.visit(`${routes.settings}/form/${formSelector.formId}`);
+    cy.wait('@form');
+
+    cy.get(formSelector.formSwitch).should('not.be.checked');
+    cy.intercept('PUT', api.updateForm.replace('$', '**'), {
+      ...forms.newForm,
+      data: { ...forms.newForm.data, data: { published: true } },
+    }).as('publishedForm');
+    cy.get(formSelector.formSwitch).check({ force: true });
+    cy.wait('@publishedForm');
+    cy.get(formSelector.formSwitch).should('be.checked');
+  });
+
+  it('Checks if user can unpublish a form', () => {
+    const { routes, api } = constants;
+    const { selectors: formSelector } = forms;
+
+    cy.intercept('GET', api.updateForm.replace('$', '**'), {
+      ...forms.newForm,
+      data: { ...forms.newForm.data, data: { published: true } },
+    }).as('form');
+    cy.visit(`${routes.settings}/form/${formSelector.formId}`);
+    cy.wait('@form');
+
+    cy.get(formSelector.formSwitch).should('be.checked');
+    cy.intercept('PUT', api.updateForm.replace('$', '**'), forms.newForm).as(
+      'publishedForm'
+    );
+    cy.get(formSelector.formSwitch).uncheck({ force: true });
+    cy.wait('@publishedForm');
+    cy.get(formSelector.formSwitch).should('not.be.checked');
+  });
+
+  it('Checks if user can delete a form from individual view', () => {
+    const { routes, api } = constants;
+    const { selectors: formSelector } = forms;
+    const { selectors: projectSelector } = project;
+    const deletedForms = forms.forms.data.filter(
+      (form) => form.id !== formSelector.formId
+    );
+
+    cy.intercept('GET', api.updateForm.replace('$', '**'), {
+      ...forms.forms,
+      data: forms.forms.data[0],
+    }).as('form');
+    cy.visit(`${routes.settings}/form/${formSelector.formId}`);
+    cy.wait('@form');
+
+    cy.get(formSelector.formListActions).click();
+    cy.get(formSelector.deleteOption).eq(0).click();
+    cy.get(formSelector.deleteModal).should('be.visible');
+
+    cy.intercept('DELETE', api.updateForm.replace('$', formSelector.formId), {
+      ...forms.forms,
+      data: forms.forms.data[0],
+    }).as('deleteForm');
+    cy.intercept('GET', api.fetchAllForms, {
+      ...forms.forms,
+      data: deletedForms,
+    }).as('getForms');
+
+    cy.get(formSelector.deleteFormButton).click();
+    cy.wait('@deleteForm');
+    cy.get(formSelector.deleteModal).should('not.exist');
+    cy.location('pathname').should('eq', routes.settings);
+
+    cy.wait('@getForms');
+    cy.get(projectSelector.platformTab).should('be.visible').click();
+    cy.get(formSelector.platformRequest).should('be.visible').click();
+    cy.get(formSelector.formRow.replace('$$', formSelector.formId)).should(
+      'not.exist'
+    );
+  });
 });

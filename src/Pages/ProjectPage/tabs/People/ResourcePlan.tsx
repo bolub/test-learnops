@@ -121,14 +121,19 @@ const ResourcePlan = () => {
       })
     );
 
-    showInlineNotification('success', intl.get('PEOPLE.UPDATE_SUCCESS'));
+    showInlineNotification(
+      'success',
+      intl.get('PEOPLE.RESOURCE_PLAN.UPDATE_SUCCESS')
+    );
     setVendorDisable(true);
   };
 
   return (
     <div className='py-4'>
       <div className='bg-neutral-white h-project overflow-y-auto px-6 py-6'>
-        <Typography variant='h5'>{intl.get('PEOPLE.RESOURCE_PLAN')}</Typography>
+        <Typography variant='h5'>
+          {intl.get('PEOPLE.TABS.RESOURCE_PLAN')}
+        </Typography>
 
         <div className='grid gap-y-6 gap-x-10% grid-cols-2 mt-8'>
           <FormItem
@@ -235,7 +240,7 @@ const ResourcePlan = () => {
             aria-disabled={disableSave}
             onClick={updateResourcePlanHandler}
           >
-            {intl.get('PEOPLE.UPDATE_RESOURCES_BUTTON')}
+            {intl.get('PEOPLE.RESOURCE_PLAN.UPDATE_RESOURCES_BUTTON')}
           </Button>
         </div>
       </div>

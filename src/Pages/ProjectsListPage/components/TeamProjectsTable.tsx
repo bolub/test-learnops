@@ -11,18 +11,26 @@ import {
   Button,
   Checkbox,
 } from '@getsynapse/design-system';
-import { Project, SortingType } from 'utils/customTypes';
+import {
+  Project,
+  SortingType,
+  ProjectProcess,
+  ProjectProcessStage,
+} from 'utils/customTypes';
 import {
   DATE,
   PATHS,
   PROJECTS_TABLE_FILTER_OPTIONS,
   PROJECTS_TABLE_TABS,
+  PROJECT_STATUS,
 } from 'utils/constants';
 import {
-  getHealthColumn,
   getStatusColumn,
   getOwnerColumn,
   getValueById,
+  getProjectNumberColumn,
+  getResourcingTypeLabel,
+  getBudgetSourceLabel,
 } from '../helpers/tableColumnsValues';
 import { teamSorting, setSortingOrders } from 'state/Projects/projectsSlice';
 import {
@@ -37,6 +45,7 @@ import SortingArrows from 'Molecules/SortingArrows';
 import { useDispatch, useSelector } from 'react-redux';
 import emptyProjectsTable from 'assets/icons/empty-projects.svg';
 import HeadCell from './HeadCell';
+import HealthLabel from 'Molecules/HealthLabel';
 
 const TeamProjectsTable: React.FC<{
   projectsList: Project[];
@@ -204,6 +213,73 @@ const TeamProjectsTable: React.FC<{
                 },
                 {
                   content: (
+                    <HeadCell testId='t-header__priority'>
+                      <React.Fragment>
+                        {intl.get('PROJECTS_LIST_PAGE.TABLE.HEAD.PRIORITY')}
+                        <SortingArrows
+                          name={PROJECTS_TABLE_FILTER_OPTIONS.PRIORITY.value}
+                          handleSort={handleSort}
+                          order={order}
+                          orderBy={orderBy}
+                        />
+                      </React.Fragment>
+                    </HeadCell>
+                  ),
+                  className: classnames(
+                    'w-36',
+                    getSortingActiveStyle(
+                      PROJECTS_TABLE_FILTER_OPTIONS.PRIORITY.value
+                    )
+                  ),
+                },
+                {
+                  content: (
+                    <HeadCell testId='t-header__owner'>
+                      <React.Fragment>
+                        {intl.get(
+                          'PROJECTS_LIST_PAGE.TABLE.HEAD.PROJECT_OWNER'
+                        )}
+                        <SortingArrows
+                          name={
+                            PROJECTS_TABLE_FILTER_OPTIONS.PROJECT_OWNER.value
+                          }
+                          handleSort={handleSort}
+                          order={order}
+                          orderBy={orderBy}
+                        />
+                      </React.Fragment>
+                    </HeadCell>
+                  ),
+                  className: classnames(
+                    'w-44',
+                    getSortingActiveStyle(
+                      PROJECTS_TABLE_FILTER_OPTIONS.PROJECT_OWNER.value
+                    )
+                  ),
+                },
+                {
+                  content: (
+                    <HeadCell testId='t-header__health'>
+                      <React.Fragment>
+                        {intl.get('PROJECTS_LIST_PAGE.TABLE.HEAD.HEALTH')}
+                        <SortingArrows
+                          name={PROJECTS_TABLE_FILTER_OPTIONS.HEALTH.value}
+                          handleSort={handleSort}
+                          order={order}
+                          orderBy={orderBy}
+                        />
+                      </React.Fragment>
+                    </HeadCell>
+                  ),
+                  className: classnames(
+                    'w-36',
+                    getSortingActiveStyle(
+                      PROJECTS_TABLE_FILTER_OPTIONS.HEALTH.value
+                    )
+                  ),
+                },
+                {
+                  content: (
                     <HeadCell testId='t-header__business-unit'>
                       <React.Fragment>
                         {intl.get(
@@ -252,52 +328,7 @@ const TeamProjectsTable: React.FC<{
                     )
                   ),
                 },
-                {
-                  content: (
-                    <HeadCell testId='t-header__priority'>
-                      <React.Fragment>
-                        {intl.get('PROJECTS_LIST_PAGE.TABLE.HEAD.PRIORITY')}
-                        <SortingArrows
-                          name={PROJECTS_TABLE_FILTER_OPTIONS.PRIORITY.value}
-                          handleSort={handleSort}
-                          order={order}
-                          orderBy={orderBy}
-                        />
-                      </React.Fragment>
-                    </HeadCell>
-                  ),
-                  className: classnames(
-                    'w-36',
-                    getSortingActiveStyle(
-                      PROJECTS_TABLE_FILTER_OPTIONS.PRIORITY.value
-                    )
-                  ),
-                },
-                {
-                  content: (
-                    <HeadCell testId='t-header__owner'>
-                      <React.Fragment>
-                        {intl.get(
-                          'PROJECTS_LIST_PAGE.TABLE.HEAD.PROJECT_OWNER'
-                        )}
-                        <SortingArrows
-                          name={
-                            PROJECTS_TABLE_FILTER_OPTIONS.PROJECT_OWNER.value
-                          }
-                          handleSort={handleSort}
-                          order={order}
-                          orderBy={orderBy}
-                        />
-                      </React.Fragment>
-                    </HeadCell>
-                  ),
-                  className: classnames(
-                    'w-44',
-                    getSortingActiveStyle(
-                      PROJECTS_TABLE_FILTER_OPTIONS.PROJECT_OWNER.value
-                    )
-                  ),
-                },
+
                 {
                   content: (
                     <HeadCell testId='t-header__start-date'>
@@ -416,25 +447,13 @@ const TeamProjectsTable: React.FC<{
                 },
                 {
                   content: (
-                    <HeadCell testId='t-header__health'>
-                      <React.Fragment>
-                        {intl.get('PROJECTS_LIST_PAGE.TABLE.HEAD.HEALTH')}
-                        <SortingArrows
-                          name={PROJECTS_TABLE_FILTER_OPTIONS.HEALTH.value}
-                          handleSort={handleSort}
-                          order={order}
-                          orderBy={orderBy}
-                        />
-                      </React.Fragment>
+                    <HeadCell testId='t-header__stage'>
+                      {intl.get('PROJECTS_LIST_PAGE.TABLE.HEAD.PROJECT_STAGE')}
                     </HeadCell>
                   ),
-                  className: classnames(
-                    'w-36',
-                    getSortingActiveStyle(
-                      PROJECTS_TABLE_FILTER_OPTIONS.HEALTH.value
-                    )
-                  ),
+                  className: 'w-36',
                 },
+
                 {
                   content: <div></div>,
                   className: classnames('w-20', {
@@ -447,6 +466,18 @@ const TeamProjectsTable: React.FC<{
             rows: projectsList.map((project: Project, index: number) => {
               const isOdd = index % 2;
               const isSelected = selectedRows.includes(project.id);
+              const isInProgressOrCompleted =
+                project.status === PROJECT_STATUS.IN_PROGRESS ||
+                project.status === PROJECT_STATUS.COMPLETED;
+
+              let matchedStages: ProjectProcessStage[] = [];
+              const matchedProcess = projectProcesses.find(
+                (process: ProjectProcess) => process.id === project.process_id
+              );
+              if (matchedProcess) {
+                matchedStages = matchedProcess.projectStages;
+              }
+
               return {
                 'data-cy': `project-${project.id}`,
                 className: 'group cursor-pointer',
@@ -481,7 +512,7 @@ const TeamProjectsTable: React.FC<{
                     }),
                   },
                   {
-                    content: project.projectNumber,
+                    content: getProjectNumberColumn(project.projectNumber),
                     className: classnames('w-36', {
                       'absolute left-12 z-5 group-hover:bg-primary-lighter shadow-table-column':
                         !isProjectsListEmpty,
@@ -516,6 +547,30 @@ const TeamProjectsTable: React.FC<{
                     }),
                   },
                   {
+                    content:
+                      project.priority &&
+                      intl.get(
+                        `PROJECT_DETAIL.PRIORITY_OPTIONS.${project.priority.toUpperCase()}`
+                      ),
+                    className: classnames('w-36', {
+                      'bg-primary-lighter': isSelected,
+                    }),
+                  },
+                  {
+                    content: project.owners && getOwnerColumn(project.owners),
+                    className: classnames('w-40', {
+                      'bg-primary-lighter': isSelected,
+                    }),
+                  },
+                  {
+                    content: isInProgressOrCompleted && (
+                      <HealthLabel health={project?.health} />
+                    ),
+                    className: classnames('w-36', {
+                      'bg-primary-lighter': isSelected,
+                    }),
+                  },
+                  {
                     content: getValueById(
                       bussinessTeams,
                       'title',
@@ -531,21 +586,11 @@ const TeamProjectsTable: React.FC<{
                       'categoryName',
                       project.category_id
                     ),
-                  },
-                  {
-                    content: intl.get(
-                      `PROJECT_DETAIL.PRIORITY_OPTIONS.${project.priority.toUpperCase()}`
-                    ),
-                    className: classnames('w-36', {
+                    className: classnames({
                       'bg-primary-lighter': isSelected,
                     }),
                   },
-                  {
-                    content: project.owners && getOwnerColumn(project.owners),
-                    className: classnames('w-40', {
-                      'bg-primary-lighter': isSelected,
-                    }),
-                  },
+
                   {
                     content:
                       project.startDate &&
@@ -577,13 +622,13 @@ const TeamProjectsTable: React.FC<{
                     }),
                   },
                   {
-                    content: 'Resourcing Type',
+                    content: getResourcingTypeLabel(project?.resourcing_type),
                     className: classnames('w-36', {
                       'bg-primary-lighter': isSelected,
                     }),
                   },
                   {
-                    content: project?.budget_source,
+                    content: getBudgetSourceLabel(project?.budget_source),
                     className: classnames('w-36', {
                       'bg-primary-lighter': isSelected,
                     }),
@@ -599,11 +644,16 @@ const TeamProjectsTable: React.FC<{
                     }),
                   },
                   {
-                    content: getHealthColumn(project?.health),
+                    content: getValueById(
+                      matchedStages,
+                      'stageName',
+                      project.stage_id!
+                    ),
                     className: classnames('w-36', {
                       'bg-primary-lighter': isSelected,
                     }),
                   },
+
                   {
                     content: (
                       <div

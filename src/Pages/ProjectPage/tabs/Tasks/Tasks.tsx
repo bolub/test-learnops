@@ -18,6 +18,7 @@ import {
 } from 'state/Tasks/taskSlice';
 import Pagination from 'Organisms/Pagination';
 import { exportCsv } from 'state/Projects/projectsSlice';
+import { getCurrentUserParticipantType } from 'state/Project/projectSlice';
 import {
   generateCsvHeaders,
   generateCsvData,
@@ -25,17 +26,26 @@ import {
 } from './helpers/export';
 import isEmpty from 'lodash/isEmpty';
 import { Task, TasksTableTab } from 'utils/customTypes';
-import { TASKS_TABLE_TABS, TASKS_TABLE_COLUMNS } from 'utils/constants';
+import {
+  TASKS_TABLE_TABS,
+  TASKS_TABLE_COLUMNS,
+  PROJECT_PARTICIPANT_TYPE,
+} from 'utils/constants';
 import { useParams } from 'react-router-dom';
 import TaskTable from './TasksListPage/components/TasksTable';
 import TasksTableFilters from './TasksListPage/components/TasksTableFilters';
 
 const Tasks = () => {
+  const participantType = useSelector(getCurrentUserParticipantType);
   const dispatch = useDispatch();
   const { projectId } = useParams<{ projectId: string }>();
   const addTaskButtonText = intl.get('TASKS.ADD_TASK_BUTTON_TITLE');
   const [currentTabIndex, setCurrentTabIndex] = useState(0);
   const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
+  const canAddTask = [
+    PROJECT_PARTICIPANT_TYPE.OWNER,
+    PROJECT_PARTICIPANT_TYPE.MEMBER,
+  ].includes(participantType);
 
   useEffect(() => {
     dispatch(fetchUserTasks(projectId));
@@ -108,9 +118,11 @@ const Tasks = () => {
           containerClassName='w-80'
         />
       </div>
-      <div className='absolute top-0 right-0 w-28'>
-        <AddTaskModal renderText={addTaskButtonText} componentType='header' />
-      </div>
+      {canAddTask && (
+        <div className='absolute top-0 right-0 w-28'>
+          <AddTaskModal renderText={addTaskButtonText} componentType='header' />
+        </div>
+      )}
       <div className='pt-4 px-6 flex-grow'>
         <Tabs
           index={currentTabIndex}

@@ -26,6 +26,7 @@ import {
   UpdateReqData,
   RequestRequiredFields,
   RequestRequiredErrors,
+  RequestQuestion,
 } from 'utils/customTypes';
 import { exists } from 'Pages/helpers';
 import { getForms, selectHasForms } from 'state/Forms/formSlice';
@@ -41,7 +42,11 @@ import {
   updateOwners,
   selectIsActiveRequestAForm,
 } from 'state/ActiveRequest/activeRequestSlice';
-import { selectOrganizationId, selectUserId } from 'state/User/userSlice';
+import {
+  selectOrganizationId,
+  selectUserId,
+  selectUserType,
+} from 'state/User/userSlice';
 import DetailsPage from './DetailsPage';
 import FooterButtons from './components/FooterButtons/FooterButtons';
 import RequestPageSidebar from 'Organisms/RequestPageSidebar/RequestPageSidebar';
@@ -53,15 +58,20 @@ import {
   setNotificationVariant,
   setNotificationTimeout,
 } from 'state/InlineNotification/inlineNotificationSlice';
+import { USER_TYPES } from 'utils/constants';
+import { values } from 'lodash';
+import { formatRequestIdentifier } from 'Pages/helpers';
 
 export const RequestContext = createContext<{
   areBasicAndRequestDisabled: boolean;
   isAdditionalDisabled: boolean;
   isLDDisabled: boolean;
+  isSubmitUpdateDisabled: boolean;
 }>({
   areBasicAndRequestDisabled: true,
   isAdditionalDisabled: true,
   isLDDisabled: true,
+  isSubmitUpdateDisabled: true,
 });
 
 const RequestPage = () => {
@@ -107,6 +117,12 @@ const RequestPage = () => {
 
   const isForm = useSelector(selectIsActiveRequestAForm);
   const userId = useSelector(selectUserId);
+  const userType = useSelector(selectUserType);
+
+  const requestIdentifier = useMemo(
+    () => formatRequestIdentifier(get(requestData, 'requestIdentifier')!),
+    [requestData]
+  );
 
   const isOwner = useMemo(() => {
     if (!isEmpty(requestData.owners)) {
@@ -115,6 +131,69 @@ const RequestPage = () => {
       return false;
     }
   }, [requestData, userId]);
+
+  const questionsWithoutLd = useMemo(
+    () => requestQuestionsData.filter((que) => que.section !== 'ldDetails'),
+    [requestQuestionsData]
+  );
+
+  const questionsOnlyLd = useMemo(
+    () => requestQuestionsData.filter((que) => que.section === 'ldDetails'),
+    [requestQuestionsData]
+  );
+
+  const filteredRequestQuestions =
+    userType === USER_TYPES.L_D &&
+    requestData.status === REQUEST_STATUS.SUBMITTED
+      ? questionsOnlyLd
+      : questionsWithoutLd;
+
+  useEffect(() => {
+    setUpdatedReqData((prev) => ({
+      ...prev,
+      requestQuestions: filteredRequestQuestions.reduce(
+        (reqQuestions, questionData) => ({
+          ...reqQuestions,
+          [questionData.id]: questionData,
+        }),
+        {}
+      ),
+    }));
+  }, [filteredRequestQuestions]);
+
+  const isSubmitUpdateDisabled = useMemo<boolean>(() => {
+    const answeredQuestions = values(updatedReqData.requestQuestions).filter(
+      (questionData: RequestQuestion) => {
+        if (!questionData?.data?.isRequired) return true;
+
+        if (questionData?.type === 'radio') {
+          return (
+            exists(questionData?.data?.value?.value) &&
+            questionData?.data?.value?.value !== ''
+          );
+        }
+
+        if (questionData?.type === 'checkbox') {
+          const checkedItems = questionData?.data?.value?.items?.filter(
+            (item: any) => {
+              return item?.checked;
+            }
+          );
+          return checkedItems.length > 0;
+        }
+
+        if (questionData?.type === 'dropdown') {
+          return (
+            exists(questionData?.data?.value?.value) &&
+            questionData?.data?.value?.value?.value !== ''
+          );
+        }
+        return questionData?.data?.value !== '';
+      }
+    );
+
+    return answeredQuestions.length !== filteredRequestQuestions.length;
+  }, [updatedReqData, filteredRequestQuestions]);
 
   const isRequester = useMemo<boolean>(
     () => requestData.requester_id === userId,
@@ -207,7 +286,7 @@ const RequestPage = () => {
     dispatch(
       setNotificationText(
         intl.get('REQUEST_PAGE.NOTIFICATIONS.REQUEST_SUBMIT', {
-          requestNo: get(requestData, 'requestIdentifier'),
+          requestNo: requestIdentifier,
         })
       )
     );
@@ -241,7 +320,7 @@ const RequestPage = () => {
     dispatch(
       setNotificationText(
         intl.get('REQUEST_PAGE.NOTIFICATIONS.MODIFICATION_SUCCESS', {
-          requestNo: get(requestData, 'requestIdentifier'),
+          requestNo: requestIdentifier,
         })
       )
     );
@@ -250,7 +329,7 @@ const RequestPage = () => {
   };
 
   useEffect(() => {
-    if (!hasForms && organizationId) {
+    if (organizationId) {
       dispatch(getForms({ organizationId, published: true }));
     }
   }, [organizationId, dispatch, hasForms]);
@@ -322,6 +401,7 @@ const RequestPage = () => {
         areBasicAndRequestDisabled,
         isAdditionalDisabled,
         isLDDisabled,
+        isSubmitUpdateDisabled,
       }}
     >
       <div className='h-full flex flex-col'>
@@ -375,6 +455,7 @@ const RequestPage = () => {
                 setOwners={setOwners}
                 questionIdParam={questionIdParam}
                 propertyNameParam={propertyNameParam}
+                requestDataStatus={requestDataStatus}
               />
             )}
             {requestSliceStatus === 'loading' && !exists(requestData) && (

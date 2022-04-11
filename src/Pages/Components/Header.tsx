@@ -45,6 +45,7 @@ const Header = () => {
     `${PATHS.EDIT_TEAM}/:teamType/:teamId`
   );
   const userPage = useRouteMatch(PATHS.USER_PAGE);
+  const formPage = useRouteMatch(`${PATHS.SETTINGS}${PATHS.FORM_PAGE}`);
   const vendorPage = useRouteMatch(PATHS.VENDOR_PAGE);
   const user = useSelector(selectUser);
   const skimClass = useElevation(1);
@@ -77,7 +78,7 @@ const Header = () => {
         linkTo: PATHS.SETTINGS,
         linkText: intl.get('ENTITIES.ORGANIZATION', { num: 1 }),
       };
-    } else if (userPage || vendorPage) {
+    } else if (userPage || formPage || vendorPage) {
       return {
         linkTo: PATHS.SETTINGS,
         linkText: intl.get('SIDEBAR.SETTINGS'),
@@ -94,6 +95,7 @@ const Header = () => {
     requestPage,
     singleTaskPage,
     userPage,
+    formPage,
     vendorPage,
     editTeamPage,
   ]);

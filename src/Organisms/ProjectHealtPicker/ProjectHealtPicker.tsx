@@ -39,7 +39,7 @@ const StatusTrigger: React.FC<{
   const hoverElevation = useElevation(1);
   return (
     <div
-      onClick={onToggleDropdown}
+      onClick={!disabled ? onToggleDropdown : () => {}}
       className={classnames(
         'min-h-10 h-10 rounded border text-base py-1 px-4 flex justify-between items-center',
         {

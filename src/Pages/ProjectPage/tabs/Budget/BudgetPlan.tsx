@@ -17,11 +17,13 @@ import { useHistory, useParams } from 'react-router-dom';
 import {
   getCurrentProjectData,
   updateProject,
+  getCurrentUserParticipantType,
 } from 'state/Project/projectSlice';
 import {
   NEW_PROJECT_FORM_FIELDS,
   PATHS,
   PROJECT_BUDGET_SOURCE,
+  PROJECT_PARTICIPANT_TYPE,
 } from 'utils/constants';
 import { BudgetPlanType, Option } from 'utils/customTypes';
 import { getInitialValueForDropDown } from 'utils/functions';
@@ -33,6 +35,8 @@ const BudgetPlan = () => {
   const footerElevation = useElevation(1);
 
   const projectData = useSelector(getCurrentProjectData);
+  const participantType = useSelector(getCurrentUserParticipantType);
+  const isUserProjectOwner = participantType === PROJECT_PARTICIPANT_TYPE.OWNER;
   const { projectId } = useParams<{ projectId: string }>();
 
   const [data, setData] = useState<BudgetPlanType>(budgetPlanFields);
@@ -101,7 +105,7 @@ const BudgetPlan = () => {
 
   return (
     <div className='py-4'>
-      <div className='bg-neutral-white h-project overflow-y-auto px-6 py-6'>
+      <div className='bg-neutral-white h-projectTabContent overflow-y-auto px-6 py-6'>
         <Typography variant='h5'>{intl.get('BUDGET.BUDGET_PLAN')}</Typography>
         <Typography variant='caption' className='mb-4 text-neutral-light'>
           {intl.get('BUDGET.BUDGET_PLAN_DESCRIPTION')}
@@ -109,6 +113,7 @@ const BudgetPlan = () => {
         <div className='grid gap-y-6 gap-x-10% grid-cols-2 mt-8'>
           <FormItem label={intl.get('PROJECT_DETAIL.BUDGET_SOURCE')}>
             <Dropdown
+              disabled={!isUserProjectOwner}
               placeholder={intl.get('PROJECT_DETAIL.BUDGET_SOURCE_PLACEHOLDER')}
               onChange={(option: Option) =>
                 handleFieldChange(
@@ -129,6 +134,7 @@ const BudgetPlan = () => {
             <div className='flex items-center w-full'>
               <span className='mr-2'>$</span>
               <NumericInput
+                disabled={!isUserProjectOwner}
                 divProps={{ className: 'flex-1' }}
                 placeholder='0'
                 value={data.estimated_cost}
@@ -148,6 +154,7 @@ const BudgetPlan = () => {
             <div className='flex items-center w-full'>
               <span className='mr-2'>$</span>
               <NumericInput
+                disabled={!isUserProjectOwner}
                 divProps={{ className: 'flex-1' }}
                 placeholder='0'
                 value={data.allocated_budget}
@@ -171,7 +178,7 @@ const BudgetPlan = () => {
           footerElevation
         )}
       >
-        <div className='flex ml-auto mr-12 gap-x-4 '>
+        <div className='flex ml-auto mr-12 gap-x-4'>
           <Button
             variant='secondary'
             onClick={handleCancel}

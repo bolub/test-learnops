@@ -1,5 +1,4 @@
 {
-  "accountsURL": "https://learnopsdev.getsynapse.com",
   "authentication": {
     "region": "us-east-1",
     "poolId": "us-east-1_iVqKZsoFl",
@@ -8,5 +7,6 @@
     "redirectSignOut": "https://learnops.dev.getsynapse.com/login",
     "redirectSignIn": "https://learnops.dev.getsynapse.com/callback"
   },
-  "backendURL": "https://learnops-backend.dev.getsynapse.com/api/"
+  "backendURL": "https://learnops-backend.dev.getsynapse.com/api/",
+  "yellowfinURL": "https://yellowfin.staging.getsynapse.com"
 }

@@ -11,6 +11,9 @@ import ForgotPassword from 'Pages/ForgotPassword/ForgotPassword';
 import ChangePassword from 'Pages/ChangePassword/ChangePassword';
 import SSOAuthentication from 'Pages/SSOAuthentication/SSOAuthentication';
 import { initAuthentication } from './aws-exports';
+import DeactivatedAccountPage from 'Pages/DeactivatedAccountPage/DeactivatedAccountPage';
+import PasswordSetup from 'Pages/PasswordSetup/PasswordSetup';
+import VerifyUser from 'Pages/VerifyUser/VerifyUser';
 
 const App = () => {
   const [initDone, setInitDone] = useState<boolean>(false);
@@ -52,6 +55,12 @@ const App = () => {
             <SSOAuthentication />
           </Route>
 
+          <Route path={PATHS.DEACTIVATED_ACCOUNT}>
+            <AuthPage className='w-102'>
+              <DeactivatedAccountPage />
+            </AuthPage>
+          </Route>
+
           <Route path={PATHS.FORGOT_PASSWORD}>
             <AuthPage>
               <ForgotPassword />
@@ -61,6 +70,18 @@ const App = () => {
           <Route path={PATHS.CHANGE_PASSWORD}>
             <AuthPage>
               <ChangePassword />
+            </AuthPage>
+          </Route>
+
+          <Route path={`${PATHS.PASSWORD_SETUP}/:userId`}>
+            <AuthPage>
+              <PasswordSetup />
+            </AuthPage>
+          </Route>
+
+          <Route path={PATHS.VERIFY_USER}>
+            <AuthPage>
+              <VerifyUser />
             </AuthPage>
           </Route>
 

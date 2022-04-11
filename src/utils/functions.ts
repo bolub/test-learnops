@@ -2,7 +2,7 @@ import { Option } from './customTypes';
 
 export const getInitialValueForDropDown = (
   options: Option[],
-  values: string[] | string | undefined
+  values: string[] | string | undefined | null
 ) => {
   if (!values) {
     return [];

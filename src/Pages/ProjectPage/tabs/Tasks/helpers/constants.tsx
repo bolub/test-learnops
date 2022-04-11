@@ -56,13 +56,7 @@ export const taskModalFields = {
   assignedUsers: [],
 };
 
-export const requiredFields = [
-  'name',
-  'start_date',
-  'due_date',
-  'type',
-  'assignedUsers',
-];
+export const requiredFields = ['name', 'start_date', 'due_date', 'type'];
 
 export const requiredFieldsErrorsMap: objKeyAsString = {
   name: false,

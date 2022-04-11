@@ -1,8 +1,23 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  createSelector,
+} from '@reduxjs/toolkit';
 import moment from 'moment';
 import has from 'lodash/has';
 import isEmpty from 'lodash/isEmpty';
-import { TaskDetailType, Task_Status } from 'utils/customTypes';
+import get from 'lodash/get';
+import { selectUserId } from 'state/User/userSlice';
+import { allUsers } from 'state/UsersManagement/usersManagementSlice';
+import { getOriginalProjectData } from 'state/Project/projectSlice';
+import {
+  TaskDetailType,
+  Task_Status,
+  TaskAssignedUser,
+  NewProject,
+  AllUsersType,
+  UserAvatars,
+} from 'utils/customTypes';
 import { DATE, TASK_STATUS, TASK_FIELDS } from 'utils/constants';
 import { taskFields } from 'Pages/ProjectPage/tabs/Tasks/helpers/constants';
 import singleTaskAPI from './singleTaskAPI';
@@ -35,7 +50,7 @@ export const updateTask = createAsyncThunk(
   async (updateData: { taskId: string; data: TaskDetailType | any }) => {
     let fieldsToUpdate = { ...updateData.data };
     let updatedStatus = null;
-    let updatedAssignedUsers = [];
+    let updatedAssignedUsers = undefined;
 
     if (has(fieldsToUpdate, TASK_FIELDS.STATUS)) {
       const { status, ...remainingTaskData } = fieldsToUpdate;
@@ -64,7 +79,7 @@ export const updateTask = createAsyncThunk(
       updatedtask[TASK_FIELDS.STATUS] = updatedStatus;
     }
 
-    if (updatedAssignedUsers.length > 0) {
+    if (updatedAssignedUsers !== undefined) {
       const response = await taskAPI.updateAssignees(
         updateData.taskId,
         updatedAssignedUsers
@@ -79,8 +94,8 @@ export const updateTask = createAsyncThunk(
 export const updateTaskEnablement = createAsyncThunk(
   'singleTask/UPDATE_TASK_ENABLEMENT',
   async ({ taskId, disabled }: { taskId: string; disabled: boolean }) => {
-    const updatedtask = await taskAPI.updateEnablement(taskId, disabled);
-    return { ...updatedtask };
+    await taskAPI.updateEnablement(taskId, disabled);
+    return disabled;
   }
 );
 
@@ -98,12 +113,95 @@ const singleTaskSlice = createSlice({
         state.value = action.payload;
       })
       .addCase(updateTaskEnablement.fulfilled, (state, action) => {
-        state.value = action.payload;
+        state.value = {
+          ...state.value,
+          disabled: action.payload,
+        };
       });
   },
 });
 
 /* =============================== SELECTORS ================================ */
 export const getSingleTaskData = (state: RootState) => state.singleTask.value;
+
+const getTaskAssignees = createSelector(
+  [getSingleTaskData],
+  (task: TaskDetailType) => {
+    if (!task.assignedUsers) {
+      return [];
+    }
+    return (task.assignedUsers as TaskAssignedUser[]).map(
+      (assignee: TaskAssignedUser) => assignee.id
+    );
+  }
+);
+
+export const isCurrentUserAssignedToTask = createSelector(
+  [getTaskAssignees, selectUserId],
+  (assignees: string[], currentUserId: string = '') => {
+    return assignees.includes(currentUserId);
+  }
+);
+
+export const getFormattedTaskAssignees = createSelector(
+  [getTaskAssignees, allUsers],
+  (assignees: string[], users: AllUsersType[]) => {
+    return users
+      .filter((user: AllUsersType) => assignees.includes(user.id))
+      .map((user: AllUsersType) => ({
+        label: `${user.data.firstName} ${user.data.lastName}`,
+        avatar: {
+          imageSrc: user.avatar_url,
+          initial: `${user.data.firstName.charAt(0)}${user.data.lastName.charAt(
+            0
+          )}`,
+        },
+        value: user.id,
+      })) as UserAvatars[];
+  }
+);
+
+export const getAvailableUsersForTaskAssignees = createSelector(
+  [getOriginalProjectData, getTaskAssignees, allUsers],
+  (project: NewProject, assignees: string[], users: AllUsersType[]) => {
+    const usersList: string[] = [];
+    for (let owner of project.owners) {
+      if (!assignees.includes(get(owner, 'project_owners.userId'))) {
+        usersList.push(get(owner, 'project_owners.userId'));
+      }
+    }
+
+    if (project.participants) {
+      for (let member of project.participants) {
+        if (!assignees.includes(get(member, 'project_participants.userId'))) {
+          usersList.push(get(member, 'project_participants.userId'));
+        }
+      }
+    }
+
+    if (project.collaborators) {
+      for (let collaborator of project.collaborators) {
+        if (
+          !assignees.includes(get(collaborator, 'project_collaborators.userId'))
+        ) {
+          usersList.push(get(collaborator, 'project_collaborators.userId'));
+        }
+      }
+    }
+
+    return users
+      .filter((user: AllUsersType) => usersList.includes(user.id))
+      .map((user: AllUsersType) => ({
+        label: `${user.data.firstName} ${user.data.lastName}`,
+        avatar: {
+          imageSrc: user.avatar_url,
+          initial: `${user.data.firstName.charAt(0)}${user.data.lastName.charAt(
+            0
+          )}`,
+        },
+        value: user.id,
+      })) as UserAvatars[];
+  }
+);
 
 export default singleTaskSlice.reducer;

@@ -9,7 +9,7 @@ const tableSubHeader = (name: string) => {
         content: <TableCell className='shadow-none' />,
       },
       {
-        colSpan: 5,
+        colSpan: 6,
         content: (
           <Typography variant='body2' weight='medium'>
             {name}

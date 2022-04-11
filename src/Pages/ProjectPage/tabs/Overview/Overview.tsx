@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import classnames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -8,11 +8,15 @@ import { useElevation, Button } from '@getsynapse/design-system';
 import {
   getCurrentProjectData,
   updateProject,
+  getCurrentUserParticipantType,
 } from 'state/Project/projectSlice';
 import { deleteProject } from 'state/Projects/projectsSlice';
-import { selectUserId } from 'state/User/userSlice';
 import { getAllRequests } from 'state/Requests/requestSlice';
-import { PROJECT_STATUS, PATHS } from 'utils/constants';
+import {
+  PROJECT_STATUS,
+  PATHS,
+  PROJECT_PARTICIPANT_TYPE,
+} from 'utils/constants';
 import { NewProject, objKeyAsString } from 'utils/customTypes';
 import {
   defaultNewProjectData,
@@ -27,7 +31,7 @@ import useInlineNotification from 'Hooks/useInlineNotification';
 import BasicDetails from '../../../NewProjectPage/components/BasicDetails';
 import PutProjectOnHoldModal from '../../components/PutProjectOnHoldModal/PutProjectOnHoldModal';
 import CloseProject from 'Pages/ProjectPage/components/CloseProject/CloseProject';
-import MoreActionsDropdown from 'Pages/ProjectPage/components/MoreActionsDropdown/MoreActionsDropdown';
+import OverviewActions from 'Pages/ProjectPage/components/OverviewActions/OverviewActions';
 import CommentsDropdown from 'Pages/ProjectPage/components/CommentsDropdown/CommentsDropdown';
 import {
   OnHoldStatusBanner,
@@ -38,7 +42,7 @@ const Overview: React.FC<{ projectId: string }> = ({ projectId }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const projectData = useSelector(getCurrentProjectData);
-  const currentUserId = useSelector(selectUserId);
+  const participantType = useSelector(getCurrentUserParticipantType);
   const { showInlineNotification } = useInlineNotification();
   const [disableSave, setDisableSave] = useState(true);
   const [shouldDisplayPutOnHoldModal, setShouldDisplayPutOnHoldModal] =
@@ -58,17 +62,8 @@ const Overview: React.FC<{ projectId: string }> = ({ projectId }) => {
     dispatch(getAllRequests());
   }, [dispatch]);
 
-  const isUserAProjectOwner = useMemo(() => {
-    if (
-      !isEmpty(projectData) &&
-      !isEmpty(projectData?.owners) &&
-      currentUserId
-    ) {
-      return projectData?.owners.includes(currentUserId);
-    } else {
-      return false;
-    }
-  }, [projectData, currentUserId]);
+  const isUserAProjectOwner =
+    participantType === PROJECT_PARTICIPANT_TYPE.OWNER;
 
   const isReadOnly =
     [PROJECT_STATUS.CLOSED, PROJECT_STATUS.CANCELED].includes(
@@ -223,6 +218,15 @@ const Overview: React.FC<{ projectId: string }> = ({ projectId }) => {
     currentSavedProject,
   ]);
 
+  const canCancelProject: boolean = useMemo<boolean>(
+    () => get(currentSavedProject, 'status', '') !== PROJECT_STATUS.CANCELED,
+    [currentSavedProject]
+  );
+  const canCloseProject: boolean = useMemo<boolean>(
+    () => projectData.status === PROJECT_STATUS.COMPLETED,
+    [projectData.status]
+  );
+
   return (
     <React.Fragment>
       <PutProjectOnHoldModal
@@ -246,21 +250,24 @@ const Overview: React.FC<{ projectId: string }> = ({ projectId }) => {
       <div className='bg-neutral-white mx-6 mt-2 z-5'>
         <div
           className={classnames(
-            'w-full p-2 flex',
+            'w-full min-h-12 p-2 flex',
             'justify-end items-center',
             headerElevation
           )}
         >
-          <CommentsDropdown projectId={projectId} />
-          {isUserAProjectOwner && (
-            <MoreActionsDropdown
-              canCancelProject={
-                get(currentSavedProject, 'status', '') !==
-                PROJECT_STATUS.CANCELED
+          {participantType !== PROJECT_PARTICIPANT_TYPE.COLLABORATOR && (
+            <CommentsDropdown
+              projectId={projectId}
+              canAddComments={
+                participantType !== PROJECT_PARTICIPANT_TYPE.NOT_PARTICIPANT
               }
-              canDeleteProject
+            />
+          )}
+          {isUserAProjectOwner && (
+            <OverviewActions
+              canCancelProject={canCancelProject}
               cancelProjectCallback={handleCancelProject}
-              canCloseProject={projectData.status === PROJECT_STATUS.COMPLETED}
+              canCloseProject={canCloseProject}
               deleteProjectCallback={handleDeleteProject}
               toggleCloseModal={toggleCloseModal}
             />

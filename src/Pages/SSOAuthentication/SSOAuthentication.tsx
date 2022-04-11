@@ -1,26 +1,40 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
-import { useAppDispatch } from 'state/hooks';
-import { getUser } from 'state/User/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
+import { getUser, selectUser } from 'state/User/userSlice';
 import Loader from 'Molecules/Loader/Loader';
-import { PATHS } from 'utils/constants';
+import { PATHS, USER_STATUS } from 'utils/constants';
 
 const SSOAuthentication = () => {
   const history = useHistory();
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+
+  useEffect(() => {
+    if (!isEmpty(user)) {
+      if (
+        user.status === USER_STATUS.INVITED_DISABLED ||
+        user.status === USER_STATUS.REGISTERED_DISABLED
+      ) {
+        history.push(PATHS.DEACTIVATED_ACCOUNT);
+      } else {
+        const redirectUrl = Cookies.get('redirectUrl');
+        Cookies.remove('redirectUrl');
+        if (redirectUrl) {
+          history.replace(redirectUrl);
+        }
+      }
+    }
+  }, [history, user]);
 
   useEffect(() => {
     const validateUserSession = async () => {
       try {
         const user = await Auth.currentAuthenticatedUser();
         await dispatch(getUser(user.attributes.email));
-        const redirectUrl = Cookies.get('redirectUrl');
-        Cookies.remove('redirectUrl');
-        if (redirectUrl) {
-          history.replace(redirectUrl);
-        }
       } catch (error) {
         history.replace(PATHS.LOGIN);
       }

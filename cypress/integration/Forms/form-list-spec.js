@@ -74,4 +74,112 @@ describe('Vew Forms', () => {
       .contains(formSelector.filteredSearch)
       .should('be.visible');
   });
+
+  it('User can duplicate form and be redirected to it', () => {
+    const { routes, api } = constants;
+    const { selectors: formSelector } = forms;
+    const { selectors: projectSelector } = project;
+
+    cy.intercept('GET', api.fetchAllForms, forms.forms).as('forms');
+    cy.visit(routes.settings);
+    cy.wait('@forms');
+    cy.get(projectSelector.platformTab).click();
+    cy.get(formSelector.platformRequest).click();
+    cy.get(formSelector.formRow.replace('$$', formSelector.formId)).within(() =>
+      cy.get(formSelector.formListActions).click()
+    );
+    cy.get(formSelector.duplicateOption).eq(0).click();
+    cy.get(formSelector.duplicateModal).should('be.visible');
+    cy.get(formSelector.originalName).contains(forms.forms.data[0].title);
+    cy.get(formSelector.newName)
+      .should('be.visible')
+      .should('have.value', `${forms.forms.data[0].title} - Copy`);
+    cy.intercept(
+      'POST',
+      api.updateForm.replace('$', `duplicate/${formSelector.formId}`),
+      forms.newForm
+    ).as('duplicateForm');
+    cy.get(formSelector.saveOpen).click();
+    cy.wait('@duplicateForm');
+    cy.location('pathname').should('include', `${routes.settings}/form/`);
+  });
+
+  it('User can duplicate form and stay in form list', () => {
+    const { routes, api } = constants;
+    const { selectors: formSelector } = forms;
+    const { selectors: projectSelector } = project;
+
+    cy.intercept('GET', api.fetchAllForms, forms.forms).as('forms');
+    cy.visit(routes.settings);
+    cy.wait('@forms');
+    cy.get(projectSelector.platformTab).click();
+    cy.get(formSelector.platformRequest).click();
+    cy.get(formSelector.formRow.replace('$$', formSelector.formId)).within(() =>
+      cy.get(formSelector.formListActions).click()
+    );
+    cy.get(formSelector.duplicateOption).eq(0).click();
+    cy.get(formSelector.duplicateModal).should('be.visible');
+    cy.get(formSelector.originalName).contains(forms.forms.data[0].title);
+    cy.get(formSelector.newName)
+      .should('be.visible')
+      .should('have.value', `${forms.forms.data[0].title} - Copy`);
+    cy.intercept(
+      'POST',
+      api.updateForm.replace('$', `duplicate/${formSelector.formId}`),
+      forms.newForm
+    ).as('duplicateForm');
+    cy.get(formSelector.save).click();
+    cy.wait('@duplicateForm');
+    cy.location('pathname').should('eq', routes.settings);
+  });
+
+  it('User can cancel duplication of form', () => {
+    const { routes, api } = constants;
+    const { selectors: formSelector } = forms;
+    const { selectors: projectSelector } = project;
+
+    cy.intercept('GET', api.fetchAllForms, forms.forms).as('forms');
+    cy.visit(routes.settings);
+    cy.wait('@forms');
+    cy.get(projectSelector.platformTab).click();
+    cy.get(formSelector.platformRequest).click();
+    cy.get(formSelector.formRow.replace('$$', formSelector.formId)).within(() =>
+      cy.get(formSelector.formListActions).click()
+    );
+    cy.get(formSelector.duplicateOption).eq(0).click();
+    cy.get(formSelector.duplicateModal).should('be.visible');
+    cy.get(formSelector.originalName).contains(forms.forms.data[0].title);
+    cy.get(formSelector.newName)
+      .should('be.visible')
+      .should('have.value', `${forms.forms.data[0].title} - Copy`);
+    cy.get(formSelector.cancel).click();
+    cy.get(formSelector.duplicateModal).should('not.exist');
+  });
+
+  it('User can delete form from the list', () => {
+    const { routes, api } = constants;
+    const { selectors: formSelector } = forms;
+    const { selectors: projectSelector } = project;
+
+    cy.intercept('GET', api.fetchAllForms, forms.forms).as('forms');
+    cy.visit(routes.settings);
+    cy.wait('@forms');
+    cy.get(projectSelector.platformTab).click();
+    cy.get(formSelector.platformRequest).click();
+    cy.get(formSelector.formRow.replace('$$', formSelector.formId)).within(() =>
+      cy.get(formSelector.formListActions).click()
+    );
+    cy.get(formSelector.deleteOption).eq(0).click();
+    cy.get(formSelector.deleteModal).should('be.visible');
+    cy.intercept('DELETE', api.updateForm.replace('$', formSelector.formId), {
+      ...forms.newForm,
+      data: forms.forms.data[0],
+    }).as('deleteForm');
+    cy.get(formSelector.deleteFormButton).click();
+    cy.wait('@deleteForm');
+    cy.get(formSelector.deleteModal).should('not.exist');
+    cy.get(formSelector.formRow.replace('$$', formSelector.formId)).should(
+      'not.exist'
+    );
+  });
 });

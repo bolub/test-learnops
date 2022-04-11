@@ -1,20 +1,26 @@
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  createSelector,
+} from '@reduxjs/toolkit';
 import userAPI from './userAPI';
 import { RootState } from 'state/store';
 import { Status, CurrentUser } from 'utils/customTypes';
-import { SLICE_STATUS } from 'utils/constants';
+import { SLICE_STATUS, USER_TYPES } from 'utils/constants';
 
 interface UserState {
   value: CurrentUser;
   status: Status;
+  nonRegisteredUser: CurrentUser;
 }
 
 /* ============================= INITIAL STATE ============================== */
 const initialState: UserState = {
   value: {},
   status: 'idle',
+  nonRegisteredUser: {},
 };
 
 /* ============================== REDUX THUNK =============================== */
@@ -38,11 +44,33 @@ export const getUser = createAsyncThunk(
       avatar_url: get(response, 'data.user.avatar_url'),
       firstName: get(response, 'data.user.data.firstName'),
       lastName: get(response, 'data.user.data.lastName'),
+      status: get(response, 'data.user.status'),
     };
     return data;
   }
 );
 
+export const getUserBasicInfo = createAsyncThunk(
+  'user/GET_USER_BASIC_INFO',
+  async (userId: string) => {
+    const response = await userAPI.getUserBasicInfo(userId);
+    if (isEmpty(response.data.basicInfo)) {
+      throw new Error('User not in DB');
+    }
+    return response.data.basicInfo;
+  }
+);
+
+export const setRegistered = createAsyncThunk(
+  'user/SET_USER_AS_REGISTERED',
+  async (userId: string) => {
+    const response = await userAPI.setRegistered(userId);
+    if (response.code !== 200) {
+      throw new Error('User is not updated');
+    }
+    return response.data;
+  }
+);
 /* ================================= REDUCER ================================ */
 const userSlice = createSlice({
   name: 'user',
@@ -65,6 +93,9 @@ const userSlice = createSlice({
       .addCase(getUser.fulfilled, (state, action) => {
         state.value = action.payload;
         state.status = SLICE_STATUS.IDLE;
+      })
+      .addCase(getUserBasicInfo.fulfilled, (state, action) => {
+        state.nonRegisteredUser = action.payload;
       });
   },
 });
@@ -94,5 +125,13 @@ export const selectUserName = (state: RootState) =>
 
 export const selectUserRole = (state: RootState) =>
   state.currentUser.value.role;
+
+export const selectIsUserLd = createSelector(
+  selectUserType,
+  (userType) => userType === USER_TYPES.L_D
+);
+
+export const selectUserBasicInfo = (state: RootState) =>
+  state.currentUser.nonRegisteredUser;
 
 export default userSlice.reducer;

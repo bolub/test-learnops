@@ -1,25 +1,29 @@
 import { ReactNode, useState } from 'react';
-import { IconButton } from '@getsynapse/design-system';
+import {
+  IconButton,
+  Checkbox,
+  tailwindOverride,
+} from '@getsynapse/design-system';
 import intl from 'react-intl-universal';
 import classnames from 'classnames';
 import upArrow from 'assets/icons/up-arrow.svg';
 import downArrow from 'assets/icons/down-arrow.svg';
-
-type ActiveHeadType = {
-  orderBy: string;
-  order: 'desc' | 'asc';
-};
+import { ActiveHeadType } from 'utils/customTypes';
 
 type RequestsTableHeadProps = {
   handleSort: (orderByParam: string, order: 'desc' | 'asc') => void;
   isLDUser: boolean;
-  isBusinessUser: boolean;
+  isRequestTableEmpty: boolean;
+  changeSelectedRequests: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isAllRowsSelected: boolean;
 };
 
 const RequestsTableHead = ({
   handleSort,
   isLDUser,
-  isBusinessUser,
+  isRequestTableEmpty,
+  changeSelectedRequests,
+  isAllRowsSelected,
 }: RequestsTableHeadProps) => {
   const [activeHead, setActiveHead] = useState<ActiveHeadType>({
     orderBy: '',
@@ -27,6 +31,21 @@ const RequestsTableHead = ({
   });
 
   return [
+    {
+      content: (
+        <Checkbox
+          value=''
+          label=''
+          onChange={changeSelectedRequests}
+          className='justify-end'
+          inputProps={{ className: '-mr-px' }}
+          checked={isAllRowsSelected}
+        />
+      ),
+      className: classnames('w-12', {
+        'absolute left-0 h-10 z-5 bg-primary-lightest': !isRequestTableEmpty,
+      }),
+    },
     {
       content: (
         <TableHead
@@ -39,8 +58,75 @@ const RequestsTableHead = ({
           setActiveHead={setActiveHead}
         />
       ),
-      className: classnames('pl-8 text-left leading-6', {
-        'bg-primary-lighter': activeHead.orderBy === 'requestIdentifier',
+      className: tailwindOverride(
+        'leading-6',
+        {
+          'absolute w-28 left-12 z-5 bg-primary-lightest h-10':
+            !isRequestTableEmpty,
+        },
+        {
+          'bg-primary-lighter': activeHead.orderBy === 'requestIdentifier',
+        }
+      ),
+    },
+    {
+      content: (
+        <TableHead
+          handleSort={handleSort}
+          columnName='title'
+          title={intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.REQUEST_TITLE')}
+          data-cy='header__request-title'
+          orderBy={activeHead.orderBy}
+          order={activeHead.order}
+          setActiveHead={setActiveHead}
+        />
+      ),
+      className: tailwindOverride(
+        {
+          'absolute w-64 left-40 z-5 bg-primary-lightest h-10 flex items-center':
+            !isRequestTableEmpty,
+        },
+        {
+          'bg-primary-lighter': activeHead.orderBy === 'title',
+        }
+      ),
+    },
+    {
+      content: (
+        <TableHead
+          handleSort={handleSort}
+          columnName='status'
+          title={intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.STATUS')}
+          data-cy='header__request-status'
+          orderBy={activeHead.orderBy}
+          order={activeHead.order}
+          setActiveHead={setActiveHead}
+        />
+      ),
+      className: tailwindOverride(
+        {
+          'absolute w-36 left-104 z-5 bg-primary-lightest h-10 flex items-center':
+            !isRequestTableEmpty,
+        },
+        {
+          'bg-primary-lighter': activeHead.orderBy === 'status',
+        }
+      ),
+    },
+    {
+      content: (
+        <TableHead
+          handleSort={handleSort}
+          columnName='requester.data.firstName'
+          title={intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.REQUESTER_NAME')}
+          data-cy='header__requester-name'
+          orderBy={activeHead.orderBy}
+          order={activeHead.order}
+          setActiveHead={setActiveHead}
+        />
+      ),
+      className: classnames({
+        'bg-primary-lighter': activeHead.orderBy === 'requester.data.firstName',
       }),
     },
     ...(isLDUser
@@ -57,47 +143,11 @@ const RequestsTableHead = ({
                 setActiveHead={setActiveHead}
               />
             ),
-            className: classnames('text-left', {
+            className: classnames({
               'bg-primary-lighter':
                 activeHead.orderBy === 'owners[0].data.firstName',
             }),
           },
-        ]
-      : []),
-    {
-      content: (
-        <TableHead
-          handleSort={handleSort}
-          columnName='requester.data.firstName'
-          title={intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.REQUESTER_NAME')}
-          data-cy='header__requester-name'
-          orderBy={activeHead.orderBy}
-          order={activeHead.order}
-          setActiveHead={setActiveHead}
-        />
-      ),
-      className: classnames('text-left', {
-        'bg-primary-lighter': activeHead.orderBy === 'requester.data.firstName',
-      }),
-    },
-    {
-      content: (
-        <TableHead
-          handleSort={handleSort}
-          columnName='title'
-          title={intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.REQUEST_TITLE')}
-          data-cy='header__request-title'
-          orderBy={activeHead.orderBy}
-          order={activeHead.order}
-          setActiveHead={setActiveHead}
-        />
-      ),
-      className: classnames('text-left pl-0', {
-        'bg-primary-lighter': activeHead.orderBy === 'title',
-      }),
-    },
-    ...(isLDUser
-      ? [
           {
             content: (
               <TableHead
@@ -110,12 +160,42 @@ const RequestsTableHead = ({
                 setActiveHead={setActiveHead}
               />
             ),
-            className: classnames('text-left pl-0', {
+            className: classnames({
               'bg-primary-lighter': activeHead.orderBy === 'businessTeam.title',
+            }),
+          },
+          {
+            content: (
+              <TableHead
+                handleSort={handleSort}
+                columnName='ldPriority'
+                title={intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.PRIORITY')}
+                orderBy={activeHead.orderBy}
+                order={activeHead.order}
+                setActiveHead={setActiveHead}
+              />
+            ),
+            className: classnames({
+              'bg-primary-lighter': activeHead.orderBy === 'ldPriority',
             }),
           },
         ]
       : []),
+    {
+      content: (
+        <TableHead
+          handleSort={handleSort}
+          columnName='createdAt'
+          title={intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.CREATION_DATE')}
+          orderBy={activeHead.orderBy}
+          order={activeHead.order}
+          setActiveHead={setActiveHead}
+        />
+      ),
+      className: classnames({
+        'bg-primary-lighter': activeHead.orderBy === 'createdAt',
+      }),
+    },
     {
       content: (
         <TableHead
@@ -128,47 +208,47 @@ const RequestsTableHead = ({
           setActiveHead={setActiveHead}
         />
       ),
-      className: classnames('text-left', {
+      className: classnames({
         'bg-primary-lighter': activeHead.orderBy === 'submittedAt',
       }),
     },
-    ...(isBusinessUser
-      ? [
-          {
-            content: (
-              <TableHead
-                handleSort={handleSort}
-                columnName='updatedAt'
-                title={intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.UPDATE_DATE')}
-                data-cy='header__update-date'
-                orderBy={activeHead.orderBy}
-                order={activeHead.order}
-                setActiveHead={setActiveHead}
-              />
-            ),
-            className: classnames('text-left', {
-              'bg-primary-lighter': activeHead.orderBy === 'updatedAt',
-            }),
-          },
-        ]
-      : []),
     {
       content: (
         <TableHead
           handleSort={handleSort}
-          columnName='status'
-          title={intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.STATUS')}
-          data-cy='header__request-status'
+          columnName='decision_date'
+          title={intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.DECISION_DATE')}
           orderBy={activeHead.orderBy}
           order={activeHead.order}
           setActiveHead={setActiveHead}
         />
       ),
-      className: classnames('text-left', {
-        'bg-primary-lighter': activeHead.orderBy === 'status',
+      className: classnames({
+        'bg-primary-lighter': activeHead.orderBy === 'decision_date',
       }),
     },
-    { content: '' },
+    {
+      content: (
+        <TableHead
+          handleSort={handleSort}
+          columnName='updatedAt'
+          title={intl.get('REQUESTS_LIST_PAGE.TABLE.HEAD.UPDATE_DATE')}
+          data-cy='header__update-date'
+          orderBy={activeHead.orderBy}
+          order={activeHead.order}
+          setActiveHead={setActiveHead}
+        />
+      ),
+      className: classnames({
+        'bg-primary-lighter': activeHead.orderBy === 'updatedAt',
+      }),
+    },
+    {
+      content: '',
+      className: classnames('w-20', {
+        'absolute right-0 z-5 bg-primary-lightest h-10': !isRequestTableEmpty,
+      }),
+    },
   ];
 };
 
@@ -186,7 +266,6 @@ type TableHeadProps = {
 const TableHead = ({
   handleSort,
   title,
-  startChildren,
   columnName,
   orderBy,
   order,
@@ -198,12 +277,16 @@ const TableHead = ({
   const isDesc = order === 'desc';
 
   return (
-    <div className={classnames('flex', 'items-center', 'relative')}>
-      {startChildren}
-      <div
-        className={classnames('flex', 'flex-col', 'absolute', 'right-0')}
-        {...otherProps}
-      >
+    <div
+      className={classnames(
+        'flex',
+        'items-center',
+        'justify-between',
+        'w-full'
+      )}
+    >
+      {title}
+      <div className='flex flex-col ml-2' {...otherProps}>
         <IconButton
           description={intl.get('REQUESTS_LIST_PAGE.TABLE.SORT.ASC')}
           onClick={() => {
@@ -230,7 +313,6 @@ const TableHead = ({
           })}
         />
       </div>
-      {title}
     </div>
   );
 };

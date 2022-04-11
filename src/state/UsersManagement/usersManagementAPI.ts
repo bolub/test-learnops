@@ -38,5 +38,20 @@ class UsersManagementAPI {
     const { data } = await this.instance.post('user', userData);
     return data;
   };
+
+  inviteUser = async (
+    userId: string,
+    email: string,
+    firstName: string,
+    companyName: string
+  ) => {
+    const { data } = await this.instance.post('user/inviteUser', {
+      userId,
+      email,
+      firstName,
+      companyName,
+    });
+    return data;
+  };
 }
 export default new UsersManagementAPI();

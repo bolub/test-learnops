@@ -8,14 +8,14 @@
         "teamMembersTable": "[data-cy=team-members_table]",
         "teamNameInput": "[data-cy=team-name_input]",
         "businessTeamsTableRow": "[data-testid=business-team_row-$]",
-        "moreActionsDropdown":"[data-cy=team-more-actions_dropdown]",
+        "moreActionsDropdown":"[data-cy=more-actions-button]",
         "deleteTeamOption": "[data-cy=delete-team_option]",
         "deleteTeamModal": {
             "modal": "[data-cy=delete-team_modal]",
             "deleteButton": "[data-cy=delete-team_button]",
             "cancelButton": "[data-cy=cancel-delete-team_button]"
         },
-        "noDeleteTooltip":"[data-cy=no-delete_tooltip]"
+        "noDeleteTooltip":"[data-cy=more-actions-tooltip-DELETE]"
     },
     "learningTeams": {
         "code": 200,

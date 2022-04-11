@@ -23,23 +23,25 @@ import {
 } from './helpers/files';
 import { getDifference } from 'Pages/ProjectPage/helpers/updatedProjectData';
 import { objKeyAsString, TaskDetailType, ProjectFile } from 'utils/customTypes';
-import { PATHS, TASKS_MORE_ACTIONS, TASK_STATUS } from 'utils/constants';
+import { PATHS, TASK_STATUS, PROJECT_PARTICIPANT_TYPE } from 'utils/constants';
 import {
   fetchTask,
   getSingleTaskData,
   updateTask,
   updateTaskEnablement,
+  isCurrentUserAssignedToTask,
 } from 'state/SingleTask/singleTaskSlice';
 import {
   getProjectFiles,
   updateProjectFiles,
+  getCurrentUserParticipantType,
 } from 'state/Project/projectSlice';
 import useInlineNotification from 'Hooks/useInlineNotification';
 import {
   fetchProject,
   getCurrentProjectData,
 } from 'state/Project/projectSlice';
-import MoreActionsDropdown from 'Pages/ProjectPage/tabs/Tasks/components/MoreActionsDropdown/MoreActionsDropdown';
+import TaskActions from './components/TaskActions/TaskActions';
 
 import PageTitle from 'Molecules/PageTitle/PageTitle';
 import TaskDetails from './components/TaskDetails';
@@ -48,9 +50,13 @@ import TaskFilesLinking from './components/TaskFilesLinking';
 import { deleteTask } from 'state/Tasks/taskSlice';
 
 const TaskPage = () => {
-  const { projectId, taskId } =
-    useParams<{ projectId: string; taskId: string }>();
+  const { projectId, taskId } = useParams<{
+    projectId: string;
+    taskId: string;
+  }>();
   const originProjectFilesList = useSelector(getProjectFiles);
+  const participantType = useSelector(getCurrentUserParticipantType);
+  const isUserAssignedToTask = useSelector(isCurrentUserAssignedToTask);
   const [updatedProjectFilesList, setUpdatedProjectFilesList] = useState<
     ProjectFile[]
   >(originProjectFilesList);
@@ -191,11 +197,17 @@ const TaskPage = () => {
     }
   };
 
+  const canUpdateTask =
+    participantType === PROJECT_PARTICIPANT_TYPE.OWNER ||
+    (participantType !== PROJECT_PARTICIPANT_TYPE.NOT_PARTICIPANT &&
+      isUserAssignedToTask);
+
   const isViewOnlyMode =
     taskData.status === TASK_STATUS.ON_HOLD ||
     (taskData.status === TASK_STATUS.COMPLETED &&
       fetchedTaskData.actual_hours !== null) ||
-    taskData.disabled;
+    taskData.disabled ||
+    !canUpdateTask;
 
   const availableProjectFilesForLinking = useMemo(
     () => getAvailableProjectFiles(taskData.id, updatedProjectFilesList),
@@ -265,36 +277,29 @@ const TaskPage = () => {
       <div className='bg-neutral-white mx-6 mt-2 z-5'>
         <div
           className={classNames(
-            'w-full p-2 flex',
+            'w-full min-h-12 p-2 flex',
             'justify-end items-center',
             headerElevation
           )}
         >
-          <Toggle
-            offText={intl.get('TASKS.TASK_DETAIL_PAGE.ENABLE_TASK')}
-            onChange={handleDisableTask}
-            onText={intl.get('TASKS.TASK_DETAIL_PAGE.DISABLE_TASK')}
-            className='mr-1 my-auto'
-            checked={!taskData.disabled}
-            toggleTextPosition='left'
-            inputProps={{
-              'data-testid': 'task-toggle-enablement',
-            }}
-          />
+          {canUpdateTask && (
+            <Toggle
+              offText={intl.get('TASKS.TASK_DETAIL_PAGE.ENABLE_TASK')}
+              onChange={handleDisableTask}
+              onText={intl.get('TASKS.TASK_DETAIL_PAGE.DISABLE_TASK')}
+              className='mr-1 my-auto'
+              checked={!taskData.disabled}
+              toggleTextPosition='left'
+              inputProps={{
+                'data-testid': 'task-toggle-enablement',
+              }}
+              disabled={!canUpdateTask}
+            />
+          )}
 
-          <MoreActionsDropdown
-            moreActionsOptions={[
-              {
-                value: TASKS_MORE_ACTIONS.DELETE,
-                label: intl.get(
-                  'TASKS.TASK_DETAIL_PAGE.MORE_ACTIONS_DROPDOWN.DELETE'
-                ),
-                iconName: 'trash',
-                dataCy: 'delete-task-button',
-              },
-            ]}
-            deleteTaskCallback={handleDeleteTask}
-          />
+          {canUpdateTask && (
+            <TaskActions deleteTaskCallback={handleDeleteTask} />
+          )}
         </div>
       </div>
 
@@ -318,6 +323,7 @@ const TaskPage = () => {
             setData={saveTaskData}
             data={taskData}
             isViewOnly={isViewOnlyMode}
+            canUpdateTask={canUpdateTask}
           />
 
           <div className='mt-10'>

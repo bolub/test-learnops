@@ -15,8 +15,8 @@
     "unlinkRequestButton": "[data-cy=unlink-request]",
     "deleteProjectButton": "[data-cy=delete-project-button]",
     "moreActionsMenu": {
-      "triggerButton": "[data-cy=more-action-menu-trigger]",
-      "optionsList": "[data-cy=more-action-menu-options-list]"
+      "triggerButton": "[data-cy=more-actions-button]",
+      "optionsList": "[data-cy=more-actions-list]"
     },
     "deleteProjectModal": {
       "modalWindow": "[data-cy=delete-project-modal]",
@@ -72,6 +72,18 @@
       "cancelLinkFileButton": "[data-cy=cancel-link-file-button]",
       "projectFilesTableRow": "[data-cy=project-file-$]"
     },
+    "peopleTab": {
+      "resourceSummaryTab": {
+        "tabButton": "[data-cy=resource-summary-tab-button]",
+        "summaryTable": "[data-cy=resource-summary-table]",
+        "totalHours": "[data-cy=resource-summary-total-hours]",
+        "totalReource": "[data-cy=resource-summary-total-resource]"
+      },
+      "projectResourceType": "[data-cy=project-resource-input]",
+      "projectResourceVendorDropdown": "[data-cy=project-vendor-dropdown]",
+      "projectResourceCancelButton": "[data-cy=resource-plan-cancel-button]",
+      "projectResourceSaveButton": "[data-cy=resource-plan-update-button]"
+    },
     "comments": {
       "trigger": "[data-cy=project-comments-trigger]",
       "list": "[data-cy=project-comments-list]",
@@ -88,12 +100,6 @@
         "editButton": "[data-testid=edit-button]",
         "deleteButton": "[data-testid=delete-button]"
       }
-    },
-    "peopleTab": {
-      "projectResourceType": "[data-cy=project-resource-input]",
-      "projectResourceVendorDropdown": "[data-cy=project-vendor-dropdown]",
-      "projectResourceCancelButton": "[data-cy=resource-plan-cancel-button]",
-      "projectResourceSaveButton": "[data-cy=resource-plan-update-button]"
     }
   },
   "constantTexts": {
@@ -202,6 +208,27 @@
             "updatedAt": "2021-11-30 16:49:21.73+00"
           }
         ]
+      },
+      "success": true
+    },
+    "resourceSummary": {
+      "code": 200,
+      "data": {
+          "Project Owner": {
+              "resourceNumber": 1,
+              "totalAllocatedHour": 60,
+              "remainingHour": 60
+          },
+          "Instructional designer": {
+              "resourceNumber": 2,
+              "totalAllocatedHour": 12,
+              "remainingHour": 0
+          },
+          "Content Writer": {
+              "resourceNumber": 1,
+              "totalAllocatedHour": 33,
+              "remainingHour": 0
+          }
       },
       "success": true
     }

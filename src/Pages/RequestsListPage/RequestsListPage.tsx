@@ -9,6 +9,7 @@ import {
   FormItem,
   TextField,
   Datepicker,
+  Typography,
 } from '@getsynapse/design-system';
 import intl from 'react-intl-universal';
 import { useSelector, useDispatch } from 'react-redux';
@@ -40,12 +41,121 @@ import searchNoReturns from 'assets/icons/search-no-returns.svg';
 import RenderNoRecords from './components/NoRecords';
 import csvExportHelpers from './csvExportHelpers';
 import { selectUserType } from 'state/User/userSlice';
-import { useAppSelector } from 'state/hooks';
 import Pagination from 'Organisms/Pagination';
 import PageTitle from 'Molecules/PageTitle/PageTitle';
 import RequestsTable from './components/RequestsTable';
-import { filter } from 'utils/customTypes';
+import { filter, Request } from 'utils/customTypes';
 import NoRequestsSvg from 'assets/icons/empty-requests.svg';
+import { selectOrganizationSettings } from 'state/Organization/organizationSlice';
+import get from 'lodash/get';
+
+type ColumnOption = {
+  name: string;
+  value: string;
+  operators: {
+    value: string;
+    name: string;
+  }[];
+  type: string;
+};
+
+const MyRequests = ({
+  columnOptions,
+  fetchUserRequestWithPagination,
+  handleSearch,
+  handleSort,
+  isSearch,
+  onExportHandler,
+  selectedRequests,
+  setModalOpen,
+  setModalProps,
+  setSelectedRequests,
+  setShowFilter,
+  showFilter,
+  tableFilterInput,
+  userRequests,
+  value,
+}: {
+  columnOptions: ColumnOption[];
+  fetchUserRequestWithPagination: (params: any) => void;
+  handleSearch: (value: string) => void;
+  handleSort: (orderByParam: string, order: 'desc' | 'asc') => void;
+  isSearch: boolean;
+  onExportHandler: () => void;
+  selectedRequests: string[];
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setModalProps: React.Dispatch<React.SetStateAction<{}>>;
+  setSelectedRequests: React.Dispatch<React.SetStateAction<string[]>>;
+  setShowFilter: (value: React.SetStateAction<boolean>) => void;
+  showFilter: boolean;
+  tableFilterInput: TableFilterProps['filterInputElement'];
+  userRequests: {
+    data: Request[];
+    total: number;
+  };
+  value: string;
+}) => {
+  const dispatch = useDispatch();
+  return (
+    <>
+      <TableOperationHeader
+        inputValue={value}
+        setInputValue={handleSearch}
+        className='border-0 bg-neutral-white'
+        onExport={onExportHandler}
+        showFilterComponent={showFilter}
+        onToggleFilter={() => setShowFilter((prevShow) => !prevShow)}
+        filterComponent={
+          <div className='bg-neutral-white'>
+            <TableFilter
+              columnOptions={columnOptions}
+              filterVisible={showFilter}
+              filterAction={(filters: filter[]) =>
+                dispatch(setUserRequestFilters(filters))
+              }
+              filterInputElement={tableFilterInput}
+            />
+          </div>
+        }
+      />
+      {userRequests.data.length <= 0 ? (
+        <Fragment>
+          {!isSearch ? (
+            <RenderNoRecords
+              imageSrc={NoRequestsSvg}
+              caption={intl.get('REQUESTS_LIST_PAGE.CREATE_MANAGE_REQUESTS')}
+            >
+              <Link to={PATHS.REQUEST_PAGE}>
+                <Button className='mt-2 mx-auto' size='small'>
+                  {intl.get('REQUESTS_LIST_PAGE.GET_STARTED')}
+                </Button>
+              </Link>
+            </RenderNoRecords>
+          ) : (
+            <RenderNoRecords
+              dataCy='no-request-found'
+              imageSrc={searchNoReturns}
+              caption={intl.get('REQUESTS_LIST_PAGE.NO_RECORDS')}
+            />
+          )}
+        </Fragment>
+      ) : (
+        <RequestsTable
+          data={userRequests.data}
+          setModalOpen={setModalOpen}
+          setModalProps={setModalProps}
+          setSelectedRequests={setSelectedRequests}
+          selectedRequests={selectedRequests}
+          handleSort={handleSort}
+        />
+      )}
+      <Pagination
+        total={userRequests.total}
+        onChange={fetchUserRequestWithPagination}
+      />
+    </>
+  );
+};
 
 const RequestsListPage = () => {
   const dispatch = useDispatch();
@@ -58,13 +168,17 @@ const RequestsListPage = () => {
   const initValue: string[] = [];
   const [selectedRequests, setSelectedRequests] = useState(initValue);
   const [value, setValue] = useState('');
-  const userType = useAppSelector(selectUserType);
+  const userType = useSelector(selectUserType);
   const isLDUser = useMemo(() => userType === USER_TYPES.L_D, [userType]);
   const isBusinessUser = useMemo(
     () => userType === USER_TYPES.BUSINESS,
     [userType]
   );
   const [isSearch, setIsSearch] = useState(false);
+  const organizationSettings = useSelector(selectOrganizationSettings);
+  const showTeamRequestsTab =
+    (get(organizationSettings, 'teamRequestsTab', true) && isBusinessUser) ||
+    !isBusinessUser;
 
   useEffect(() => {
     dispatch(getAllRequests());
@@ -138,15 +252,7 @@ const RequestsListPage = () => {
     dispatch(exportCsv({ csvHeaders, csvData, fileName }));
   };
 
-  const columnOptions: {
-    name: string;
-    value: string;
-    operators: {
-      value: string;
-      name: string;
-    }[];
-    type: string;
-  }[] = useMemo(() => {
+  const columnOptions: ColumnOption[] = useMemo(() => {
     const visibleColumns = [
       ...REQUEST_COLUMNS,
       ...(isLDUser ? LD_USER_PERMISSIONS : []),
@@ -226,146 +332,140 @@ const RequestsListPage = () => {
           </Link>
         }
       />
-      <Tabs
-        className='mt-4 px-6 pb-20 overflow-y-auto flex-grow'
-        data-cy='request-tabs'
-        data={[
-          {
-            label: isBusinessUser
-              ? intl.get('REQUESTS_LIST_PAGE.SUB_NAV.TEAM_REQUESTS')
-              : intl.get('REQUESTS_LIST_PAGE.SUB_NAV.TEAM_BOARD'),
-            content: (
-              <Fragment>
-                <TableOperationHeader
-                  inputValue={value}
-                  setInputValue={handleSearch}
-                  className='border-0 bg-neutral-white'
-                  onExport={onExportHandler}
-                  showFilterComponent={showFilter}
-                  onToggleFilter={() => setShowFilter((prevShow) => !prevShow)}
-                  filterComponent={
-                    <div className='bg-neutral-white'>
-                      <TableFilter
-                        columnOptions={columnOptions}
-                        filterVisible={showFilter}
-                        filterAction={(filters: filter[]) =>
-                          dispatch(setTeamRequestFilters(filters))
-                        }
-                        filterInputElement={tableFilterInput}
-                      />
-                    </div>
-                  }
-                />
-                {allRequests.data.length <= 0 ? (
-                  <Fragment>
-                    {!isSearch ? (
-                      <RenderNoRecords
-                        imageSrc={NoRequestsSvg}
-                        caption={intl.get(
-                          'REQUESTS_LIST_PAGE.CREATE_MANAGE_REQUESTS'
-                        )}
-                      >
-                        <Link to={PATHS.REQUEST_PAGE}>
-                          <Button className='mt-2 mx-auto' size='small'>
-                            {intl.get('REQUESTS_LIST_PAGE.GET_STARTED')}
-                          </Button>
-                        </Link>
-                      </RenderNoRecords>
-                    ) : (
-                      <RenderNoRecords
-                        dataCy='no-request-found'
-                        imageSrc={searchNoReturns}
-                        caption={intl.get('REQUESTS_LIST_PAGE.NO_RECORDS')}
-                      />
-                    )}
-                  </Fragment>
-                ) : (
-                  <RequestsTable
-                    data={allRequests.data}
-                    setModalOpen={setModalOpen}
-                    setModalProps={setModalProps}
-                    setSelectedRequests={setSelectedRequests}
-                    handleSort={handleSort}
+      {showTeamRequestsTab ? (
+        <Tabs
+          className='mt-4 px-6 pb-20 overflow-y-auto flex-grow'
+          data-cy='request-tabs'
+          data={[
+            {
+              label: isBusinessUser
+                ? intl.get('REQUESTS_LIST_PAGE.SUB_NAV.TEAM_REQUESTS')
+                : intl.get('REQUESTS_LIST_PAGE.SUB_NAV.TEAM_BOARD'),
+              content: (
+                <Fragment>
+                  <TableOperationHeader
+                    inputValue={value}
+                    setInputValue={handleSearch}
+                    className='border-0 bg-neutral-white'
+                    onExport={onExportHandler}
+                    showFilterComponent={showFilter}
+                    onToggleFilter={() =>
+                      setShowFilter((prevShow) => !prevShow)
+                    }
+                    filterComponent={
+                      <div className='bg-neutral-white'>
+                        <TableFilter
+                          columnOptions={columnOptions}
+                          filterVisible={showFilter}
+                          filterAction={(filters: filter[]) =>
+                            dispatch(setTeamRequestFilters(filters))
+                          }
+                          filterInputElement={tableFilterInput}
+                        />
+                      </div>
+                    }
                   />
-                )}
-                <Pagination
-                  total={allRequests.total}
-                  onChange={fetchRequestWithPagination}
-                />
-              </Fragment>
-            ),
-          },
-          {
-            label: isBusinessUser
-              ? intl.get('REQUESTS_LIST_PAGE.SUB_NAV.MY_REQUESTS')
-              : intl.get('REQUESTS_LIST_PAGE.SUB_NAV.MY_BOARD'),
-            content: (
-              <Fragment>
-                <TableOperationHeader
-                  inputValue={value}
-                  setInputValue={handleSearch}
-                  className='border-0 bg-neutral-white'
-                  onExport={onExportHandler}
-                  showFilterComponent={showFilter}
-                  onToggleFilter={() => setShowFilter((prevShow) => !prevShow)}
-                  filterComponent={
-                    <div className='bg-neutral-white'>
-                      <TableFilter
-                        columnOptions={columnOptions}
-                        filterVisible={showFilter}
-                        filterAction={(filters: filter[]) =>
-                          dispatch(setUserRequestFilters(filters))
-                        }
-                        filterInputElement={tableFilterInput}
-                      />
-                    </div>
-                  }
-                />
-                {userRequests.data.length <= 0 ? (
-                  <Fragment>
-                    {!isSearch ? (
-                      <RenderNoRecords
-                        imageSrc={NoRequestsSvg}
-                        caption={intl.get(
-                          'REQUESTS_LIST_PAGE.CREATE_MANAGE_REQUESTS'
-                        )}
-                      >
-                        <Link to={PATHS.REQUEST_PAGE}>
-                          <Button className='mt-2 mx-auto' size='small'>
-                            {intl.get('REQUESTS_LIST_PAGE.GET_STARTED')}
-                          </Button>
-                        </Link>
-                      </RenderNoRecords>
-                    ) : (
-                      <RenderNoRecords
-                        dataCy='no-request-found'
-                        imageSrc={searchNoReturns}
-                        caption={intl.get('REQUESTS_LIST_PAGE.NO_RECORDS')}
-                      />
-                    )}
-                  </Fragment>
-                ) : (
-                  <RequestsTable
-                    data={userRequests.data}
-                    setModalOpen={setModalOpen}
-                    setModalProps={setModalProps}
-                    setSelectedRequests={setSelectedRequests}
-                    handleSort={handleSort}
+                  {allRequests.data.length <= 0 ? (
+                    <Fragment>
+                      {!isSearch ? (
+                        <RenderNoRecords
+                          imageSrc={NoRequestsSvg}
+                          caption={intl.get(
+                            'REQUESTS_LIST_PAGE.CREATE_MANAGE_REQUESTS'
+                          )}
+                        >
+                          <Link to={PATHS.REQUEST_PAGE}>
+                            <Button className='mt-2 mx-auto' size='small'>
+                              {intl.get('REQUESTS_LIST_PAGE.GET_STARTED')}
+                            </Button>
+                          </Link>
+                        </RenderNoRecords>
+                      ) : (
+                        <RenderNoRecords
+                          dataCy='no-request-found'
+                          imageSrc={searchNoReturns}
+                          caption={intl.get('REQUESTS_LIST_PAGE.NO_RECORDS')}
+                        />
+                      )}
+                    </Fragment>
+                  ) : (
+                    <RequestsTable
+                      data={allRequests.data}
+                      setModalOpen={setModalOpen}
+                      setModalProps={setModalProps}
+                      setSelectedRequests={setSelectedRequests}
+                      selectedRequests={selectedRequests}
+                      handleSort={handleSort}
+                    />
+                  )}
+                  <Pagination
+                    total={allRequests.total}
+                    onChange={fetchRequestWithPagination}
                   />
-                )}
-                <Pagination
-                  total={userRequests.total}
-                  onChange={fetchUserRequestWithPagination}
+                </Fragment>
+              ),
+            },
+            {
+              label: isBusinessUser
+                ? intl.get('REQUESTS_LIST_PAGE.SUB_NAV.MY_REQUESTS')
+                : intl.get('REQUESTS_LIST_PAGE.SUB_NAV.MY_BOARD'),
+              content: (
+                <MyRequests
+                  columnOptions={columnOptions}
+                  fetchUserRequestWithPagination={
+                    fetchUserRequestWithPagination
+                  }
+                  handleSearch={handleSearch}
+                  handleSort={handleSort}
+                  isSearch={isSearch}
+                  onExportHandler={onExportHandler}
+                  selectedRequests={selectedRequests}
+                  setModalOpen={setModalOpen}
+                  setModalProps={setModalProps}
+                  setSelectedRequests={setSelectedRequests}
+                  setShowFilter={setShowFilter}
+                  showFilter={showFilter}
+                  tableFilterInput={tableFilterInput}
+                  userRequests={userRequests}
+                  value={value}
                 />
-              </Fragment>
-            ),
-          },
-        ]}
-        defaultIndex={0}
-        tabListProps={{ className: 'max-w-sm mb-4' }}
-        type='tab'
-        onChange={(index: number) => setTabIndex(index)}
-      />
+              ),
+            },
+          ]}
+          defaultIndex={0}
+          tabListProps={{ className: 'max-w-sm mb-4' }}
+          type='tab'
+          onChange={(index: number) => setTabIndex(index)}
+        />
+      ) : (
+        <div className='mt-4 px-6 pb-20 overflow-y-auto flex-grow'>
+          <Typography
+            variant='h6'
+            weight='medium'
+            className='text-neutral-dark mb-5'
+          >
+            {intl.get('REQUESTS_LIST_PAGE.SUB_NAV.MY_REQUESTS')}
+          </Typography>
+
+          <MyRequests
+            columnOptions={columnOptions}
+            fetchUserRequestWithPagination={fetchUserRequestWithPagination}
+            handleSearch={handleSearch}
+            handleSort={handleSort}
+            isSearch={isSearch}
+            onExportHandler={onExportHandler}
+            selectedRequests={selectedRequests}
+            setModalOpen={setModalOpen}
+            setModalProps={setModalProps}
+            setSelectedRequests={setSelectedRequests}
+            setShowFilter={setShowFilter}
+            showFilter={showFilter}
+            tableFilterInput={tableFilterInput}
+            userRequests={userRequests}
+            value={value}
+          />
+        </div>
+      )}
     </div>
   );
 };

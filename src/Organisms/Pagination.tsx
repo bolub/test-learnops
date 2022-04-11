@@ -68,7 +68,7 @@ const Pagination = ({ total, onChange, className }: PaginationProps) => {
   return (
     <div
       className={classnames(
-        'absolute bottom-0 left-0 py-2',
+        'absolute bottom-0 left-0 py-2 z-10',
         'pl-14 pr-4 bg-neutral-white w-full',
         'flex items-center justify-end',
         skim,
@@ -81,13 +81,14 @@ const Pagination = ({ total, onChange, className }: PaginationProps) => {
       <Typography variant='body' weight='medium' className='ml-4 mr-2'>
         {intl.get('PAGINATION.SHOW')}
       </Typography>
-      <Dropdown
-        options={pageSizeOptions}
-        values={[pageSize]}
-        onChange={handleChangePageSize}
-        triggerProps={{ size: 'sm' }}
-      />
-
+      <div className='min-w-12'>
+        <Dropdown
+          options={pageSizeOptions}
+          values={[pageSize]}
+          onChange={handleChangePageSize}
+          triggerProps={{ size: 'sm' }}
+        />
+      </div>
       <PageSlider
         total={total}
         pages={pageCount}
@@ -101,12 +102,14 @@ const Pagination = ({ total, onChange, className }: PaginationProps) => {
       <Typography variant='body' weight='medium' className='mr-2'>
         {intl.get('PAGINATION.JUMP_TO_PAGE')}
       </Typography>
-      <Dropdown
-        options={pageSliderOptions}
-        values={[currentPage]}
-        onChange={(option: PageSliderOption) => setCurrentPage(option)}
-        triggerProps={{ size: 'sm' }}
-      />
+      <div className='min-w-12'>
+        <Dropdown
+          options={pageSliderOptions}
+          values={[currentPage]}
+          onChange={(option: PageSliderOption) => setCurrentPage(option)}
+          triggerProps={{ size: 'sm' }}
+        />
+      </div>
     </div>
   );
 };

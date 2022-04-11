@@ -11,7 +11,10 @@ import {
 import HeadCell from 'Pages/ProjectsListPage/components/HeadCell';
 import intl from 'react-intl-universal';
 import classnames from 'classnames';
-import { BUDGET_DETAILS_FIELDS } from 'utils/constants';
+import {
+  BUDGET_DETAILS_FIELDS,
+  PROJECT_PARTICIPANT_TYPE,
+} from 'utils/constants';
 import { BudgetDetail } from 'utils/customTypes';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +24,10 @@ import {
   fetchBudgetCategoriesAndBudgets,
   selectProjectBudgetCategories,
 } from 'state/Budget/budgetSlice';
-import { getCurrentProjectData } from 'state/Project/projectSlice';
+import {
+  getCurrentProjectData,
+  getCurrentUserParticipantType,
+} from 'state/Project/projectSlice';
 import { budgetDetailsValues } from 'Pages/ProjectPage/helpers/types';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
@@ -30,6 +36,8 @@ const BudgetDetails = () => {
   const dispatch = useDispatch();
   const { projectId } = useParams<{ projectId: string }>();
   const projectData = useSelector(getCurrentProjectData);
+  const participantType = useSelector(getCurrentUserParticipantType);
+  const isUserProjectOwner = participantType === PROJECT_PARTICIPANT_TYPE.OWNER;
   const [totalCostToDate, setTotalCostToDate] = useState(0);
   const [totalAllocatedBudget, setAllocatedBudget] = useState(0);
   const [budgetPlan, setBudgetPlan] = useState(0);
@@ -157,14 +165,14 @@ const BudgetDetails = () => {
 
   return (
     <div className='w-full h-full'>
-      <div className='bg-neutral-white px-4 py-6 flex flex-col'>
+      <div className='bg-neutral-white h-projectTabContent px-4 py-6 flex flex-col'>
         <Typography variant='h4'>
           {intl.get('BUDGET.BUDGET_DETAILS_TABLE.TITLE')}
         </Typography>
         <Typography variant='caption' className='text-neutral pb-4'>
           {intl.get('BUDGET.BUDGET_DETAILS_TABLE.SUBTITLE')}
         </Typography>
-        <div className='w-full m-auto overflow-y-auto max-h-124 bg-neutral-lightest'>
+        <div className='w-full overflow-y-auto max-h-124 bg-neutral-lightest'>
           <Table
             className='w-full border-separate'
             style={{ borderSpacing: 0 }}
@@ -257,6 +265,8 @@ const BudgetDetails = () => {
                                 <TextField
                                   divProps={{ className: 'w-30' }}
                                   type='number'
+                                  height='small'
+                                  inputClassName='no-spinner'
                                   defaultValue={
                                     get(
                                       data,
@@ -275,10 +285,9 @@ const BudgetDetails = () => {
                                         e.target.value,
                                     })
                                   }
-                                  className='w-full'
                                   data-cy={`allocated_budget-input-${data.id}`}
                                 />
-                                <span className='pl-2'>
+                                <span className='pl-1'>
                                   {intl.get('BUDGET.BUDGET_DETAILS_TABLE.USD')}
                                 </span>
                               </div>
@@ -316,6 +325,8 @@ const BudgetDetails = () => {
                                 <TextField
                                   divProps={{ className: 'w-30' }}
                                   type='number'
+                                  height='small'
+                                  inputClassName='no-spinner'
                                   defaultValue={
                                     get(
                                       data,
@@ -334,11 +345,9 @@ const BudgetDetails = () => {
                                         e.target.value,
                                     })
                                   }
-                                  className='w-full'
                                   data-cy={`cost_to_date-input-${data.id}`}
                                 />
-
-                                <span className='pl-2'>
+                                <span className='pl-1'>
                                   {intl.get('BUDGET.BUDGET_DETAILS_TABLE.USD')}
                                 </span>
                               </div>
@@ -369,6 +378,7 @@ const BudgetDetails = () => {
                           data.id === budgetData.id && renderInput === true ? (
                             <FormItem>
                               <TextField
+                                height='small'
                                 defaultValue={
                                   get(data, 'categoryBudgets[0].notes', '') ===
                                   ''
@@ -428,7 +438,7 @@ const BudgetDetails = () => {
                       {
                         content:
                           renderInput === true && data.id === budgetData.id ? (
-                            <div className='flex'>
+                            <div className='flex float-right mr-2'>
                               <Button
                                 onClick={() => handleSave(data)}
                                 variant='tertiary'
@@ -453,7 +463,7 @@ const BudgetDetails = () => {
                               onClick={() => handleChangeElement(data)}
                               variant='tertiary'
                               size='small'
-                              disabled={canEditBudget}
+                              disabled={!isUserProjectOwner || canEditBudget}
                               className='hover:bg-neutral-lightest float-right mr-2'
                               data-cy={`edit-budget-details-button-${data.id}`}
                             >
@@ -467,7 +477,8 @@ const BudgetDetails = () => {
                 ...totalStub.map((item) => {
                   return {
                     id: item.id,
-                    className: 'sticky bottom-0 hover:bg-neutral-white',
+                    className:
+                      'sticky bottom-0 hover:bg-neutral-white bg-neutral-white',
 
                     cells: [
                       {

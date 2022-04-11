@@ -20,8 +20,14 @@ import {
   ProjectProcessStage,
   ProjectsBoardTabs,
 } from 'utils/customTypes';
-import { PROJECTS_LIST_VIEW_MODE } from 'utils/constants';
-import { formatFilters, groupProjectsByStage, filterProjects } from './helpers';
+import { PROJECTS_LIST_VIEW_MODE, PROJECTS_BOARD_TABS } from 'utils/constants';
+import {
+  formatFilters,
+  groupProjectsByStage,
+  filterProjects,
+  filterOutInactiveProjects,
+  processNewProjectData,
+} from './helpers';
 import { selectProjectProcesses } from 'state/Processes/processesSlice';
 import ProjectsAPI from './projectsAPI';
 import ProjectAPI from '../Project/projectAPI';
@@ -54,6 +60,7 @@ interface ProjectsState {
     };
     searchParam: string;
   };
+  selectedProjectsBoard: ProjectsBoardTabs;
   teamProjectsBoard: {
     filters: filter[];
     process: string;
@@ -103,6 +110,7 @@ const initialState: ProjectsState = {
     },
     searchParam: '',
   },
+  selectedProjectsBoard: PROJECTS_BOARD_TABS.TEAM_BOARD,
   teamProjectsBoard: {
     filters: [],
     process: '',
@@ -131,9 +139,9 @@ export const createNewProject = createAsyncThunk(
   async (newProjectData: NewProject, { getState }) => {
     const state = getState() as RootState;
     const organizationId = selectOrganizationId(state);
-    delete newProjectData.health;
+    const processedProjectData = processNewProjectData(newProjectData);
     const response = await projectsAPI.createProject({
-      ...newProjectData,
+      ...processedProjectData,
       organization_id: organizationId,
     });
     return response;
@@ -221,6 +229,11 @@ export const setProjectsListViewMode = createAction<ProjectsListViewMode>(
   'projects/SET_PROJECTS_LIST_VIEW_MODE'
 );
 
+export const resetBoardView = createAction('projects/RESET_BOAR_VIEW');
+
+export const setProjectsBoard =
+  createAction<ProjectsBoardTabs>('projects/SET_BOARD');
+
 export const setBoardProcess = createAction(
   'projects/SET_BOARD_PROCESS',
   (processId: string, board: ProjectsBoardTabs) => {
@@ -300,6 +313,14 @@ const projectsSlice = createSlice({
       .addCase(setProjectsListViewMode, (state, action) => {
         state.viewMode = action.payload;
       })
+      .addCase(setProjectsBoard, (state, action) => {
+        state.selectedProjectsBoard = action.payload;
+      })
+      .addCase(resetBoardView, (state, action) => {
+        state.selectedProjectsBoard = initialState.selectedProjectsBoard;
+        state.teamProjectsBoard = initialState.teamProjectsBoard;
+        state.myProjectsBoard = initialState.myProjectsBoard;
+      })
       .addCase(setBoardProcess, (state, action) => {
         state[action.payload.board] = {
           ...state[action.payload.board],
@@ -372,6 +393,8 @@ export const teamBoardSorting = (state: RootState) =>
   state.projectsState.teamProjectsBoard.sorting;
 export const myBoardSorting = (state: RootState) =>
   state.projectsState.myProjectsBoard.sorting;
+export const projectsBoard = (state: RootState) =>
+  state.projectsState.selectedProjectsBoard;
 
 const teamBoardStages = createSelector(
   [selectProjectProcesses, teamBoardProcess],
@@ -403,6 +426,16 @@ const myBoardStages = createSelector(
 
 export const selectAllProjects = (state: RootState) =>
   state.projectsState.projects;
+
+const selectAllActiveProjects = createSelector(
+  selectAllProjects,
+  (allProjects) => filterOutInactiveProjects(allProjects)
+);
+
+const selectMyActiveProjects = createSelector(
+  (state: RootState) => state.projectsState.userProjects,
+  (myProjects) => filterOutInactiveProjects(myProjects)
+);
 
 export const selectTeamProjects = createSelector(
   [
@@ -454,7 +487,7 @@ export const selectUserProjects = createSelector(
 
 export const teamBoard = createSelector(
   [
-    selectAllProjects,
+    selectAllActiveProjects,
     teamBoardProcess,
     teamBoardStages,
     teamBoardSorting,
@@ -484,7 +517,7 @@ export const teamBoard = createSelector(
 
 export const myBoard = createSelector(
   [
-    (state: RootState) => state.projectsState.userProjects,
+    selectMyActiveProjects,
     myBoardProcess,
     myBoardStages,
     myBoardSorting,

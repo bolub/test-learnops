@@ -13,7 +13,7 @@
         "taskAssignee": "[data-cy=user_picker]",
         "confirmTaskButton": "[data-cy=confirm-button]",
         "taskSuccessModal": ".bg-success-lighter",
-        "moreActionsButton": "[data-cy=tasks-more-actions-button]",
+        "moreActionsButton": "[data-cy=more-actions-button]",
         "taskActualHours": "[data-cy=task-actual-hours]",
         "taskEnablementToggle": "[data-testid=task-toggle-enablement]",
         "tasksListTable": {

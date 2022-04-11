@@ -32,10 +32,10 @@ const PendingCancellationBanner = ({ requestData }: Props) => {
           return (
             <div className='flex justify-between items-start'>
               <div>
-                <Typography>
+                <Typography className='text-warning-dark'>
                   {intl.get('REQUEST_PAGE.PENDING_CANCELLATION_BANNER.TITLE')}
                 </Typography>
-                <Typography>
+                <Typography className='text-warning-dark'>
                   {intl.get('REQUEST_PAGE.PENDING_CANCELLATION_BANNER.BODY')}
                 </Typography>
               </div>

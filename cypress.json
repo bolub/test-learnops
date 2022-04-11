@@ -1,11 +1,10 @@
 {
-  "baseUrl": "http://localhost:3005",
-  "viewportWidth": 1300,
-  "viewportHeight": 1000,
-  "defaultCommandTimeout": 100000,
-  "requestTimeout": 100000,
-  "responseTimeout": 100000,
-  "pageLoadTimeout": 1000000,
-  "video": true,
-  "projectId": "j6c392"
+    "baseUrl": "http://localhost:3005",
+    "viewportWidth": 1300,
+    "viewportHeight": 1000,
+    "defaultCommandTimeout": 100000,
+    "requestTimeout": 100000,
+    "responseTimeout": 100000,
+    "pageLoadTimeout": 1000000,
+    "video": false
 }

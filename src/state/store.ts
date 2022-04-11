@@ -20,11 +20,14 @@ import vendors from './Vendors/vendorsSlice';
 import businessTeams from './BusinessTeams/businessTeamsSlice';
 import learningTeams from './LearningTeams/learningTeamsSlice';
 import budgets from './Budget/budgetSlice';
+import capacity from './Capacity/capacitySlice';
+import resourceAllocation from './ResourceAllocation/resourceAllocation';
 
 export const store = configureStore({
   reducer: {
     activeRequest,
     businessTeams,
+    capacity,
     learningTeams,
     currentUser,
     forms,
@@ -44,8 +47,8 @@ export const store = configureStore({
     processes,
     vendors,
     budgets,
+    resourceAllocation,
   },
 });
 
-export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

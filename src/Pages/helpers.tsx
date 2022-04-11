@@ -7,4 +7,8 @@ export const isNotEmptyArray = (data: any) =>
 
 export const utils = { exists, isNotEmptyArray };
 
+export const formatRequestIdentifier = (requestIdentifier: string) => {
+  return requestIdentifier ? `R${requestIdentifier.padStart(6, '0')}` : '';
+};
+
 export default utils;

@@ -98,11 +98,10 @@ export const editRequest = createAsyncThunk(
 export const updateRequestQuestions = createAsyncThunk(
   'activeRequest/UPDATE_REQUEST_QUESTIONS',
   async ({ requestId, updateData }: { requestId: string; updateData: any }) => {
-    await requestAPI.updateQuestions(requestId, {
+    const { data } = await requestAPI.updateQuestions(requestId, {
       data: Object.values(updateData),
     });
-    const response = await requestAPI.fetchRequestQuestions(requestId);
-    return response.data;
+    return data[0];
   }
 );
 
@@ -115,9 +114,8 @@ export const createRequestQuestions = createAsyncThunk(
     requestId: string;
     questionType: string;
   }) => {
-    await requestAPI.createQuestion(requestId, questionType);
-    const response = await requestAPI.fetchRequestQuestions(requestId);
-    return response.data;
+    const response = await requestAPI.createQuestion(requestId, questionType);
+    return response;
   }
 );
 
@@ -130,9 +128,8 @@ export const deleteRequestQuestions = createAsyncThunk(
     questionId: string;
     requestId: string;
   }) => {
-    await requestAPI.deleteQuestion(questionId);
-    const response = await requestAPI.fetchRequestQuestions(requestId);
-    return response.data;
+    const response = await requestAPI.deleteQuestion(questionId);
+    return response;
   }
 );
 
@@ -202,13 +199,21 @@ const activeRequestSlice = createSlice({
         state.status = SLICE_STATUS.FAILED;
       })
       .addCase(createRequestQuestions.fulfilled, (state, action) => {
-        state.value.requestQuestions = action.payload;
+        state.value.requestQuestions = [
+          ...state.value.requestQuestions,
+          action.payload,
+        ];
       })
       .addCase(deleteRequestQuestions.fulfilled, (state, action) => {
-        state.value.requestQuestions = action.payload;
+        state.value.requestQuestions = state.value.requestQuestions.filter(
+          (question) => question.id !== action.payload.id
+        );
       })
       .addCase(updateRequestQuestions.fulfilled, (state, action) => {
-        state.value.requestQuestions = action.payload;
+        state.value.requestQuestions = state.value.requestQuestions.map(
+          (question) =>
+            question.id === action.payload.id ? action.payload : question
+        );
       })
       .addCase(updateOwners.fulfilled, (state, action) => {
         state.value.request = action.payload;

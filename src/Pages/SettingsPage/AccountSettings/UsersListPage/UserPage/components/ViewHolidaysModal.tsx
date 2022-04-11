@@ -38,7 +38,7 @@ const ViewHolidaysModal = ({ country, holidays }: ViewHolidaysModalProps) => {
           'SETTINGS_PAGE.USER_PAGE.VIEW_HOLIDAYS_MODAL.TITLE'
         )}
         size='medium'
-        childrenClassName='max-h-136 w-extra pr-12'
+        childrenClassName='max-h-136'
       >
         <div>
           <img src={publicHolidaysImg} alt='' className='mb-1.5' />

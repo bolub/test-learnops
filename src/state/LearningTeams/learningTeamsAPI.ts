@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import config from 'config/Config';
 import { initAxios } from 'utils/axios';
 import { LDTeam, LearningTeamBase } from 'utils/customTypes';
-
+import get from 'lodash/get';
 class LearningTeamsAPI {
   instance: AxiosInstance;
 
@@ -17,7 +17,10 @@ class LearningTeamsAPI {
 
   createLDTeam = async (team: LearningTeamBase) => {
     const { data } = await this.instance.post('/', team);
-    return data;
+    const id = get(data, 'data.learningTeam.id');
+    const learningTeamData = await this.instance.get(`/${id}`);
+    const teamResp = get(learningTeamData, 'data');
+    return teamResp;
   };
 
   getLearningTeam = async (id: string) => {

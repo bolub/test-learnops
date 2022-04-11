@@ -7,9 +7,13 @@ import {
   Modal,
 } from '@getsynapse/design-system';
 import { useHistory } from 'react-router-dom';
-import { PATHS, USER_TYPES } from 'utils/constants';
+import { LICENSE_TIER, PATHS, USER_TYPES } from 'utils/constants';
 import { useState, useMemo, Fragment } from 'react';
-import { Option } from 'utils/customTypes';
+import { Option, License } from 'utils/customTypes';
+import LicenseBanner from './LicenseBanner';
+import { useSelector } from 'react-redux';
+import { selectOrganizationLicense } from 'state/Organization/organizationSlice';
+import { selectAvailableLicenses } from 'state/UsersManagement/usersManagementSlice';
 
 const AddUserModal = ({
   isOpen,
@@ -38,6 +42,10 @@ const AddUserModal = ({
     ],
     []
   );
+
+  const licenseData: License = useSelector(selectOrganizationLicense);
+
+  const availableLicenses = useSelector(selectAvailableLicenses);
 
   const addUser = () => history.push(`${PATHS.USER_PAGE}/${email}/${userType}`);
 
@@ -124,6 +132,9 @@ const AddUserModal = ({
           </FormItem>
         </div>
       </Fragment>
+      {userType === USER_TYPES.L_D &&
+        licenseData.license_tier !== LICENSE_TIER.TRIAL &&
+        availableLicenses < 1 && <LicenseBanner />}
     </Modal>
   );
 };
