@@ -106,17 +106,17 @@ describe('Create Cancel Project From Request', () => {
         cy.get(childData[1]).contains('Abir').click();
       });
     cy.get(projectInputPrivacy).click();
-    cy.selectDropdownItem('Private', 'private');
+    cy.selectDropdownItem({ label: 'Private', value: 'private' });
     cy.get(projectInputCategory).click();
-    cy.selectDropdownItem(
-      'New Training Development',
-      'a6a9dd58-33ea-4c62-bb65-9f0fb9485437'
-    );
+    cy.selectDropdownItem({
+      label: 'New Training Development',
+      value: 'a6a9dd58-33ea-4c62-bb65-9f0fb9485437',
+    });
     cy.get(projectInputProcess).click();
-    cy.selectDropdownItem(
-      'test process 1',
-      '73009fc1-19d2-405d-9ea8-7576177d747f'
-    );
+    cy.selectDropdownItem({
+      label: 'ADDIE',
+      value: '73009fc1-19d2-405d-9ea8-7576177d747f',
+    });
   });
 
   it('checks if create project can be cancelled', () => {
@@ -203,28 +203,32 @@ describe('Create Cancel Project From Request', () => {
     cy.get(projectStartDate).click();
 
     cy.get(projectInputCategory).click();
-    cy.selectDropdownItem(
-      'New Training Development',
-      'a6a9dd58-33ea-4c62-bb65-9f0fb9485437'
-    );
+    cy.selectDropdownItem({
+      label: 'New Training Development',
+      value: 'a6a9dd58-33ea-4c62-bb65-9f0fb9485437',
+    });
 
     cy.get(projectInputProcess).click();
-    cy.selectDropdownItem(
-      'test process 1',
-      '73009fc1-19d2-405d-9ea8-7576177d747f'
-    );
+    cy.selectDropdownItem({
+      label: 'ADDIE',
+      value: '73009fc1-19d2-405d-9ea8-7576177d747f',
+    });
 
     cy.get(projectInputPriority).click();
 
-    cy.get(
-      `[data-value='${JSON.stringify({ label: 'Medium', value: 'medium' })}']`
-    )
-      .should('be.visible')
-      .eq(1)
-      .click();
+    cy.selectDropdownItem({
+      label: 'Medium',
+      value: 'medium',
+    });
+    // cy.get(
+    //   `[data-value='${JSON.stringify({ label: 'Medium', value: 'medium' })}']`
+    // )
+    //   .should('be.visible')
+    //   .eq(1)
+    //   .click();
 
     cy.get(projectInputPrivacy).click();
-    cy.selectDropdownItem('Public', 'public');
+    cy.selectDropdownItem({ label: 'Public', value: 'public' });
 
     cy.intercept('POST', api.createProject).as('createProject');
     cy.get(saveNowProject).click();

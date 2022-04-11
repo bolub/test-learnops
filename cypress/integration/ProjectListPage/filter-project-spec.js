@@ -147,7 +147,7 @@ describe('Filter projects', () => {
     filterAndRemove('Project Name', 'Contains', 'Test Company 1 - Project 2');
     filterAndRemove('Status', 'Contains', 'New');
     filterAndRemove('Project Owner', 'Contains', 'Abir');
-    filterAndRemove('Budget Source', 'Contains', 'ld_budget');
+    // filterAndRemove('Budget Source', 'Contains', 'ld_budget');
   });
 
   it('checks multiple filters using AND operator', () => {

@@ -50,7 +50,11 @@ describe('Complete project', () => {
     cy.visit(`${routes.projectPage}${userProject.id}`);
     cy.wait('@projectDetail');
     cy.get(selectors.projectStatus).should('be.visible').click();
-    cy.selectDropdownItem('Completed', 'completed');
+    cy.selectDropdownItem({
+      label: 'Completed',
+      value: 'completed',
+    });
+
     cy.get(selectors.projectActualCompletionDate).should('be.visible').click();
     cy.get(`[data-value=${datePick}]`).click();
     cy.get(selectors.updateProjectButton).should('not.have.attr', 'disabled');
