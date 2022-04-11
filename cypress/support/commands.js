@@ -26,10 +26,10 @@ Cypress.Commands.add('signIn', () => {
         .type('alex+test@getsynapse.com');
       cy.get(selectors.loginInputPassword).click().type('EKtest1#');
 
+      cy.intercept('GET', stubRoute, businessUser).as('loginIntercept');
       cy.get(selectors.loginSubmitButton).click();
 
-      cy.intercept('GET', stubRoute, businessUser).as('loginIntercept');
-
+      cy.wait(2000);
       cy.wait('@loginIntercept').its('response.statusCode').should('eq', 200);
     });
   });
@@ -47,11 +47,13 @@ Cypress.Commands.add('signInLD', () => {
         .type('alex+test@getsynapse.com');
       cy.get(selectors.loginInputPassword).click().type('EKtest1#');
 
-      cy.get(selectors.loginSubmitButton).click();
       cy.intercept(stubRoute, { times: 1, method: 'GET' }, ldUser).as(
         'loginIntercept'
       );
-      cy.wait('@loginIntercept');
+      cy.get(selectors.loginSubmitButton).click();
+
+      cy.wait(2000);
+      cy.wait('@loginIntercept').its('response.statusCode').should('eq', 200);
     });
   });
 });
