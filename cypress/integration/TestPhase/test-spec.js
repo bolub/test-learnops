@@ -21,8 +21,8 @@ describe('Project List View', () => {
     cy.interceptApiRequests();
   });
 
-  const isVisible = (elem) =>
-    !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
+  // const isVisible = (elem) =>
+  //   !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
 
   it('Checks if table does not show if no projects are available', () => {
     const { routes, api } = constants;

@@ -27,9 +27,13 @@ Cypress.Commands.add('signIn', () => {
       cy.get(selectors.loginInputPassword).click().type('EKtest1#');
 
       cy.intercept(stubRoute).as('loginIntercept');
+      cy.intercept('https://cognito-idp.us-east-1.amazonaws.com/').as(
+        'cognito'
+      );
+
       cy.get(selectors.loginSubmitButton).click();
 
-      cy.wait(2000);
+      cy.wait('@cognito');
       cy.wait('@loginIntercept');
     });
   });
@@ -42,15 +46,16 @@ Cypress.Commands.add('signInLD', () => {
       const { ldUser, stubRoute } = content;
       const { selectors } = auth;
 
-      cy.get(selectors.loginInputEmail)
-        .click()
-        .type('alex+test@getsynapse.com');
-      cy.get(selectors.loginInputPassword).click().type('EKtest1#');
+      cy.get(selectors.loginInputEmail).type('alex+test@getsynapse.com');
+      cy.get(selectors.loginInputPassword).type('EKtest1#');
 
+      cy.intercept('https://cognito-idp.us-east-1.amazonaws.com/').as(
+        'cognito'
+      );
       cy.intercept(stubRoute).as('loginIntercept');
       cy.get(selectors.loginSubmitButton).click();
 
-      cy.wait(2000);
+      cy.wait('@cognito');
       cy.wait('@loginIntercept');
     });
   });
