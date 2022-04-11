@@ -30,7 +30,7 @@ Cypress.Commands.add('signIn', () => {
       cy.get(selectors.loginSubmitButton).click();
 
       cy.wait(2000);
-      cy.wait('@loginIntercept').its('response.statusCode').should('eq', 200);
+      cy.wait('@loginIntercept');
     });
   });
 });
@@ -51,7 +51,7 @@ Cypress.Commands.add('signInLD', () => {
       cy.get(selectors.loginSubmitButton).click();
 
       cy.wait(2000);
-      cy.wait('@loginIntercept').its('response.statusCode').should('eq', 200);
+      cy.wait('@loginIntercept');
     });
   });
 });
