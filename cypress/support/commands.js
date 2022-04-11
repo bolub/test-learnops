@@ -47,9 +47,7 @@ Cypress.Commands.add('signInLD', () => {
         .type('alex+test@getsynapse.com');
       cy.get(selectors.loginInputPassword).click().type('EKtest1#');
 
-      cy.intercept(stubRoute, { times: 1, method: 'GET' }, ldUser).as(
-        'loginIntercept'
-      );
+      cy.intercept(stubRoute).as('loginIntercept');
       cy.get(selectors.loginSubmitButton).click();
 
       cy.wait(2000);
