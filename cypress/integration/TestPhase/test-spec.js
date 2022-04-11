@@ -22,7 +22,7 @@ describe('Project List View', () => {
   });
 
   it('Checks if table does not show if no projects are available', () => {
-    const { routes, } = constants;
+    const { routes } = constants;
     const {
       selectors: {
         projectsListTable: {
@@ -33,9 +33,6 @@ describe('Project List View', () => {
       },
     } = projects;
 
-
     cy.visit(routes.projectsList);
-
-   
-
+  });
 });
