@@ -23,6 +23,8 @@ jobs:
           build: npm run build
           start: npx serve -s build -l 3005
           spec: '**/ProjectListPage/*'
+        env:
+          CYPRESS:RECORED_KEY: bb48e66f-0528-4777-a79f-0681517c0fa3
 
       - uses: actions/upload-artifact@v2
         if: failure()
@@ -36,7 +38,7 @@ jobs:
           name: cypress-videos
           path: cypress/videos
 
-      - name: Cypress run edge
-        uses: cypress-io/github-action@v2
-        with:
-          spec: '**/Auth/*'
+      # - name: Cypress run edge
+      #   uses: cypress-io/github-action@v2
+      #   with:
+      #     spec: '**/Auth/*'
