@@ -26,7 +26,7 @@ Cypress.Commands.add('signIn', () => {
         .type('alex+test@getsynapse.com');
       cy.get(selectors.loginInputPassword).click().type('EKtest1#');
 
-      cy.intercept('GET', stubRoute, businessUser).as('loginIntercept');
+      cy.intercept(stubRoute).as('loginIntercept');
       cy.get(selectors.loginSubmitButton).click();
 
       cy.wait(2000);

@@ -21,8 +21,11 @@ describe('Project List View', () => {
     cy.interceptApiRequests();
   });
 
+  const isVisible = (elem) =>
+    !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
+
   it('Checks if table does not show if no projects are available', () => {
-    const { routes } = constants;
+    const { routes, api } = constants;
     const {
       selectors: {
         projectsListTable: {
@@ -33,6 +36,27 @@ describe('Project List View', () => {
       },
     } = projects;
 
+    cy.intercept(api.fetchProjects, {
+      status: 200,
+      data: [],
+      success: true,
+    }).as('teamProjectsList');
+
+    cy.intercept(api.myProjects, {
+      status: 200,
+      data: [],
+      success: true,
+    }).as('myProjectsList');
+
     cy.visit(routes.projectsList);
+
+    cy.wait('@teamProjectsList');
+    cy.wait('@myProjectsList');
+
+    cy.get(teamProjectsEmpty).should('be.visible');
+
+    cy.get(myProjectsTab).click();
+
+    cy.get(myProjectsEmpty).should('be.visible');
   });
 });
