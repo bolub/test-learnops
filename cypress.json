@@ -6,6 +6,6 @@
     "requestTimeout": 100000,
     "responseTimeout": 100000,
     "pageLoadTimeout": 1000000,
-    "video": false,
+    "video": true,
     "projectId": "5q26nj"
 }
